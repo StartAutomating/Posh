@@ -2378,5 +2378,150 @@ $script:TreeDepth++;</ScriptBlock>
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>System.Text.RegularExpressions.RegEx</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Text.RegularExpressions.RegEx</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    $pattern = "$($_.ToString())"
+    @(for ($i = 0; $i -lt $pattern.Length; $i++) {
+        if ($pattern[$i -1] -eq '\') {
+            if ($pattern[$i -2] -ne '\' -or ($pattern[$i -2] -eq '\' -and $pattern[$i -3] -eq '\')) {
+                $pattern[$i]
+                continue
+            }
+        }
+        if ($i -and $pattern[$i] -eq '?' -and $pattern[$i + 1] -eq '&lt;' -and $pattern[$i + 2] -match '[\w\-]') {
+            # Group name
+            if ($psStyle) {
+                $psStyle.Foreground.Green
+                $psStyle.Bold
+            }                        
+            $nameEnd = $pattern.IndexOf('&gt;', $i)
+            $pattern.Substring($i, 2)
+            if ($psStyle) {
+                $psStyle.Underline
+            }
+            
+            $pattern.Substring($i + 2, $nameEnd - ($i + 2))
+            if ($psStyle) {
+                $psStyle.UnderlineOff
+            }
+            $i = $nameEnd
+            '&gt;'
+            if ($psStyle) { $psStyle.Reset }
+            continue
+        }
+
+        if ('(',')','[',']' -contains $pattern[$i]) {
+            # Grouping paranthesis
+            if ($psStyle) {
+                $psStyle.Foreground.Yellow;$psStyle.Bold
+                # . $SetOutputStyle -ForegroundColor Warning &lt;#Irregular.Regex.Group#&gt; -Bold
+            }
+            
+            $pattern[$i]
+            if ($psStyle) { $psStyle.Reset }            
+            continue
+        }
+
+        if ('|','?','&lt;','&gt;','!' -contains $pattern[$i]) {
+            if ($psStyle) { $psStyle.Formatting.Verbose }
+            $pattern[$i]
+            if ($psStyle) { $psStyle.Reset }            
+            continue
+        }
+
+        if ($pattern[$i] -eq '#') {
+            if ($psStyle) {
+                $psStyle.Foreground.Green
+                $psStyle.Bold
+            }
+            # . $SetOutputStyle -ForegroundColor Success # Irregular.Regex.Comment
+            $lineEnd = $pattern.IndexOfAny([Environment]::NewLine.ToCharArray(), $i)
+            if (($lineEnd - $i) -gt 0) {
+                $pattern.Substring($i, $lineEnd -$i)
+                $i = $lineEnd - 1
+
+            } else {
+                $pattern.Substring($i)
+                $i = $pattern.Length
+            }
+            if ($psStyle) {
+                $psStyle.Reset
+            }            
+            continue
+        }
+
+
+        $pattern[$i]
+    }) -join ''
+
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>System.Text.RegularExpressions.RegEx</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Text.RegularExpressions.RegEx</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>GroupNames</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Pattern</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Options</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>MatchTimeout</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>System.Text.RegularExpressions.RegEx</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Text.RegularExpressions.RegEx</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap />
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Pattern</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>GroupNames</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
