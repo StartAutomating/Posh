@@ -1,0 +1,5 @@
+Count
+AliasCount
+ApplicationCount
+CmdletCount
+FunctionCount

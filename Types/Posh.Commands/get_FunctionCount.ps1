@@ -1,0 +1,1 @@
+@($this.Function).Count
