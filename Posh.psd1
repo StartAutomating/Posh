@@ -8,6 +8,20 @@
         ProjectURI = 'https://github.com/StartAutomating/Posh'
         LicenseURI = 'https://github.com/StartAutomating/Posh/blob/main/LICENSE'
         Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized'
+        ReleaseNotes = @'
+# 0.1:
+
+* Initial Version of Posh, including:
+  * Customizable prompts
+  * Easier access to PowerShell Error history  
+* Formatting:
+  * Reflection formatter
+  * Get-Member in Color
+  * Colorized XML
+  * Colorized File View (with Icons!) (no NerdFonts required)
+  * Colorized Regex
+  * Process HeatMap
+'@
         FileTypes = @{
             "Posh.Prompt" = @{
                 Pattern = '(?>^prompt|\.prompt\.ps1$)'
