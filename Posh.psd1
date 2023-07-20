@@ -9,7 +9,7 @@
         LicenseURI = 'https://github.com/StartAutomating/Posh/blob/main/LICENSE'
         Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized'
         ReleaseNotes = @'
-# 0.1:
+## Posh 0.1:
 
 * Initial Version of Posh, including:
   * Customizable prompts
