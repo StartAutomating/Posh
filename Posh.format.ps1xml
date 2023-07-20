@@ -520,6 +520,408 @@
       </CustomControl>
     </Control>
     <Control>
+      <Name>XmlNodeControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$Branch,$trunk = '', '    '
+if ($script:treeDepth) {
+    [Environment]::Newline + ($trunk * $script:TreeDepth)+ $Branch
+} else {
+    $Branch
+}
+$script:TreeDepth++;</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlack') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> '&lt;'.Trim() </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlue','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.LocalName
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        $_.HasAttributes -and '#text', '#whitespace' -notcontains $_.LocalName
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$_.Attributes</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>XmlAttributeControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlack') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        if ($_.HasChildren -or $_.HasChildNodes) {
+            '&gt;'
+        } else {
+            '/&gt;'
+        }
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>'#text','#whitespace','#comment','#document' -notcontains $_.LocalName </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.LocalName -in '#text' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Green') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.LocalName -in '#text' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$_.InnerText </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.LocalName -in '#text' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.LocalName -in '#comment' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightGreen') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.LocalName -in '#comment' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> "&lt;!--$($_.InnerText)--&gt;" + [Environment]::NewLine </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.LocalName -in '#comment' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.HasChildren -or $_.HasChildNodes -and $_.LocalName -ne '#whitespace'</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    @(foreach ($cn in $_.ChildNodes) {
+        if ($cn.LocalName -eq '#whitespace') { continue }
+        $cn
+    })
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>XmlNodeControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlack') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        if (-not ($_.HasChildren -or $_.HasChildNodes)) {
+            ''
+        } else {
+            [Environment]::NewLine + (' ' * ($script:TreeDepth - 1)* 4) + '&lt;/'
+        }
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlue','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+         if ($_.HasChildren -or $_.HasChildNodes) { $_.LocalName}
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlack') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+         if ($_.HasChildren -or $_.HasChildNodes) {'&gt;'}
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$script:TreeDepth--;</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$null</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>XmlAttributeControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> ' ' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightCyan') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $_.Name
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlack') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $null = $_.OuterXml -match '=\s{0,}(?&lt;q&gt;["''])'
+        if ($matches.Q) {
+            '=' + $matches.Q
+        }
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Magenta') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        [security.SecurityElement]::Escape($_.Value)
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.BrightBlack') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $null = $_.OuterXml -match '=\s{0,}(?&lt;q&gt;["''])'
+        $matches.Q
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>${Posh_Format-RichText}</Name>
       <CustomControl>
         <CustomEntries>
@@ -1420,6 +1822,67 @@
     </ScriptBlock>
                 <EnumerateCollection />
                 <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>System.Xml.XmlElement</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Xml.XmlElement</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$script:TreeDepth = 0;$true</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$_</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>XmlNodeControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$executionContext.SessionState.PSVariable.Remove("script:TreeDepth");$false</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$null</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>System.Xml.XmlDocument</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Xml.XmlDocument</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$script:TreeDepth = 0;$true</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    @(foreach ($cn in $_.ChildNodes) {
+        if ($cn -is [xml.xmldeclaration]) { continue }
+        $cn
+    })
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>XmlNodeControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$ExecutionContext.SessionState.PSVariable.Remove('script:TreeDepth'); $false</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $null </ScriptBlock>
               </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
