@@ -4,7 +4,10 @@
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
     Description = 'PowerShell made Posh - Spice up Your Shell'
-    PrivateData = @{        
+    PrivateData = @{
+        ProjectURI = 'https://github.com/StartAutomating/Posh'
+        LicenseURI = 'https://github.com/StartAutomating/Posh/blob/main/LICENSE'
+        Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized'
         FileTypes = @{
             "Posh.Prompt" = @{
                 Pattern = '(?>^prompt|\.prompt\.ps1$)'
