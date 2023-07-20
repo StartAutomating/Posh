@@ -2408,6 +2408,36 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </TableControl>
     </View>
     <View>
+      <Name>System.Reflection.MemberInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Reflection.MemberInfo</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $ExecutionContext.SessionState.PSVariable.Set('Script:DisplayingMember',$true) </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $null </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>TypeMemberControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $ExecutionContext.SessionState.PSVariable.Remove('Script:DisplayingMember') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $null </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
       <Name>System.Type</Name>
       <ViewSelectedBy>
         <TypeName>System.Type</TypeName>
