@@ -1,6 +1,947 @@
 <?xml version="1.0" encoding="utf-16"?>
 <!-- Generated with EZOut 2.0: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
 <Configuration>
+  <Controls>
+    <Control>
+      <Name>TypeBase</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock> '  *' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>$_ </ScriptBlock>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>TypeEventControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $script:DisplayingMember  </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> [Environment]::NewLine </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> '  * ' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Formatting.Warning') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <PropertyName>Name</PropertyName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <Text>(</Text>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.EventHandlerType.GetMethod('Invoke') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $MethodParameters = @($_.EventHandlerType.GetMethod('Invoke').GetParameters())
+        foreach ($n in 0..($MethodParameters.Count - 1)) {
+            $o =[PSObject]::new($MethodParameters[$n])
+            $o.psobject.properties.add([PSNoteProperty]::new('N', $N))
+            $o
+        }
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodParameterControl</CustomControlName>
+              </ExpressionBinding>
+              <Text>)</Text>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>TypeFieldControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $script:DisplayingMember  </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> [Environment]::NewLine </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> '  * '</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <PropertyName>FieldType</PropertyName>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Formatting.Warning') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <PropertyName>Name</PropertyName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>TypeMemberControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> 
+        'RuntimeMethodInfo', 'RuntimeConstructorInfo' -contains $_.GetType().Name
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$_ </ScriptBlock>
+                <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetType().Name -eq 'RuntimePropertyInfo' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$_ </ScriptBlock>
+                <CustomControlName>TypePropertyControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> 
+        
+        'MdFieldInfo', 'RtFieldInfo' -contains $_.GetType().Name 
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$_ </ScriptBlock>
+                <CustomControlName>TypeFieldControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetType().Name -eq 'RuntimeEventInfo' </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>$_ </ScriptBlock>
+                <CustomControlName>TypeEventControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>TypeMethodControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $script:DisplayingMember  </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> [Environment]::NewLine </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> '  *' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.IsStatic </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> ' static ' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.IsConstructor </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.IsConstructor </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $_.DeclaringType </ScriptBlock>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.IsConstructor </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.IsConstructor -and $_.ReturnType </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.IsConstructor -and $_.ReturnType </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $_.ReturnType </ScriptBlock>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.IsConstructor -and $_.ReturnType </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.IsConstructor </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Formatting.Warning') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.IsConstructor </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> ' ' +  $_.Name </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.IsConstructor </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> ' (' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $MethodParameters = @($_.GetParameters())
+        foreach ($n in 0..($MethodParameters.Count - 1)) {
+            $o =[PSObject]::new($MethodParameters[$n])
+            $o.psobject.properties.add([PSNoteProperty]::new('N', $N))
+            $o
+        }
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodParameterControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> ')' </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>TypeMethodParameterControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.N -gt 0</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> ', ' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Formatting.Verbose') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <PropertyName>ParameterType</PropertyName>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Formatting.Warning') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> '$' + $_.Name </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> ' ' </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>TypeNameControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <Text> [</Text>
+              <ExpressionBinding>
+                <ScriptBlock>
+        if ($_.FullName) {
+            $_.Fullname -replace '`.+', '' -replace '^System\.', ''
+        } else {
+            $_.Name -replace '`.+', '' -replace '^System\.', ''
+        }
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        $_.IsGenericType
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.GenericTypeArguments
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <Text>]</Text>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>TypePropertyControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $script:DisplayingMember  </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> [Environment]::NewLine </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> '  * '</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <PropertyName>PropertyType</PropertyName>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Formatting.Warning') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <PropertyName>Name</PropertyName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        ' {' +
+        $(if ($_.CanRead) {'get;'}) +
+        $(if ($_.CanWrite) {'set;'})+
+        '}'
+    </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>${Posh_Format-RichText}</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    &lt;#
+    .Synopsis
+        Formats the text color of output
+    .Description
+        Formats the text color of output
+
+        * ForegroundColor
+        * BackgroundColor
+        * Bold
+        * Underline
+    .Notes
+        Stylized Output works in two contexts at present:
+        * Rich consoles (Windows Terminal, PowerShell.exe, Pwsh.exe) (when $host.UI.SupportsVirtualTerminal)
+        * Web pages (Based off the presence of a $Request variable, or when $host.UI.SupportsHTML (you must add this property to $host.UI))
+    #&gt;
+    [Management.Automation.Cmdlet("Format","Object")]
+    [ValidateScript({
+        $canUseANSI     = $host.UI.SupportsVirtualTerminal
+        $canUseHTML     = $Request -or $host.UI.SupportsHTML -or $OutputMode -eq 'HTML'
+        if (-not ($canUseANSI -or $canUseHTML)) { return $false}
+        return $true
+    })]
+    [OutputType([string])]
+    param(
+    # The input object
+    [Parameter(ValueFromPipeline)]
+    [PSObject]
+    $InputObject,
+    
+    # The foreground color
+    [string]$ForegroundColor,
+
+    # The background color
+    [string]$BackgroundColor,
+
+    # If set, will render as bold
+    [switch]$Bold,
+
+    # If set, will render as italic.
+    [Alias('Italics')]
+    [switch]$Italic,
+
+    # If set, will render as faint
+    [switch]$Faint,
+
+    # If set, will render as hidden text.
+    [switch]$Hide,
+
+    # If set, will render as blinking (not supported in all terminals or HTML)
+    [switch]$Blink,    
+
+    # If set, will render as strikethru
+    [Alias('Strikethrough', 'Crossout')]
+    [switch]$Strikethru,
+
+    # If set, will underline text
+    [switch]$Underline,
+
+    # If set, will double underline text.
+    [switch]$DoubleUnderline,    
+
+    # If set, will invert text
+    [switch]$Invert,
+
+    # If provided, will create a hyperlink to a given uri
+    [Alias('Hyperlink', 'Href')]
+    [uri]
+    $Link,
+
+    # If set, will not clear formatting
+    [switch]$NoClear,
+
+    # The alignment.  Defaulting to Left.
+    # Setting an alignment will pad the remaining space on each line.
+    [ValidateSet('Left','Right','Center')]
+    [string]
+    $Alignment,
+
+    # The length of a line.  By default, the buffer width
+    [int]$LineLength = $($host.UI.RawUI.BufferSize.Width)
+    )    
+
+    begin {
+        $canUseANSI     = $host.UI.SupportsVirtualTerminal
+        $canUseHTML     = $Request -or $host.UI.SupportsHTML -or $OutputMode -eq 'HTML'
+        $knownStreams = @{
+            Output='';Error='BrightRed';Warning='BrightYellow';
+            Verbose='BrightCyan';Debug='Yellow';Progress='Cyan';
+            Success='BrightGreen';Failure='Red';Default=''}
+
+        $ansiCode = [Regex]::new(@'
+        (?&lt;ANSI_Code&gt;
+        (?-i)\e                                                                                   # An Escape
+        \[                                                                                        # Followed by a bracket
+        (?&lt;ParameterBytes&gt;[\d\:\;\&lt;\=\&gt;\?]{0,})                                                   # Followed by zero or more parameter  
+        bytes
+        (?&lt;IntermediateBytes&gt;[\s\!\"\#\$\%\&amp;\'\(\)\*\+\,\-\.\/]{0,})                              # Followed by zero or more 
+        intermediate bytes
+        (?&lt;FinalByte&gt;[\@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~]) # Followed by a final byte
+        
+        )                
+'@)
+        $esc = [char]0x1b
+        $standardColors = 'Black', 'Red', 'Green', 'Yellow', 'Blue','Magenta', 'Cyan', 'White'
+        $brightColors   = 'BrightBlack', 'BrightRed', 'BrightGreen', 'BrightYellow', 'BrightBlue','BrightMagenta', 'BrightCyan', 'BrightWhite'
+
+        $allOutput      = @()
+
+        $n =0
+        $cssClasses = @()        
+        $colorAttributes =         
+            @(:nextColor foreach ($hc in $ForegroundColor,$BackgroundColor) {
+                $n++
+                if (-not $hc) { continue }
+                if ($hc[0] -eq $esc) {
+                    if ($canUseANSI) { 
+                        $hc; continue
+                    }
+                }
+        
+                $ansiStartPoint = if ($n -eq 1) { 30 } else { 40 } 
+                if ($knownStreams.ContainsKey($hc)) {
+                    $i = $brightColors.IndexOf($knownStreams[$hc])
+                    if ($canUseHTML) {
+                        $cssClasses += $hc
+                    } else {
+                        if ($i -ge 0 -and $canUseANSI) {
+                            '' + $esc + "[1;$($ansiStartPoint + $i)m"
+                        } else {
+                            $i = $standardColors.IndexOf($knownStreams[$hc])
+                            if ($i -ge 0 -and $canUseANSI) {
+                                '' + $esc + "[1;$($ansiStartPoint + $i)m"
+                            } elseif ($i -le 0 -and $canUseANSI) {                        
+                                '' + $esc + "[$($ansistartpoint + 8):5m"
+                            }
+                        }
+                    }
+                    continue nextColor
+                }
+                elseif ($standardColors -contains $hc) {
+                    for ($i = 0; $i -lt $standardColors.Count;$i++) {
+                        if ($standardColors[$i] -eq $hc) {
+                            if ($canUseANSI -and -not $canUseHTML) {
+                                '' + $esc + "[$($ansiStartPoint + $i)m"
+                            } else {
+                                $cssClasses += $standardColors[$i]
+                            }
+                            continue nextColor
+                        }
+                    }
+                } elseif ($brightColors -contains $hc) {
+                    for ($i = 0; $i -lt $brightColors.Count;$i++) {
+                        if ($brightColors[$i] -eq $hc) {
+                            if ($canUseANSI -and -not $canUseHTML) {
+                                '' + $esc + "[1;$($ansiStartPoint + $i)m"
+                            } else {
+                                $cssClasses += $standardColors[$i]
+                            }
+                            continue nextColor
+                        }
+                    }
+                }                
+                elseif ($psStyle -and $psStyle.Formatting.$hc -and 
+                    $psStyle.Formatting.$hc -match '^\e') {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        $psStyle.Formatting.$hc
+                    } else {
+                        $cssClasses += "formatting-$hc"
+                    }
+                }
+                elseif (-not $n -and $psStyle -and $psStyle.Foreground.$hc -and 
+                    $psStyle.Foreground.$hc -match '^\e' ) {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        $psStyle.Foreground.$hc
+                    } else {
+                        $cssClasses += "foreground-$hc"
+                    }                   
+                }
+                elseif ($n -and $psStyle -and $psStyle.Background.$hc -and
+                    $psStyle.Background.$hc -match '^\e') {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        $psStyle.Background.$hc
+                    } else {
+                        $cssClasses += "background-$hc"
+                    }                    
+                }
+
+        
+        
+                if ($hc -and $hc -notmatch '^[\#\e]') {
+                    $placesToLook=
+                        @(if ($hc.Contains('.')) {
+                            $module, $setting = $hc -split '\.', 2
+                            $theModule = Get-Module $module
+                            $theModule.PrivateData.Color,
+                                $theModule.PrivateData.Colors,
+                                $theModule.PrivateData.Colour,
+                                $theModule.PrivateData.Colours,
+                                $theModule.PrivateData.EZOut,
+                                $global:PSColors,
+                                $global:PSColours
+                        } else {
+                            $setting = $hc
+                            $moduleColorSetting = $theModule.PrivateData.PSColors.$setting
+                        })
+        
+                    foreach ($place in $placesToLook) {
+                        if (-not $place) { continue }
+                        foreach ($propName in $setting -split '\.') {
+                            $place = $place.$propName
+                            if (-not $place) { break }
+                        }
+                        if ($place -and "$place".StartsWith('#') -and 4,7 -contains "$place".Length) {
+                            $hc = $place
+                            continue
+                        }
+                    }
+                    if (-not $hc.StartsWith -or -not $hc.StartsWith('#')) {
+                        continue
+                    }
+                }
+                $r,$g,$b = if ($hc.Length -eq 7) {
+                    [int]::Parse($hc[1..2]-join'', 'HexNumber')
+                    [int]::Parse($hc[3..4]-join '', 'HexNumber')
+                    [int]::Parse($hc[5..6] -join'', 'HexNumber')
+                }elseif ($hc.Length -eq 4) {
+                    [int]::Parse($hc[1], 'HexNumber') * 16
+                    [int]::Parse($hc[2], 'HexNumber') * 16
+                    [int]::Parse($hc[3], 'HexNumber') * 16
+                }
+        
+                if ($canUseHTML) {
+                    if ($n -eq 1) { "color:$hc" }
+                    elseif ($n -eq 2) { "background-color:$hc"} 
+                }
+                elseif ($canUseANSI) {
+                    if ($n -eq 1) { $esc+"[38;2;$r;$g;${b}m" }
+                    elseif ($n -eq 2) { $esc+"[48;2;$r;$g;${b}m" }
+                }
+                
+            })
+        
+        $styleAttributes = @() + $colorAttributes
+        
+        $styleAttributes += @(
+            if ($Bold) {
+                if ($canUseHTML) {"font-weight:bold"}
+                elseif ($canUseANSI) { '' + $esc + "[1m" }
+            }
+            if ($Faint) {
+                if ($canUseHTML) { "opacity:.5" }
+                elseif ($canUseANSI) { '' + $esc + "[2m" }
+            }
+            if ($Italic) {                
+                if ($canUseHTML) { "font-weight:bold" }
+                elseif ($canUseANSI)  {'' + $esc + "[3m" }
+            }
+            
+            if ($Underline -and -not $doubleUnderline) {             
+                if ($canUseHTML) { "text-decoration:underline"} 
+                elseif ($canUseANSI) {'' +$esc + "[4m" }
+            }
+
+            if ($Blink) {             
+                if ($canUseANSI) { '' +$esc + "[5m" }
+            }
+
+            if ($invert) {
+                if ($canUseHTML) {"filter:invert(100%)"}
+                elseif ($canUseANSI) { '' + $esc + "[7m"}
+            }
+
+            if ($hide) {
+                if ($canUseHTML) {"opacity:0"}
+                elseif ($canUseANSI) { '' + $esc + "[8m"}
+            }
+            
+            if ($Strikethru) {             
+                if ($canUseHTML) {"text-decoration: line-through"}
+                elseif ($canUseANSI) { '' +$esc + "[9m" }
+            }
+            
+            if ($DoubleUnderline) {
+                if ($canUseHTML) { "border-bottom: 3px double;"}
+                elseif ($canUseANSI) {'' +$esc + "[21m" }
+            }
+
+            if ($Alignment -and $canUseHTML) {
+                "display:block;text-align:$($Alignment.ToLower())"
+            }
+
+            if ($Link) {
+                if ($canUseHTML) { 
+                    # Hyperlinks need to be a nested element
+                    # so we will not add it to style attributes for HTML
+                }
+                elseif ($canUseANSI) {
+                    # For ANSI,
+                    '' + $esc + ']8;;' + $Link + $esc + '\'   
+                }
+            }
+            
+        )
+        
+        $header =
+            if ($canUseHTML) {        
+                "&lt;span$(
+                    if ($styleAttributes) { " style='$($styleAttributes -join ';')'"}
+                )$(
+                    if ($cssClasses) { " class='$($cssClasses -join ' ')'"}
+                )&gt;" + $(
+                    if ($Link) {
+                        "&lt;a href='$link'&gt;"
+                    }
+                )
+            } elseif ($canUseANSI) {
+                $styleAttributes -join ''
+            }
+    }
+
+    process {
+        $inputObjectAsString =
+            "$(if ($inputObject) { $inputObject | Out-String})".Trim()
+
+        $inputObjectAsString = 
+            if ($Alignment -and -not $canUseHTML) {
+                (@(foreach ($inputObjectLine in ($inputObjectAsString -split '(?&gt;\r\n|\n)')) {
+                    $inputObjectLength = $ansiCode.Replace($inputObjectLine, '').Length
+                    if ($inputObjectLength -lt $LineLength) {
+                        if ($Alignment -eq 'Left') {
+                            $inputObjectLine
+                        } elseif ($Alignment -eq 'Right') {
+                            (' ' * ($LineLength - $inputObjectLength)) + $inputObjectLine                            
+                        } else {
+                            $half = ($LineLength - $inputObjectLength)/2
+                            (' ' * [Math]::Floor($half)) + $inputObjectLine +
+                            (' ' * [Math]::Ceiling($half))
+                        }
+                    }
+                    else {
+                        $inputObjectLine
+                    }
+                }) -join [Environment]::NewLine) + [Environment]::newline
+            } else {
+                $inputObjectAsString
+            }
+
+        $allOutput +=
+            if ($header) {
+                "$header" + $inputObjectAsString
+            }
+            elseif ($inputObject) {
+                $inputObjectAsString
+            }
+    }
+
+    end {
+        
+        if (-not $NoClear) {
+            $allOutput += 
+                if ($canUseHTML) {
+                    if ($Link) {
+                        "&lt;/a&gt;"
+                    }
+                    "&lt;/span&gt;"
+                }
+                elseif ($canUseANSI) {
+                    if ($Bold -or $Faint -or $colorAttributes -match '\[1;') {
+                        "$esc[22m"
+                    }
+                    if ($Italic) {
+                        "$esc[23m"
+                    }
+                    if ($Underline -or $doubleUnderline) {
+                        "$esc[24m"
+                    }
+                    if ($Blink) {
+                        "$esc[25m"
+                    }                
+                    if ($Invert) {
+                        "$esc[27m"
+                    }
+                    if ($hide) {
+                        "$esc[28m"
+                    }
+                    if ($Strikethru) {
+                        "$esc[29m"
+                    }
+                    if ($ForegroundColor) {
+                        "$esc[39m"
+                    }
+                    if ($BackgroundColor) {
+                        "$esc[49m"
+                    }
+
+                    if ($Link) {
+                        "$esc]8;;$esc\"
+                    }
+                
+                    if (-not ($Underline -or $Bold -or $Invert -or $ForegroundColor -or $BackgroundColor)) {
+                        '' + $esc + '[0m'
+                    }
+                }
+        }
+
+        $allOutput -join ''
+    }
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+  </Controls>
   <ViewDefinitions>
     <View>
       <Name>Posh.Host</Name>
@@ -38,6 +979,323 @@
           </TableRowEntry>
         </TableRowEntries>
       </TableControl>
+    </View>
+    <View>
+      <Name>System.Type</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Type</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>FullName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>BaseType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>IsPublic</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>IsSerializable</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>System.Type.Summary</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Type</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock> '| Format-Custom -View System.Type.Full for more'</ScriptBlock>
+        <Label>Type Summary</Label>
+      </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock> '-' * ($Host.UI.RawUI.BufferSize.Width - 1) </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> ' ' * 1 </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'Posh'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${Posh_Format-RichText} -ForegroundColor 'Verbose' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${Posh_Format-RichText} -ForegroundColor 'Verbose' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> ' ' * 1 </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.BaseType -and -not $_.IsValueType </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        ':'
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.BaseType -and -not $_.IsValueType -and $_.BaseType -ne [Object] </ScriptBlock>
+                </ItemSelectionCondition>
+                <PropertyName>BaseType</PropertyName>
+                <CustomControlName>TypeBase</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetInterfaces() </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $_.GetInterfaces() | Sort-Object Name</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeBase</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>System.Type.Full</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Type</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock> '-' * ($Host.UI.RawUI.BufferSize.Width - 1) </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> ' ' * 1 </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'Posh'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${Posh_Format-RichText} -ForegroundColor 'Verbose' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${Posh_Format-RichText} -ForegroundColor 'Verbose' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> ' ' * 1 </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.BaseType -and -not $_.IsValueType -and $_.BaseType -ne [Object] </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        ':'
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.BaseType -and -not $_.IsValueType -and $_.BaseType -ne [Object] </ScriptBlock>
+                </ItemSelectionCondition>
+                <PropertyName>BaseType</PropertyName>
+                <CustomControlName>TypeBase</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetInterfaces() </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $_.GetInterfaces() | Sort-Object Name</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeBase</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetConstructors('Instance,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        [Environment]::NewLine + ('#' * 3) + ' Constructors:'           
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetConstructors('Instance,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.GetConstructors('Instance,Public')
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetEvents('Instance,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        [Environment]::NewLine + ('#' * 3) + ' Events:'    
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetEvents('Instance,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.GetEvents('Instance,Public') | Sort-Object Name
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeEventControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetProperties('Static,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        [Environment]::NewLine + ('#' * 3) + ' Static Properties:'
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetProperties('Static,Public')</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.GetProperties('Static,Public') | Sort-Object Name
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypePropertyControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetProperties('Instance,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        [Environment]::NewLine + ('#' * 3) + ' Properties:'
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetProperties('Instance,Public')</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.GetProperties('Instance,Public') | Sort-Object Name
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypePropertyControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetMethods('Static,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        [Environment]::NewLine + ('#' * 3) + ' Static Methods:'
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetMethods('Static,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.GetMethods('Static,Public') | Sort-Object Name | Where-Object { -not $_.IsSpecialName }
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetMethods('Instance,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        [Environment]::NewLine + ('#' * 3) + ' Methods:'
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.GetMethods('Instance,Public') </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        $_.GetMethods('Instance,Public') | Sort-Object Name | Where-Object { -not $_.IsSpecialName } 
+    </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
     </View>
   </ViewDefinitions>
 </Configuration>
