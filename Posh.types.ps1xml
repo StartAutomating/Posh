@@ -2,6 +2,138 @@
 <!-- Generated with EZOut 2.0: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
 <Types>
   <Type>
+    <Name>Posh.Errors</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>LineLike</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Filters errors by line wildcard
+.DESCRIPTION
+    Filters entries in $Error for items that a .Line like a wildcard.
+.EXAMPLE
+    $error.LineLike("Get-*")
+#&gt;
+param(
+# A wildcard pattern.
+[string]
+$Like
+)
+
+,@(foreach ($err in $this) {
+    if ($err.InvocationInfo.Line -like $Like) {
+        $err
+    }
+})
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>LineMatch</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Filters errors by command pattern
+.DESCRIPTION
+    Filters entries in $Error for items that have a .CommandLine matching the pattern.
+.EXAMPLE
+    $error.LineMatc("^Get")
+#&gt;
+param(
+# A regular expression.
+$Match
+)
+
+,@(foreach ($err in $this) {
+    if ($err.InvocationInfo.Line -match $match) {
+        $err
+    }
+})
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>ByLine</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets errors by line
+.DESCRIPTION
+    Gets all lines that produced errors
+.EXAMPLE
+    $error.ByLine    
+#&gt;
+$errorsByLine = 
+    [Collections.Generic.Dictionary[
+        string,
+        [Collections.Generic.List[psobject]]
+    ]]::new([System.StringComparer]::OrdinalIgnoreCase)
+
+
+foreach ($err in $this) {
+    
+    $errLine = $err.InvocationInfo.Line
+    if (-not $errLine) { continue }
+    if (-not $errorsByLine[$errLine]) {
+        $errorsByLine[$errLine] = [Collections.Generic.List[psobject]]::new()
+    }
+    $null = $errorsByLine[$errLine].Add($err)
+}
+$errorsByLine
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ByType</Name>
+        <GetScriptBlock>
+                        &lt;#
+
+#&gt;
+$errorsByType = 
+    [Collections.Generic.Dictionary[
+        type,
+        [Collections.Generic.List[psobject]]
+    ]]::new()
+
+
+foreach ($err in $this) {
+    
+    $exceptionType = if ($err.Exception) {
+        $err.Exception.GetType()
+    } else {
+        $err.GetType()
+    }
+    if (-not $errorsByType[$exceptionType]) {
+        $errorsByType[$exceptionType] = [Collections.Generic.List[psobject]]::new()
+    }
+    $null = $errorsByType[$exceptionType].Add($err)
+}
+$errorsByType
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>History</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Error History
+.DESCRIPTION
+    Gets the history items associated with PowerShell Errors
+.EXAMPLE
+    $Error.History
+#&gt;
+$historyIDS = @(foreach ($err in $this) {
+    if ($err.InvocationInfo.HistoryId -gt 0) {
+        $err.InvocationInfo.HistoryId
+    }
+})
+
+Get-History -Id $historyIDS
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Host</Name>
     <Members>
       <ScriptProperty>
