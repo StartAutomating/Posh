@@ -2523,5 +2523,61 @@ $script:TreeDepth++;</ScriptBlock>
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Default</Name>
+      <ViewSelectedBy>
+        <TypeName>System.TimeSpan</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>"$_"</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>ISO-8601</Name>
+      <ViewSelectedBy>
+        <TypeName>System.TimeSpan</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>   
+    $timespan = $_
+    @(
+        "P"
+        if ([Math]::floor($timespan.TotalDays) -gt 0) {
+            [Math]::floor($timespan.TotalDays)
+            "D"
+        }
+        "T"
+        if ([Math]::floor($timespan.TotalHours) -gt 0) {
+            [Math]::floor($timespan.TotalHours % 24)
+            "H"
+        }
+        if ([Math]::floor($timespan.TotalMinutes) -gt 0) {
+            [Math]::floor($timespan.TotalMinutes % 60)
+            "M"
+        }
+        if ([Math]::floor($timespan.TotalSeconds) -gt 0) {
+            [Math]::floor($timespan.TotalSeconds % 60)
+            "S"
+        }
+    ) -join ''
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
