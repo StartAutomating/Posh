@@ -55,7 +55,7 @@ foreach ($stackableFunctionKeyValue in $stackableFunctions.GetEnumerator()) {
 $Posh |
     Add-Member NoteProperty "Posh.Parameters" (
         [PSCustomObject]@{
-            PSTypeName    = "Posh.$functionStackType"
+            PSTypeName    = "Posh.Parameters"
             DefaultValues = $global:PSDefaultParameterValues
         }
     ) -Force
@@ -77,14 +77,14 @@ $posh | Add-Member NoteProperty Commands $poshCommands -Force
 
 $PoshResources = [Ordered]@{
     PSTypeName = 'Posh.Resources'
-    PowerShellGuide   = 'https://PowerShellGuide.com/'
-    PowerShellDotOrg   = 'https://powershell.org/'
+    'PowerShell Guide'   = 'https://PowerShellGuide.com/'
+    'PowerShell.Org'   = 'https://powershell.org/'
     'PowerShell Discord' = 'https://discord.com/invite/powershell'
-    PowerShellProject = 'https://github.com/PowerShell/PowerShell'    
-    PowerShellGitHub  = 'https://github.com/topics/powershell'
-    PowerShellTwitter = 'https://twitter.com/search?q=%23PowerShell'
-    PowerShellFacebook = 'https://www.facebook.com/groups/powershell/'    
-    PoshProject = $posh.PrivateData.PSData.ProjectURI
+    'PowerShell Project' = 'https://github.com/PowerShell/PowerShell'    
+    'PowerShell GitHub'  = 'https://github.com/topics/powershell'
+    'PowerShell Twitter' = 'https://twitter.com/search?q=%23PowerShell'
+    'PowerShell Facebook' = 'https://www.facebook.com/groups/powershell/'
+    'PoshProject' = $posh.PrivateData.PSData.ProjectURI
 }
 
 $posh | Add-Member NoteProperty Resources ([PSCustomObject]$PoshResources)
