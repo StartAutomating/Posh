@@ -1,0 +1,1692 @@
+<?xml version="1.0" encoding="utf-16"?>
+<!-- Generated with EZOut 2.0: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>Posh</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Error</Name>
+        <ReferencedMemberName>Errors</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Profile</Name>
+        <ReferencedMemberName>Profiles</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Errors</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Returns all errors
+.DESCRIPTION
+    Returns all errors from the current session
+.EXAMPLE
+    $Posh.Errors
+#&gt;
+$global:Error
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ExecutionContext</Name>
+        <GetScriptBlock>
+                        $global:ExecutionContext
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>History</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell History
+.DESCRIPTION
+    Gets the history of commands run in this PowerShell session.
+.EXAMPLE
+    $posh.History
+.LINK
+    Get-History
+#&gt;
+Get-History
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Host</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell Host
+.DESCRIPTION
+    Gets the current PowerShell Host
+.EXAMPLE
+    $posh.Host
+
+#&gt;
+$global:host
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Jobs</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets PowerShell Jobs
+.DESCRIPTION
+    Gets PowerShell Background Jobs
+.EXAMPLE
+    $posh.Jobs
+.Link
+    Get-Job
+.Link
+    Start-Job
+#&gt;
+Get-Job
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Modules</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the loaded modules
+.DESCRIPTION
+    Gets the PowerShell modules loaded in the current session.
+#&gt;
+Get-Module
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Presets</Name>
+        <GetScriptBlock>
+                        # Get-Module 
+$moduleRoots = Get-Module | Split-Path | Select-Object -Unique
+
+
+foreach ($extensionFile in $posh.Commands.FindExtensions.Invoke(@(
+        $posh
+        $moduleRoots
+    ))
+) {
+    if ($extensionFile.pstypenames -contains 'Posh.Preset.Command') {
+        $extensionFile
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Process</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell Process
+.DESCRIPTION
+    Gets the process currently hosting PowerShell
+.EXAMPLE
+    $posh.Process
+#&gt;
+Get-Process -id $PID
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Profiles</Name>
+        <GetScriptBlock>
+                        $profile
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Runspace</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell Runspaces
+.DESCRIPTION
+    Gets the current PowerShell Runspace.
+.EXAMPLE
+    $posh.Runspace
+#&gt;
+$host.Runspace
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Commands</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Count</Name>
+              <Name>AliasCount</Name>
+              <Name>ApplicationCount</Name>
+              <Name>CmdletCount</Name>
+              <Name>FunctionCount</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <AliasProperty>
+        <Name>Aliases</Name>
+        <ReferencedMemberName>Alias</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Applications</Name>
+        <ReferencedMemberName>Application</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Cmdlets</Name>
+        <ReferencedMemberName>Cmdlet</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Functions</Name>
+        <ReferencedMemberName>Function</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>FindExtensions</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+
+.DESCRIPTION
+
+.EXAMPLE
+    $posh.Commands.FindExtensions($posh, "$pwd")
+#&gt;
+$targetModules = @()
+$targetPaths = @()
+$loadedModules = Get-Module
+foreach ($arg in $args) {
+    if ($arg -is [Management.Automation.PSModuleInfo]) {
+        $targetModules += $arg
+    }
+    elseif ($arg -is [IO.FileInfo] -or $arg -is [IO.DirectoryInfo]) {
+        $targetPaths += $arg
+    } 
+    elseif ($arg -is [Management.Automation.PathInfo]) {
+        $targetPaths += "$arg"
+    }
+    elseif ($arg -is [string]) {
+        $argIsModule = 
+            foreach ($module in $loadedModules) { if ($module.Name -like $arg) { $module}}
+        if ($argIsModule) {
+            $targetModules += $argIsModule
+        } elseif (Test-Path $arg) {
+            $targetPaths += $arg
+        }
+        
+    }
+}
+
+if (-not $targetModules) { $targetModules = $posh.Modules}
+$Splat = @{}
+if ($targetPaths) {
+    $Splat.FilePath = $targetPaths
+}
+foreach ($module in $targetModules) {
+    # Aspect.ModuleExtendedCommand
+    &amp; { 
+        &lt;#
+        .SYNOPSIS
+            Returns a module's extended commands
+        .DESCRIPTION
+            Returns the commands or scripts in a module that match the module command pattern.
+            Each returned script will be decorated with the typename(s) that match,
+            so that the extended commands can be augmented by the extended types system.
+        .LINK
+            Aspect.ModuleCommandPattern
+        .EXAMPLE
+            Aspect.ModuleExtensionCommand -Module PipeScript # Should -BeOfType ([Management.Automation.CommandInfo])
+        #&gt;
+        [Alias('Aspect.ModuleExtendedCommand')]
+        param(
+        # The name of a module, or a module info object.
+        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [ValidateScript({
+        $validTypeList = [System.String],[System.Management.Automation.PSModuleInfo]
+        $thisType = $_.GetType()
+        $IsTypeOk =
+            $(@( foreach ($validType in $validTypeList) {
+                if ($_ -as $validType) {
+                    $true;break
+                }
+            }))
+        if (-not $isTypeOk) {
+            throw "Unexpected type '$(@($thisType)[0])'.  Must be 'string','psmoduleinfo'."
+        }
+        return $true
+        })]
+        
+        $Module,
+        
+        # A list of commands.
+        # If this is provided, each command that is a valid extension will be returned.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Management.Automation.CommandInfo[]]
+        $Commands,
+        # The suffix to apply to each named capture.
+        # Defaults to '_Command'
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]
+        $Suffix = '_Command',
+        # The prefix to apply to each named capture. 
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]
+        $Prefix,
+        # The file path(s).  If provided, will look for commands within these paths.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('Fullname')]    
+        $FilePath,
+        # The PowerShell command type.  If this is provided, will only get commands of this type.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Management.Automation.CommandTypes]
+        $CommandType,
+        # The base PSTypeName(s).
+        # If provided, any commands that match the pattern will apply these typenames, too.
+        [string[]]
+        $PSTypeName
+        )
+        process {        
+            if ($Module -is [string]) {
+                $Module = Get-Module $Module
+            }
+            $ModuleInfo = $module
+            if (-not $ModuleInfo) { return }
+            
+            $ModuleCommandPattern = # Aspect.ModuleExtensionPattern
+                                    &amp; { 
+                                        &lt;#
+                                        .SYNOPSIS
+                                            Outputs a module's extension pattern
+                                        .DESCRIPTION
+                                            Outputs a regular expression that will match any possible pattern.
+                                        .EXAMPLE
+                                            Aspect.ModuleCommandPattern -Module PipeScript # Should -BeOfType ([Regex])
+                                        #&gt;
+                                        [Alias('Aspect.ModuleCommandPattern')]
+                                        param(
+                                        # The name of a module, or a module info object.
+                                        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+                                        [ValidateScript({
+                                        $validTypeList = [System.String],[System.Management.Automation.PSModuleInfo]
+                                        $thisType = $_.GetType()
+                                        $IsTypeOk =
+                                            $(@( foreach ($validType in $validTypeList) {
+                                                if ($_ -as $validType) {
+                                                    $true;break
+                                                }
+                                            }))
+                                        if (-not $isTypeOk) {
+                                            throw "Unexpected type '$(@($thisType)[0])'.  Must be 'string','psmoduleinfo'."
+                                        }
+                                        return $true
+                                        })]
+                                        
+                                        $Module,
+                                        # The suffix to apply to each named capture.
+                                        # Defaults to '_Command'
+                                        [Parameter(ValueFromPipelineByPropertyName)]
+                                        [string]
+                                        $Suffix = '_Command',
+                                        # The prefix to apply to each named capture. 
+                                        [Parameter(ValueFromPipelineByPropertyName)]
+                                        [string]
+                                        $Prefix
+                                        )
+                                        process {
+                                            if ($Module -is [string]) {
+                                                $Module = Get-Module $Module
+                                            }
+                                            $ModuleInfo = $module
+                                            #region Search for Module Extension Types
+                                            if (-not $ModuleInfo) { return }
+                                            $ModuleExtensionTypes = # Aspect.ModuleExtensionTypes
+                                                                    &amp; { 
+                                                                        &lt;#
+                                                                        .SYNOPSIS
+                                                                            Outputs a module's extension types
+                                                                        .DESCRIPTION
+                                                                            Outputs the extension types defined in a module's manifest.
+                                                                        .EXAMPLE
+                                                                            # Outputs a PSObject with information about extension command types.
+                                                                            
+                                                                            # The two primary pieces of information are the `.Name` and `.Pattern`.
+                                                                            Aspect.ModuleExtensionType -Module PipeScript # Should -BeOfType ([PSObject])
+                                                                        #&gt;
+                                                                        [Alias('Aspect.ModuleCommandTypes','Aspect.ModuleCommandType','Aspect.ModuleExtensionTypes')]
+                                                                        param(
+                                                                        # The name of a module, or a module info object.
+                                                                        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+                                                                        [ValidateScript({
+                                                                        $validTypeList = [System.String],[System.Management.Automation.PSModuleInfo]
+                                                                        $thisType = $_.GetType()
+                                                                        $IsTypeOk =
+                                                                            $(@( foreach ($validType in $validTypeList) {
+                                                                                if ($_ -as $validType) {
+                                                                                    $true;break
+                                                                                }
+                                                                            }))
+                                                                        if (-not $isTypeOk) {
+                                                                            throw "Unexpected type '$(@($thisType)[0])'.  Must be 'string','psmoduleinfo'."
+                                                                        }
+                                                                        return $true
+                                                                        })]
+                                                                        
+                                                                        $Module
+                                                                        )
+                                                                        begin {
+                                                                            $ExtensionCollectionNames = 
+                                                                                "Extension", "Command", "Cmdlet", "Function", "Alias", "Script", "Application", "File","Configuration"
+                                                                            $ExtensionCollectionNames = @($ExtensionCollectionNames -replace '.+$','${0}Type') + @($ExtensionCollectionNames -replace '.+$','${0}Types')
+                                                                        }
+                                                                        process {
+                                                                            #region Resolve Module Info
+                                                                            if ($Module -is [string]) {
+                                                                                $Module = Get-Module $Module
+                                                                            }
+                                                                            $ModuleInfo = $module                
+                                                                            if (-not $ModuleInfo) { return }
+                                                                            #endregion Resolve Module Info
+                                                                            #region Check Cache and Hopefully Return
+                                                                            if (-not $script:ModuleExtensionTypeCache) {
+                                                                                $script:ModuleExtensionTypeCache = @{}
+                                                                            }
+                                                                            
+                                                                            if ($script:ModuleExtensionTypeCache[$ModuleInfo]) {
+                                                                                return $script:ModuleExtensionTypeCache[$ModuleInfo]
+                                                                            }
+                                                                            #endregion Check Cache and Hopefully Return
+                                                                            #region Find Extension Types
+                                                                            $modulePrivateData  = $ModuleInfo.PrivateData
+                                                                            $SortedExtensionTypes = [Ordered]@{}
+                                                                            foreach ($TypeOfExtensionCollection in $ExtensionCollectionNames) {
+                                                                                $moduleExtensionTypes = 
+                                                                                    if ($modulePrivateData.$TypeOfExtensionCollection) {
+                                                                                        $modulePrivateData.$TypeOfExtensionCollection
+                                                                                    } elseif ($modulePrivateData.PSData.$TypeOfExtensionCollection) {
+                                                                                        $modulePrivateData.PSData.$TypeOfExtensionCollection
+                                                                                    } else {
+                                                                                        $null
+                                                                                    }
+                                                                                if (-not $moduleExtensionTypes) { continue } 
+                                                                                foreach ($commandType in @($ModuleExtensionTypes.GetEnumerator() | Sort-Object Key)) {
+                                                                                    if ($commandType.Value -is [Collections.IDictionary]) {
+                                                                                        if (-not $commandType.Value.Name) {
+                                                                                            $commandType.Value["Name"] = $commandType.Key
+                                                                                        }
+                                                                                        if (-not $commandType.Value.PSTypeName) {
+                                                                                            $commandType.Value["PSTypeName"] = "$($module.Name).ExtensionCommandType"
+                                                                                        }
+                                                                                        $SortedExtensionTypes[$commandType.Name] = $commandType.Value
+                                                                                    } else {
+                                                                                        $SortedExtensionTypes[$commandType.Name] = [Ordered]@{
+                                                                                            PSTypeName = "$($module.Name).ExtensionCommandType"
+                                                                                            Name    = $commandType.Key
+                                                                                            Pattern = $commandType.Value
+                                                                                        }
+                                                                                    }
+                                                                                    if ($TypeOfExtensionCollection -notmatch '(?&gt;Extension|Command|Cmdlet)') {
+                                                                                        $SortedExtensionTypes[$commandType.Name].CommandType = $TypeOfExtensionCollection -replace 'Type(?:s)?$'
+                                                                                    } elseif ($TypeOfExtensionCollection -match 'Cmdlet') {
+                                                                                        $SortedExtensionTypes[$commandType.Name].CommandType = "(?&gt;Alias|Function|Filter|Cmdlet)"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            
+                                                                            $SortedExtensionTypes.PSTypeName="$($Module.Name).ExtensionCommandTypes"
+                                                                            
+                                                                            $script:ModuleExtensionTypeCache[$ModuleInfo] = [PSCustomObject]$SortedExtensionTypes
+                                                                            $script:ModuleExtensionTypeCache[$ModuleInfo]
+                                                                            #endregion Find Extension Types
+                                                                        }    
+                                                                     } -Module $moduleInfo
+                                            
+                                            if (-not $ModuleExtensionTypes) { return }
+                                                
+                                            # With some clever understanding of Regular expressions, we can make match any/all of our potential command types.
+                                            # Essentially: Regular Expressions can look ahead (matching without changing the position), and be optional.
+                                            # So we can say "any/all" by making a series of optional lookaheads.
+                                            
+                                            # We'll go thru each pattern in order
+                                            $combinedRegex = @(foreach ($categoryExtensionTypeInfo in @($ModuleExtensionTypes.psobject.properties)) {
+                                                $categoryPattern = $categoryExtensionTypeInfo.Value.Pattern                
+                                                # ( and skip anyone that does not have a pattern)
+                                                if (-not $categoryPattern) { continue } 
+                                                '(?=' + # Start a lookahead
+                                                    '.{0,}' + # match any or no characters
+                                                    # followed by the command pattern
+                                                    "(?&lt;$Prefix$($categoryExtensionTypeInfo.Name -replace '\p{P}', '_')$Suffix&gt;$categoryPattern)" +
+                                                    ')?' # made optional                            
+                                            }) -join [Environment]::NewLine
+                                            # Now that we've combined the whole thing, make it a Regex and output it.        
+                                            [Regex]::new("$combinedRegex", 'IgnoreCase,IgnorePatternWhitespace','00:00:01')
+                                        }
+                                     } $ModuleInfo -Prefix $prefix -Suffix $Suffix
+            $ModuleCommandTypes   = # Aspect.ModuleExtensionType
+                                    &amp; { 
+                                        &lt;#
+                                        .SYNOPSIS
+                                            Outputs a module's extension types
+                                        .DESCRIPTION
+                                            Outputs the extension types defined in a module's manifest.
+                                        .EXAMPLE
+                                            # Outputs a PSObject with information about extension command types.
+                                            
+                                            # The two primary pieces of information are the `.Name` and `.Pattern`.
+                                            Aspect.ModuleExtensionType -Module PipeScript # Should -BeOfType ([PSObject])
+                                        #&gt;
+                                        [Alias('Aspect.ModuleCommandTypes','Aspect.ModuleCommandType','Aspect.ModuleExtensionTypes')]
+                                        param(
+                                        # The name of a module, or a module info object.
+                                        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+                                        [ValidateScript({
+                                        $validTypeList = [System.String],[System.Management.Automation.PSModuleInfo]
+                                        $thisType = $_.GetType()
+                                        $IsTypeOk =
+                                            $(@( foreach ($validType in $validTypeList) {
+                                                if ($_ -as $validType) {
+                                                    $true;break
+                                                }
+                                            }))
+                                        if (-not $isTypeOk) {
+                                            throw "Unexpected type '$(@($thisType)[0])'.  Must be 'string','psmoduleinfo'."
+                                        }
+                                        return $true
+                                        })]
+                                        
+                                        $Module
+                                        )
+                                        begin {
+                                            $ExtensionCollectionNames = 
+                                                "Extension", "Command", "Cmdlet", "Function", "Alias", "Script", "Application", "File","Configuration"
+                                            $ExtensionCollectionNames = @($ExtensionCollectionNames -replace '.+$','${0}Type') + @($ExtensionCollectionNames -replace '.+$','${0}Types')
+                                        }
+                                        process {
+                                            #region Resolve Module Info
+                                            if ($Module -is [string]) {
+                                                $Module = Get-Module $Module
+                                            }
+                                            $ModuleInfo = $module                
+                                            if (-not $ModuleInfo) { return }
+                                            #endregion Resolve Module Info
+                                            #region Check Cache and Hopefully Return
+                                            if (-not $script:ModuleExtensionTypeCache) {
+                                                $script:ModuleExtensionTypeCache = @{}
+                                            }
+                                            
+                                            if ($script:ModuleExtensionTypeCache[$ModuleInfo]) {
+                                                return $script:ModuleExtensionTypeCache[$ModuleInfo]
+                                            }
+                                            #endregion Check Cache and Hopefully Return
+                                            #region Find Extension Types
+                                            $modulePrivateData  = $ModuleInfo.PrivateData
+                                            $SortedExtensionTypes = [Ordered]@{}
+                                            foreach ($TypeOfExtensionCollection in $ExtensionCollectionNames) {
+                                                $moduleExtensionTypes = 
+                                                    if ($modulePrivateData.$TypeOfExtensionCollection) {
+                                                        $modulePrivateData.$TypeOfExtensionCollection
+                                                    } elseif ($modulePrivateData.PSData.$TypeOfExtensionCollection) {
+                                                        $modulePrivateData.PSData.$TypeOfExtensionCollection
+                                                    } else {
+                                                        $null
+                                                    }
+                                                if (-not $moduleExtensionTypes) { continue } 
+                                                foreach ($commandType in @($ModuleExtensionTypes.GetEnumerator() | Sort-Object Key)) {
+                                                    if ($commandType.Value -is [Collections.IDictionary]) {
+                                                        if (-not $commandType.Value.Name) {
+                                                            $commandType.Value["Name"] = $commandType.Key
+                                                        }
+                                                        if (-not $commandType.Value.PSTypeName) {
+                                                            $commandType.Value["PSTypeName"] = "$($module.Name).ExtensionCommandType"
+                                                        }
+                                                        $SortedExtensionTypes[$commandType.Name] = $commandType.Value
+                                                    } else {
+                                                        $SortedExtensionTypes[$commandType.Name] = [Ordered]@{
+                                                            PSTypeName = "$($module.Name).ExtensionCommandType"
+                                                            Name    = $commandType.Key
+                                                            Pattern = $commandType.Value
+                                                        }
+                                                    }
+                                                    if ($TypeOfExtensionCollection -notmatch '(?&gt;Extension|Command|Cmdlet)') {
+                                                        $SortedExtensionTypes[$commandType.Name].CommandType = $TypeOfExtensionCollection -replace 'Type(?:s)?$'
+                                                    } elseif ($TypeOfExtensionCollection -match 'Cmdlet') {
+                                                        $SortedExtensionTypes[$commandType.Name].CommandType = "(?&gt;Alias|Function|Filter|Cmdlet)"
+                                                    }
+                                                }
+                                            }
+                                            
+                                            $SortedExtensionTypes.PSTypeName="$($Module.Name).ExtensionCommandTypes"
+                                            
+                                            $script:ModuleExtensionTypeCache[$ModuleInfo] = [PSCustomObject]$SortedExtensionTypes
+                                            $script:ModuleExtensionTypeCache[$ModuleInfo]
+                                            #endregion Find Extension Types
+                                        }    
+                                     } $ModuleInfo
+            
+            $commands    =
+                @(
+                if ($PSBoundParameters['Commands']) {
+                    $commands
+                }
+                elseif ($PSBoundParameters['FilePath']) {
+                    if (-not $commandType) {
+                        $commandType = 'Application,ExternalScript'
+                    }
+                    foreach ($file in Get-ChildItem -File -Path $PSBoundParameters['FilePath'] -Recurse) {
+                        $ExecutionContext.SessionState.InvokeCommand.GetCommand($file.FullName, $commandType)
+                    }
+                } else {
+                    if (-not $CommandType) {
+                        $commandType = 'Function,Alias,Filter,Cmdlet'
+                    }
+                    $ExecutionContext.SessionState.InvokeCommand.GetCommands('*', $commandType, $true)
+                })
+            :nextCommand foreach ($cmd in $commands) {            
+                $matched = $ModuleCommandPattern.Match("$cmd")
+                if (-not $matched.Success) { continue }
+                $NamedGroupMatch = $false
+                :nextCommandType foreach ($group in $matched.Groups) {
+                    if (-not $group.Success) { continue }
+                    if ($null -ne ($group.Name -as [int])) { continue }                
+                    $CommandTypeName     = $group.Name.Replace('_','.')
+                    $ThisCommandsType    = $ModuleCommandTypes.($group.Name -replace "^$prefix" -replace "$suffix$")
+                    if ($ThisCommandsType) {
+                        $ThisTypeFilter = @($ThisCommandsType.CommandType,$ThisCommandsType.CommandTypes -ne $null)[0]
+                        if ($ThisTypeFilter -and ($cmd.CommandType -notmatch $ThisTypeFilter)) {
+                            continue nextCommandType
+                        }
+                        $ThisExcludeFilter = @($ThisCommandsType.ExcludeCommandType,$ThisCommandsType.ExcludeCommandTypes -ne $null)[0]
+                        if ($ThisExcludeFilter -and ($cmd.CommandType -match $ThisExcludeFilter)) {
+                            continue nextCommandType
+                        }
+                    }
+                    $NamedGroupMatch     = $true
+                    if ($PSTypeName) {
+                        foreach ($psuedoType in $PSTypeName) {
+                            if ($cmd.pstypenames -notcontains $psuedoType) {
+                                $cmd.pstypenames.insert(0, $psuedoType)        
+                            }
+                        }
+                    }
+                    if ($cmd.pstypenames -notcontains $CommandTypeName) {
+                        $cmd.pstypenames.insert(0, $CommandTypeName)
+                    }
+                }
+                if ($NamedGroupMatch) {
+                    $cmd
+                }
+            }
+        }
+     } -Module $module @Splat
+}
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>AliasCount</Name>
+        <GetScriptBlock>
+                        @($this.Alias).Count
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ApplicationCount</Name>
+        <GetScriptBlock>
+                        @($this.Application).Count
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>CmdletCount</Name>
+        <GetScriptBlock>
+                        @($this.Alias).Count
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Count</Name>
+        <GetScriptBlock>
+                        @($this.All).Count
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Extended</Name>
+        <GetScriptBlock>
+                        $this.FindExtensions()
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FunctionCount</Name>
+        <GetScriptBlock>
+                        @($this.Function).Count
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>DefaultDisplay</Name>
+        <Value>Count
+AliasCount
+ApplicationCount
+CmdletCount
+FunctionCount</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Errors</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>LineLike</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Filters errors by line wildcard
+.DESCRIPTION
+    Filters entries in $Error for items that a .Line like a wildcard.
+.EXAMPLE
+    $error.LineLike("Get-*")
+#&gt;
+param(
+# A wildcard pattern.
+[string]
+$Like
+)
+
+,@(foreach ($err in $this) {
+    if ($err.InvocationInfo.Line -like $Like) {
+        $err
+    }
+})
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>LineMatch</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Filters errors by command pattern
+.DESCRIPTION
+    Filters entries in $Error for items that have a .CommandLine matching the pattern.
+.EXAMPLE
+    $error.LineMatc("^Get")
+#&gt;
+param(
+# A regular expression.
+$Match
+)
+
+,@(foreach ($err in $this) {
+    if ($err.InvocationInfo.Line -match $match) {
+        $err
+    }
+})
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>ByLine</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets errors by line
+.DESCRIPTION
+    Gets all lines that produced errors
+.EXAMPLE
+    $error.ByLine    
+#&gt;
+$errorsByLine = 
+    [Collections.Generic.Dictionary[
+        string,
+        [Collections.Generic.List[psobject]]
+    ]]::new([System.StringComparer]::OrdinalIgnoreCase)
+
+
+foreach ($err in $this) {
+    
+    $errLine = $err.InvocationInfo.Line
+    if (-not $errLine) { continue }
+    if (-not $errorsByLine[$errLine]) {
+        $errorsByLine[$errLine] = [Collections.Generic.List[psobject]]::new()
+    }
+    $null = $errorsByLine[$errLine].Add($err)
+}
+$errorsByLine
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ByType</Name>
+        <GetScriptBlock>
+                        &lt;#
+
+#&gt;
+$errorsByType = 
+    [Collections.Generic.Dictionary[
+        type,
+        [Collections.Generic.List[psobject]]
+    ]]::new()
+
+
+foreach ($err in $this) {
+    
+    $exceptionType = if ($err.Exception) {
+        $err.Exception.GetType()
+    } else {
+        $err.GetType()
+    }
+    if (-not $errorsByType[$exceptionType]) {
+        $errorsByType[$exceptionType] = [Collections.Generic.List[psobject]]::new()
+    }
+    $null = $errorsByType[$exceptionType].Add($err)
+}
+$errorsByType
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>History</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Error History
+.DESCRIPTION
+    Gets the history items associated with PowerShell Errors
+.EXAMPLE
+    $Error.History
+#&gt;
+$historyIDS = @(foreach ($err in $this) {
+    if ($err.InvocationInfo.HistoryId -gt 0) {
+        $err.InvocationInfo.HistoryId
+    }
+})
+
+Get-History -Id $historyIDS
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Host</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Height</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the height of the host
+.DESCRIPTION
+    Gets the height of the host (in characters).
+.EXAMPLE
+    $posh.Host.Height
+.EXAMPLE
+    $Host.Height
+#&gt;
+$this.UI.RawUI.BufferSize.Height
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Width</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the Width of the host
+.DESCRIPTION
+    Gets the Width of the host (in characters).
+.EXAMPLE
+    $posh.Host.Width
+.EXAMPLE
+    $Host.Width
+#&gt;
+$this.UI.RawUI.BufferSize.Width
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Input</Name>
+    <Members>
+      <AliasProperty>
+        <Name>After</Name>
+        <ReferencedMemberName>Append</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Before</Name>
+        <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Append</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Appends content to a stackable function
+.DESCRIPTION
+
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+$ToAppend = $this.Stringify($Value)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Clear</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Clears a stackable function
+.DESCRIPTION
+    Clears a stackable function, resetting it to it's original state.
+.EXAMPLE
+    $Posh.Prompt.Clear()
+#&gt;
+if ($this.Stack -and $this.Stack.Count) {
+    
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", @($this.Stack.ToArray())[-1])     
+    $this.Stack.Clear()
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Pop</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pops the last value from a function stack
+.DESCRIPTION
+    Pops the latest value from a function stack, such as the prompt.
+.EXAMPLE
+    $Posh.Prompt.Pop()
+#&gt;
+param(
+  
+)
+
+if ($this.Stack -and $this.Stack.Count) {
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", $this.Stack.Pop()) 
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Prepend</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Prepends content to a stackable function.
+.DESCRIPTION
+    Prepends content to a stackable function.
+
+    This takes the current entry and adds content to it's beginning.
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+
+
+$toPrepend = $this.Stringify($prompt)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Push</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pushes an entry into a stackable function
+.DESCRIPTION
+    Pushes an entry into a stackable function.
+
+    This overwrites the existing entry,
+    and adds the previous value to the stack so it can be easily undone.
+#&gt;
+param(
+# The new value for the function
+[ScriptBlock]
+$Value
+)
+
+$this.Current = $Value
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Replace</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Replaces content within a function
+.DESCRIPTION
+    Replaces content within a stackable function, such as the prompt.
+.EXAMPLE
+    # Replace both ends of the prompt
+    $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+#&gt;
+param(
+# The content to replace
+$Replace,
+
+# The new value
+$Value
+)
+
+
+$toReplace = if ($Value -is [ScriptBlock]) {
+    "{$Value}"
+} else {
+    $this.Stringify($Value)
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+
+$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
+$passThru = $false
+foreach ($arg in $args) {
+    if ($arg -is [bool] -and $arg) {
+        $passThru = $true
+    }
+}
+$newFunc = "@(
+    `$existingOutput =. { $function:prompt };
+    `$replacePattern = $replaceRegex
+    `$replaceWith = $toReplace 
+    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
+) -join ''" 
+
+
+$this.Current = $newFunc
+if ($passThru) {
+    $this
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Stringify</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Converts into a stringified value
+.DESCRIPTION
+    Converts an item into a stringified value.
+
+    This is used internally by stackable functions when they are prepending or appending.
+#&gt;
+param(
+$Prompt
+)
+
+
+
+if ($Prompt -is [ScriptBlock]) {
+    ". {$prompt}"
+} else {
+    "'$(
+        $(
+    if ($Prompt -is [int]) {
+        if ($Prompt -le 1000) {
+            $Prompt -as [char] -as [string]
+        } else {
+            $ExecutionContext.SessionState.InvokeCommand.ExpandString('`u{'+("{0:x}" -f $Prompt)  + '}')
+        }
+    } else {
+        $Prompt
+    }
+        ) -replace "'","''"
+    )'"
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the value of a stackable function
+.DESCRIPTION
+    Gets the current value of a stackable function.
+.EXAMPLE
+    $posh.Prompt.Current
+#&gt;
+$posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the current implementation of a function
+.DESCRIPTION
+    Sets the current imlementation of a stackable function.
+
+    Stackable functions keep a stack of all prior entries for easy undo.
+.EXAMPLE
+    $Posh.Prompt.Current = {"?"}
+#&gt;
+if (-not $this.FunctionName) { return }
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Stack.Push(
+$currentFunctionValue
+)
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>PowerShell has a robust input system.
+
+There's a very useful module by the name of PSReadLine that helps handle advanced input.
+
+Posh allows you to override the input function for PowerShell in a safe, stackable way.
+
+Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Profiles</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Add</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Adds content to a profile
+.DESCRIPTION
+    Adds content to a PowerShell profile
+#&gt;
+param(
+# The content to add to your profile.
+[ScriptBlock]
+$Content,
+
+# Which profile should the content be added to?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+$profilePath = $PROFILE.$WhichProfile
+
+$profileContent = 
+    if (Test-Path $profilePath) {
+        Get-Content -Raw $profilePath 
+    } else {
+        ''
+    }
+
+if ($profileContent -like "*$Content*") {
+    return
+}
+
+$profileContent += [Environment]::NewLine
+$profileContent += "$content"
+$profileContent | Set-Content -Path $profilePath -PassThru
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Remove</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Removes content from a profile
+.DESCRIPTION
+    Removes content from a PowerShell profile.
+#&gt;
+param(
+# The content to remove.
+# If the content is a regular expression pattern, any matches will be removed.
+# Otherwise, any case-insensitive occurances of the string will be removed.
+$Content,
+
+# Which profile should the content be removed from?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+$profilePath = $PROFILE.$WhichProfile
+
+$profileContent = 
+    if (Test-Path $profilePath) {
+        Get-Content -Raw $profilePath 
+    } else {
+        ''
+    }
+
+if ($Content -is [regex]) {
+    $profileContent = $Content.Replace($profileContent, '')
+} else {
+    $Content = "$content"
+    if ($Content) {
+        $profileContent = 
+            $profileContent.Replace(
+                $content, '', [StringComparison]::OrdinalIgnoreCase
+            )
+    }
+}
+
+$profileContent | Set-Content -Path $profilePath -PassThru
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the current Profile
+.DESCRIPTION
+    Gets the current PowerShell Profile
+.EXAMPLE
+    $posh.Profile.Current
+#&gt;
+"$profile"
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Files</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the profile files
+.DESCRIPTION
+    Gets the FileInfo objects for each profile that exists.
+.EXAMPLE
+    $posh.Profile.Files
+#&gt;
+foreach ($potentialPath in $profile.CurrentUserCurrentHost, $profile.CurrentUserAllHosts, $profile.AllUsersAllHosts, $profile.AllUsersCurrentHost) {
+    if ([IO.File]::Exists($potentialPath)) {
+        [IO.FileInfo]$potentialPath
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>PowerShell has profiles!
+
+Profiles run whenever PowerShell is loaded.
+
+They're great if there's a module you want to always load, or a variable you always want defined.
+
+To see how to manipulate PowerShell profiles with Posh, use $posh.Profiles | Get-Member</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Prompt</Name>
+    <Members>
+      <AliasProperty>
+        <Name>After</Name>
+        <ReferencedMemberName>Append</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Before</Name>
+        <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Append</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Appends content to a stackable function
+.DESCRIPTION
+
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+$ToAppend = $this.Stringify($Value)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Clear</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Clears a stackable function
+.DESCRIPTION
+    Clears a stackable function, resetting it to it's original state.
+.EXAMPLE
+    $Posh.Prompt.Clear()
+#&gt;
+if ($this.Stack -and $this.Stack.Count) {
+    
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", @($this.Stack.ToArray())[-1])     
+    $this.Stack.Clear()
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Pop</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pops the last value from a function stack
+.DESCRIPTION
+    Pops the latest value from a function stack, such as the prompt.
+.EXAMPLE
+    $Posh.Prompt.Pop()
+#&gt;
+param(
+  
+)
+
+if ($this.Stack -and $this.Stack.Count) {
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", $this.Stack.Pop()) 
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Prepend</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Prepends content to a stackable function.
+.DESCRIPTION
+    Prepends content to a stackable function.
+
+    This takes the current entry and adds content to it's beginning.
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+
+
+$toPrepend = $this.Stringify($prompt)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Push</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pushes an entry into a stackable function
+.DESCRIPTION
+    Pushes an entry into a stackable function.
+
+    This overwrites the existing entry,
+    and adds the previous value to the stack so it can be easily undone.
+#&gt;
+param(
+# The new value for the function
+[ScriptBlock]
+$Value
+)
+
+$this.Current = $Value
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Replace</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Replaces content within a function
+.DESCRIPTION
+    Replaces content within a stackable function, such as the prompt.
+.EXAMPLE
+    # Replace both ends of the prompt
+    $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+#&gt;
+param(
+# The content to replace
+$Replace,
+
+# The new value
+$Value
+)
+
+
+$toReplace = if ($Value -is [ScriptBlock]) {
+    "{$Value}"
+} else {
+    $this.Stringify($Value)
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+
+$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
+$passThru = $false
+foreach ($arg in $args) {
+    if ($arg -is [bool] -and $arg) {
+        $passThru = $true
+    }
+}
+$newFunc = "@(
+    `$existingOutput =. { $function:prompt };
+    `$replacePattern = $replaceRegex
+    `$replaceWith = $toReplace 
+    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
+) -join ''" 
+
+
+$this.Current = $newFunc
+if ($passThru) {
+    $this
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Stringify</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Converts into a stringified value
+.DESCRIPTION
+    Converts an item into a stringified value.
+
+    This is used internally by stackable functions when they are prepending or appending.
+#&gt;
+param(
+$Prompt
+)
+
+
+
+if ($Prompt -is [ScriptBlock]) {
+    ". {$prompt}"
+} else {
+    "'$(
+        $(
+    if ($Prompt -is [int]) {
+        if ($Prompt -le 1000) {
+            $Prompt -as [char] -as [string]
+        } else {
+            $ExecutionContext.SessionState.InvokeCommand.ExpandString('`u{'+("{0:x}" -f $Prompt)  + '}')
+        }
+    } else {
+        $Prompt
+    }
+        ) -replace "'","''"
+    )'"
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the value of a stackable function
+.DESCRIPTION
+    Gets the current value of a stackable function.
+.EXAMPLE
+    $posh.Prompt.Current
+#&gt;
+$posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the current implementation of a function
+.DESCRIPTION
+    Sets the current imlementation of a stackable function.
+
+    Stackable functions keep a stack of all prior entries for easy undo.
+.EXAMPLE
+    $Posh.Prompt.Current = {"?"}
+#&gt;
+if (-not $this.FunctionName) { return }
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Stack.Push(
+$currentFunctionValue
+)
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>`prompt` is the function that is called before PowerShell prompts for input.
+
+$Posh.Prompt allows you to customize the PowerShell prompt.
+
+Prompts are a cool way to customize your shell.
+
+Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Stackable</Name>
+    <Members>
+      <AliasProperty>
+        <Name>After</Name>
+        <ReferencedMemberName>Append</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Before</Name>
+        <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Append</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Appends content to a stackable function
+.DESCRIPTION
+
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+$ToAppend = $this.Stringify($Value)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Clear</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Clears a stackable function
+.DESCRIPTION
+    Clears a stackable function, resetting it to it's original state.
+.EXAMPLE
+    $Posh.Prompt.Clear()
+#&gt;
+if ($this.Stack -and $this.Stack.Count) {
+    
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", @($this.Stack.ToArray())[-1])     
+    $this.Stack.Clear()
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Pop</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pops the last value from a function stack
+.DESCRIPTION
+    Pops the latest value from a function stack, such as the prompt.
+.EXAMPLE
+    $Posh.Prompt.Pop()
+#&gt;
+param(
+  
+)
+
+if ($this.Stack -and $this.Stack.Count) {
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", $this.Stack.Pop()) 
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Prepend</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Prepends content to a stackable function.
+.DESCRIPTION
+    Prepends content to a stackable function.
+
+    This takes the current entry and adds content to it's beginning.
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+
+
+$toPrepend = $this.Stringify($prompt)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Push</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pushes an entry into a stackable function
+.DESCRIPTION
+    Pushes an entry into a stackable function.
+
+    This overwrites the existing entry,
+    and adds the previous value to the stack so it can be easily undone.
+#&gt;
+param(
+# The new value for the function
+[ScriptBlock]
+$Value
+)
+
+$this.Current = $Value
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Replace</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Replaces content within a function
+.DESCRIPTION
+    Replaces content within a stackable function, such as the prompt.
+.EXAMPLE
+    # Replace both ends of the prompt
+    $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+#&gt;
+param(
+# The content to replace
+$Replace,
+
+# The new value
+$Value
+)
+
+
+$toReplace = if ($Value -is [ScriptBlock]) {
+    "{$Value}"
+} else {
+    $this.Stringify($Value)
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+
+$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
+$passThru = $false
+foreach ($arg in $args) {
+    if ($arg -is [bool] -and $arg) {
+        $passThru = $true
+    }
+}
+$newFunc = "@(
+    `$existingOutput =. { $function:prompt };
+    `$replacePattern = $replaceRegex
+    `$replaceWith = $toReplace 
+    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
+) -join ''" 
+
+
+$this.Current = $newFunc
+if ($passThru) {
+    $this
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Stringify</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Converts into a stringified value
+.DESCRIPTION
+    Converts an item into a stringified value.
+
+    This is used internally by stackable functions when they are prepending or appending.
+#&gt;
+param(
+$Prompt
+)
+
+
+
+if ($Prompt -is [ScriptBlock]) {
+    ". {$prompt}"
+} else {
+    "'$(
+        $(
+    if ($Prompt -is [int]) {
+        if ($Prompt -le 1000) {
+            $Prompt -as [char] -as [string]
+        } else {
+            $ExecutionContext.SessionState.InvokeCommand.ExpandString('`u{'+("{0:x}" -f $Prompt)  + '}')
+        }
+    } else {
+        $Prompt
+    }
+        ) -replace "'","''"
+    )'"
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the value of a stackable function
+.DESCRIPTION
+    Gets the current value of a stackable function.
+.EXAMPLE
+    $posh.Prompt.Current
+#&gt;
+$posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the current implementation of a function
+.DESCRIPTION
+    Sets the current imlementation of a stackable function.
+
+    Stackable functions keep a stack of all prior entries for easy undo.
+.EXAMPLE
+    $Posh.Prompt.Current = {"?"}
+#&gt;
+if (-not $this.FunctionName) { return }
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Stack.Push(
+$currentFunctionValue
+)
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+                    </SetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>
