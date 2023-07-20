@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-16"?>
+<!-- Generated with EZOut 2.0: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>Posh.Host</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Host</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>CurrentCulture</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Width</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Height</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
