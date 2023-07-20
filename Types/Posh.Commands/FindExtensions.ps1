@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+
+.DESCRIPTION
+
+.EXAMPLE
+    $posh.Commands.FindExtensions($posh, "$pwd")
+#>
 $targetModules = @()
 $targetPaths = @()
 $loadedModules = Get-Module
@@ -7,7 +15,11 @@ foreach ($arg in $args) {
     }
     elseif ($arg -is [IO.FileInfo] -or $arg -is [IO.DirectoryInfo]) {
         $targetPaths += $arg
-    } elseif ($arg -is [string]) {
+    } 
+    elseif ($arg -is [Management.Automation.PathInfo]) {
+        $targetPaths += "$arg"
+    }
+    elseif ($arg -is [string]) {
         $argIsModule = 
             foreach ($module in $loadedModules) { if ($module.Name -like $arg) { $module}}
         if ($argIsModule) {
