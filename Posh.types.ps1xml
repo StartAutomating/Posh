@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-16"?>
+<!-- Generated with EZOut 2.0: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>Posh.Host</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Height</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the height of the host
+.DESCRIPTION
+    Gets the height of the host (in characters).
+.EXAMPLE
+    $posh.Host.Height
+.EXAMPLE
+    $Host.Height
+#&gt;
+$this.UI.RawUI.BufferSize.Height
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Width</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the Width of the host
+.DESCRIPTION
+    Gets the Width of the host (in characters).
+.EXAMPLE
+    $posh.Host.Width
+.EXAMPLE
+    $Host.Width
+#&gt;
+$this.UI.RawUI.BufferSize.Width
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>
