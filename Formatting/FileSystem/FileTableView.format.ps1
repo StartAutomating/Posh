@@ -93,12 +93,10 @@ Write-FormatView -TypeName FileSystemTypes -Property LastWriteTime, Length, Name
                         .mp3 {'♬'}
                         .wav {'♬'}
                         .txt { 
-                            '🖉';
-                            $extraSpace = $false
+                            '≣'                            
                         }
                         .md {
-                            '🖉'
-                            $extraSpace = $false
+                            '≣'                            
                         }
                         .inf {'⚙' }
                         .ini {'⚙ '}
