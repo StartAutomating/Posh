@@ -1,0 +1,4 @@
+@{
+    Error = "Errors"
+    Profile = "Profiles"
+}
