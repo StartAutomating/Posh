@@ -2408,6 +2408,110 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </TableControl>
     </View>
     <View>
+      <Name>Posh.Prompt</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Prompt</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Green','Bold') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        Show-Markdown -InputObject $_.README
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        "To reset the prompt, use `$posh.Prompt.Clear()"
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        $_.Stack.Count 
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Yellow','Italic') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        $_.Stack.Count 
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        ('The prompt has ' + $_.Stack.Count + ' modification(s)')
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        $_.Stack.Count 
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
       <Name>System.Reflection.MemberInfo</Name>
       <ViewSelectedBy>
         <TypeName>System.Reflection.MemberInfo</TypeName>
