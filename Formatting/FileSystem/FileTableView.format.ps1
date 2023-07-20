@@ -124,7 +124,7 @@ Write-FormatView -TypeName FileSystemTypes -Property LastWriteTime, Length, Name
 
                 
             }) + $(
-                if ($PSStyle.FormatHyperlink) {
+                if ($PSStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
                     $PSStyle.FormatHyperlink($fileInfo.Name, [uri]$fileInfo.Fullname)
                 } else {
                     $fileInfo.Name
