@@ -170,4 +170,720 @@ $this.UI.RawUI.BufferSize.Width
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>Posh.Input</Name>
+    <Members>
+      <AliasProperty>
+        <Name>After</Name>
+        <ReferencedMemberName>Append</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Before</Name>
+        <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Append</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Appends content to a stackable function
+.DESCRIPTION
+
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+$ToAppend = $this.Stringify($Value)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Clear</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Clears a stackable function
+.DESCRIPTION
+    Clears a stackable function, resetting it to it's original state.
+.EXAMPLE
+    $Posh.Prompt.Clear()
+#&gt;
+if ($this.Stack -and $this.Stack.Count) {
+    
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", @($this.Stack.ToArray())[-1])     
+    $this.Stack.Clear()
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Pop</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pops the last value from a function stack
+.DESCRIPTION
+    Pops the latest value from a function stack, such as the prompt.
+.EXAMPLE
+    $Posh.Prompt.Pop()
+#&gt;
+param(
+  
+)
+
+if ($this.Stack -and $this.Stack.Count) {
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", $this.Stack.Pop()) 
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Prepend</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Prepends content to a stackable function.
+.DESCRIPTION
+    Prepends content to a stackable function.
+
+    This takes the current entry and adds content to it's beginning.
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+
+
+$toPrepend = $this.Stringify($prompt)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Push</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pushes an entry into a stackable function
+.DESCRIPTION
+    Pushes an entry into a stackable function.
+
+    This overwrites the existing entry,
+    and adds the previous value to the stack so it can be easily undone.
+#&gt;
+param(
+# The new value for the function
+[ScriptBlock]
+$Value
+)
+
+$this.Current = $Value
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Replace</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Replaces content within a function
+.DESCRIPTION
+    Replaces content within a stackable function, such as the prompt.
+.EXAMPLE
+    # Replace both ends of the prompt
+    $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+#&gt;
+param(
+# The content to replace
+$Replace,
+
+# The new value
+$Value
+)
+
+
+$toReplace = if ($Value -is [ScriptBlock]) {
+    "{$Value}"
+} else {
+    $this.Stringify($Value)
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+
+$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
+$passThru = $false
+foreach ($arg in $args) {
+    if ($arg -is [bool] -and $arg) {
+        $passThru = $true
+    }
+}
+$newFunc = "@(
+    `$existingOutput =. { $function:prompt };
+    `$replacePattern = $replaceRegex
+    `$replaceWith = $toReplace 
+    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
+) -join ''" 
+
+
+$this.Current = $newFunc
+if ($passThru) {
+    $this
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Stringify</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Converts into a stringified value
+.DESCRIPTION
+    Converts an item into a stringified value.
+
+    This is used internally by stackable functions when they are prepending or appending.
+#&gt;
+param(
+$Prompt
+)
+
+
+
+if ($Prompt -is [ScriptBlock]) {
+    ". {$prompt}"
+} else {
+    "'$(
+        $(
+    if ($Prompt -is [int]) {
+        if ($Prompt -le 1000) {
+            $Prompt -as [char] -as [string]
+        } else {
+            $ExecutionContext.SessionState.InvokeCommand.ExpandString('`u{'+("{0:x}" -f $Prompt)  + '}')
+        }
+    } else {
+        $Prompt
+    }
+        ) -replace "'","''"
+    )'"
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the value of a stackable function
+.DESCRIPTION
+    Gets the current value of a stackable function.
+.EXAMPLE
+    $posh.Prompt.Current
+#&gt;
+$posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the current implementation of a function
+.DESCRIPTION
+    Sets the current imlementation of a stackable function.
+
+    Stackable functions keep a stack of all prior entries for easy undo.
+.EXAMPLE
+    $Posh.Prompt.Current = {"?"}
+#&gt;
+if (-not $this.FunctionName) { return }
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Stack.Push(
+$currentFunctionValue
+)
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>PowerShell has a robust input system.
+
+There's a very useful module by the name of PSReadLine that helps handle advanced input.
+
+Posh allows you to override the input function for PowerShell in a safe, stackable way.
+
+Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Prompt</Name>
+    <Members>
+      <AliasProperty>
+        <Name>After</Name>
+        <ReferencedMemberName>Append</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Before</Name>
+        <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Append</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Appends content to a stackable function
+.DESCRIPTION
+
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+$ToAppend = $this.Stringify($Value)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Clear</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Clears a stackable function
+.DESCRIPTION
+    Clears a stackable function, resetting it to it's original state.
+.EXAMPLE
+    $Posh.Prompt.Clear()
+#&gt;
+if ($this.Stack -and $this.Stack.Count) {
+    
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", @($this.Stack.ToArray())[-1])     
+    $this.Stack.Clear()
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Pop</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pops the last value from a function stack
+.DESCRIPTION
+    Pops the latest value from a function stack, such as the prompt.
+.EXAMPLE
+    $Posh.Prompt.Pop()
+#&gt;
+param(
+  
+)
+
+if ($this.Stack -and $this.Stack.Count) {
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", $this.Stack.Pop()) 
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Prepend</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Prepends content to a stackable function.
+.DESCRIPTION
+    Prepends content to a stackable function.
+
+    This takes the current entry and adds content to it's beginning.
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+
+
+$toPrepend = $this.Stringify($prompt)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Push</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pushes an entry into a stackable function
+.DESCRIPTION
+    Pushes an entry into a stackable function.
+
+    This overwrites the existing entry,
+    and adds the previous value to the stack so it can be easily undone.
+#&gt;
+param(
+# The new value for the function
+[ScriptBlock]
+$Value
+)
+
+$this.Current = $Value
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Replace</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Replaces content within a function
+.DESCRIPTION
+    Replaces content within a stackable function, such as the prompt.
+.EXAMPLE
+    # Replace both ends of the prompt
+    $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+#&gt;
+param(
+# The content to replace
+$Replace,
+
+# The new value
+$Value
+)
+
+
+$toReplace = if ($Value -is [ScriptBlock]) {
+    "{$Value}"
+} else {
+    $this.Stringify($Value)
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+
+$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
+$passThru = $false
+foreach ($arg in $args) {
+    if ($arg -is [bool] -and $arg) {
+        $passThru = $true
+    }
+}
+$newFunc = "@(
+    `$existingOutput =. { $function:prompt };
+    `$replacePattern = $replaceRegex
+    `$replaceWith = $toReplace 
+    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
+) -join ''" 
+
+
+$this.Current = $newFunc
+if ($passThru) {
+    $this
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Stringify</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Converts into a stringified value
+.DESCRIPTION
+    Converts an item into a stringified value.
+
+    This is used internally by stackable functions when they are prepending or appending.
+#&gt;
+param(
+$Prompt
+)
+
+
+
+if ($Prompt -is [ScriptBlock]) {
+    ". {$prompt}"
+} else {
+    "'$(
+        $(
+    if ($Prompt -is [int]) {
+        if ($Prompt -le 1000) {
+            $Prompt -as [char] -as [string]
+        } else {
+            $ExecutionContext.SessionState.InvokeCommand.ExpandString('`u{'+("{0:x}" -f $Prompt)  + '}')
+        }
+    } else {
+        $Prompt
+    }
+        ) -replace "'","''"
+    )'"
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the value of a stackable function
+.DESCRIPTION
+    Gets the current value of a stackable function.
+.EXAMPLE
+    $posh.Prompt.Current
+#&gt;
+$posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the current implementation of a function
+.DESCRIPTION
+    Sets the current imlementation of a stackable function.
+
+    Stackable functions keep a stack of all prior entries for easy undo.
+.EXAMPLE
+    $Posh.Prompt.Current = {"?"}
+#&gt;
+if (-not $this.FunctionName) { return }
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Stack.Push(
+$currentFunctionValue
+)
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>`prompt` is the function that is called before PowerShell prompts for input.
+
+$Posh.Prompt allows you to customize the PowerShell prompt.
+
+Prompts are a cool way to customize your shell.
+
+Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Stackable</Name>
+    <Members>
+      <AliasProperty>
+        <Name>After</Name>
+        <ReferencedMemberName>Append</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Before</Name>
+        <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Append</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Appends content to a stackable function
+.DESCRIPTION
+
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+$ToAppend = $this.Stringify($Value)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Clear</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Clears a stackable function
+.DESCRIPTION
+    Clears a stackable function, resetting it to it's original state.
+.EXAMPLE
+    $Posh.Prompt.Clear()
+#&gt;
+if ($this.Stack -and $this.Stack.Count) {
+    
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", @($this.Stack.ToArray())[-1])     
+    $this.Stack.Clear()
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Pop</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pops the last value from a function stack
+.DESCRIPTION
+    Pops the latest value from a function stack, such as the prompt.
+.EXAMPLE
+    $Posh.Prompt.Pop()
+#&gt;
+param(
+  
+)
+
+if ($this.Stack -and $this.Stack.Count) {
+    $posh.ExecutionContext.SessionState.psvariable.Set("function:$($this.FunctionName)", $this.Stack.Pop()) 
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Prepend</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Prepends content to a stackable function.
+.DESCRIPTION
+    Prepends content to a stackable function.
+
+    This takes the current entry and adds content to it's beginning.
+#&gt;
+param(
+# The value to prepend.
+$Value
+)
+
+
+
+$toPrepend = $this.Stringify($prompt)
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Push</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pushes an entry into a stackable function
+.DESCRIPTION
+    Pushes an entry into a stackable function.
+
+    This overwrites the existing entry,
+    and adds the previous value to the stack so it can be easily undone.
+#&gt;
+param(
+# The new value for the function
+[ScriptBlock]
+$Value
+)
+
+$this.Current = $Value
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Replace</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Replaces content within a function
+.DESCRIPTION
+    Replaces content within a stackable function, such as the prompt.
+.EXAMPLE
+    # Replace both ends of the prompt
+    $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+#&gt;
+param(
+# The content to replace
+$Replace,
+
+# The new value
+$Value
+)
+
+
+$toReplace = if ($Value -is [ScriptBlock]) {
+    "{$Value}"
+} else {
+    $this.Stringify($Value)
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+
+$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
+$passThru = $false
+foreach ($arg in $args) {
+    if ($arg -is [bool] -and $arg) {
+        $passThru = $true
+    }
+}
+$newFunc = "@(
+    `$existingOutput =. { $function:prompt };
+    `$replacePattern = $replaceRegex
+    `$replaceWith = $toReplace 
+    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
+) -join ''" 
+
+
+$this.Current = $newFunc
+if ($passThru) {
+    $this
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Stringify</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Converts into a stringified value
+.DESCRIPTION
+    Converts an item into a stringified value.
+
+    This is used internally by stackable functions when they are prepending or appending.
+#&gt;
+param(
+$Prompt
+)
+
+
+
+if ($Prompt -is [ScriptBlock]) {
+    ". {$prompt}"
+} else {
+    "'$(
+        $(
+    if ($Prompt -is [int]) {
+        if ($Prompt -le 1000) {
+            $Prompt -as [char] -as [string]
+        } else {
+            $ExecutionContext.SessionState.InvokeCommand.ExpandString('`u{'+("{0:x}" -f $Prompt)  + '}')
+        }
+    } else {
+        $Prompt
+    }
+        ) -replace "'","''"
+    )'"
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the value of a stackable function
+.DESCRIPTION
+    Gets the current value of a stackable function.
+.EXAMPLE
+    $posh.Prompt.Current
+#&gt;
+$posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the current implementation of a function
+.DESCRIPTION
+    Sets the current imlementation of a stackable function.
+
+    Stackable functions keep a stack of all prior entries for easy undo.
+.EXAMPLE
+    $Posh.Prompt.Current = {"?"}
+#&gt;
+if (-not $this.FunctionName) { return }
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$this.Stack.Push(
+$currentFunctionValue
+)
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+                    </SetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
