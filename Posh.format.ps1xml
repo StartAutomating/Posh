@@ -2364,12 +2364,10 @@ if ($Request -or $Host.UI.SupportsHTML) {
                         .mp3 {'♬'}
                         .wav {'♬'}
                         .txt { 
-                            '🖉';
-                            $extraSpace = $false
+                            '≣'                            
                         }
                         .md {
-                            '🖉'
-                            $extraSpace = $false
+                            '≣'                            
                         }
                         .inf {'⚙' }
                         .ini {'⚙ '}
