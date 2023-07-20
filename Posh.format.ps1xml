@@ -1889,5 +1889,201 @@ $script:TreeDepth++;</ScriptBlock>
         </CustomEntries>
       </CustomControl>
     </View>
+    <View>
+      <Name>Microsoft.PowerShell.Commands.MemberDefinition</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.MemberDefinition</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>TypeName</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>MemberType</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Definition</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <!-- {ConditionalStyle:"
+        if ($_.MemberType -like &apos;*property*&apos;) {        
+            &quot;Foreground.Green&quot;, &quot;Bold&quot;
+        }
+        elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
+            &quot;Formatting.Warning&quot;
+        }        
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        if ($_.MemberType -like '*property*') {        
+            "Foreground.Green", "Bold"
+        }
+        elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
+            "Formatting.Warning"
+        }        
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '\.') {
+                                            $styleGroup, $styleProp = $styleProp -split '\.'
+                                            $psStyle.$styleGroup.$styleProp
+                                    } else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'Name'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <!-- {ConditionalStyle:"
+        if ($_.MemberType -like &apos;*property*&apos;) {        
+            &quot;Foreground.Green&quot;, &quot;Bold&quot;
+        }
+        elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
+            &quot;Formatting.Warning&quot;
+        }        
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        if ($_.MemberType -like '*property*') {        
+            "Foreground.Green", "Bold"
+        }
+        elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
+            "Formatting.Warning"
+        }        
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '\.') {
+                                            $styleGroup, $styleProp = $styleProp -split '\.'
+                                            $psStyle.$styleGroup.$styleProp
+                                    } else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'MemberType'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>
+        $findOverloads = [Regex]::new('(?&lt;=^|\))[\s\p{P}]{0,}(?&lt;Type&gt;\S{1,})\s{1,}(?&lt;Name&gt;\w{1,})', 'IgnoreCase', '00:00:01')
+        $definition = $_.definition
+        $memberInfo = $_
+        $foundOverloads = @(foreach ($m in $findOverloads.Matches($Definition)) {$m.Groups["Type","Name"]})
+        
+        
+        $chars         = $definition.ToCharArray()
+        $overload      = $null
+        $overloadIndex = 0
+        $innerDepth = 0
+        $overloadTypeDefined = $false
+        @(for($i = 0; $i -lt $chars.length; $i++) {
+            if (-not $overload) {
+                if ($foundOverloads[$overloadIndex].Index -eq $i) {                    
+                    $overload = $foundOverloads[$overloadIndex]
+                    if ($overload.Name -eq 'Type') {
+                        if ($psStyle) {
+                            $psStyle.Foreground.BrightCyan
+                            $psStyle.Foreground.Bold
+                        }
+                    } else {
+                        if ($psStyle) {
+                            $psStyle.Formatting.Warning
+                        }
+                        
+                    }
+                    $overloadTypeDefined = $false
+                }
+
+            }
+            switch ($chars[$i]) {
+                '(' {
+                    if ($psStyle) {$psStyle.Formatting.Warning}
+                    '('
+                    if ($psStyle) {$psStyle.Reset}
+                    $innerDepth++
+                }
+                ')' {
+                    if ($psStyle) {$psStyle.Formatting.Warning}
+                    ')'
+                    if ($psStyle) {$psStyle.Reset}
+                    $innerDepth--                    
+                }
+                '{' {
+                    if ($psStyle) {$psStyle.Foreground.Magenta;$psStyle.Foreground.Bold}
+                    '{'
+                    if ($psStyle) {$psStyle.Reset}
+                    $innerDepth++
+                }
+                '}' {
+                    if ($psStyle) {$psStyle.Foreground.Magenta;$psStyle.Foreground.Bold}
+                    $innerDepth--
+                    '}'
+                    if ($psStyle) {$psStyle.Reset}                    
+                }
+                ';' {
+                    if ($psStyle) {$psStyle.Foreground.BrightCyan}
+                    ';'
+                    if ($psStyle) {$psStyle.Reset}
+                }
+                
+                ',' {
+                    
+                    if ($psStyle) {
+                        $psStyle.Foreground.BrightCyan
+                    }
+                    ','
+                    if ($psStyle) {
+                        $psStyle.Reset
+                    }
+                
+                    
+                }
+                
+                default {
+                    if ($memberInfo.MemberType -eq 'ScriptMethod') {
+                        if (-not $innerDepth) {
+                            $chars[$i]
+                        }
+                    }  else {
+                        $chars[$i]
+                    }
+                    
+                }
+            }
+            
+            
+            if ($overload -and ($i -eq ($overload.Index + $overload.Length))) {
+                $overload = $null
+                $overloadIndex++
+                if ($psStyle) {
+                    $psStyle.Reset
+                }
+            }
+            
+        }) -join ''
+    </ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
