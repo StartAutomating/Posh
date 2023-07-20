@@ -413,6 +413,142 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Profiles</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Add</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Adds content to a profile
+.DESCRIPTION
+    Adds content to a PowerShell profile
+#&gt;
+param(
+# The content to add to your profile.
+[ScriptBlock]
+$Content,
+
+# Which profile should the content be added to?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+$profilePath = $PROFILE.$WhichProfile
+
+$profileContent = 
+    if (Test-Path $profilePath) {
+        Get-Content -Raw $profilePath 
+    } else {
+        ''
+    }
+
+if ($profileContent -like "*$Content*") {
+    return
+}
+
+$profileContent += [Environment]::NewLine
+$profileContent += "$content"
+$profileContent | Set-Content -Path $profilePath -PassThru
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Remove</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Removes content from a profile
+.DESCRIPTION
+    Removes content from a PowerShell profile.
+#&gt;
+param(
+# The content to remove.
+# If the content is a regular expression pattern, any matches will be removed.
+# Otherwise, any case-insensitive occurances of the string will be removed.
+$Content,
+
+# Which profile should the content be removed from?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+$profilePath = $PROFILE.$WhichProfile
+
+$profileContent = 
+    if (Test-Path $profilePath) {
+        Get-Content -Raw $profilePath 
+    } else {
+        ''
+    }
+
+if ($Content -is [regex]) {
+    $profileContent = $Content.Replace($profileContent, '')
+} else {
+    $Content = "$content"
+    if ($Content) {
+        $profileContent = 
+            $profileContent.Replace(
+                $content, '', [StringComparison]::OrdinalIgnoreCase
+            )
+    }
+}
+
+$profileContent | Set-Content -Path $profilePath -PassThru
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Current</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the current Profile
+.DESCRIPTION
+    Gets the current PowerShell Profile
+.EXAMPLE
+    $posh.Profile.Current
+#&gt;
+"$profile"
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Files</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the profile files
+.DESCRIPTION
+    Gets the FileInfo objects for each profile that exists.
+.EXAMPLE
+    $posh.Profile.Files
+#&gt;
+foreach ($potentialPath in $profile.CurrentUserCurrentHost, $profile.CurrentUserAllHosts, $profile.AllUsersAllHosts, $profile.AllUsersCurrentHost) {
+    if ([IO.File]::Exists($potentialPath)) {
+        [IO.FileInfo]$potentialPath
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>PowerShell has profiles!
+
+Profiles run whenever PowerShell is loaded.
+
+They're great if there's a module you want to always load, or a variable you always want defined.
+
+To see how to manipulate PowerShell profiles with Posh, use $posh.Profiles | Get-Member</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Prompt</Name>
     <Members>
       <AliasProperty>
