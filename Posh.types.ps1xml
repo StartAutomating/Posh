@@ -2,6 +2,152 @@
 <!-- Generated with EZOut 2.0: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
 <Types>
   <Type>
+    <Name>Posh</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Error</Name>
+        <ReferencedMemberName>Errors</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Profile</Name>
+        <ReferencedMemberName>Profiles</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Errors</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Returns all errors
+.DESCRIPTION
+    Returns all errors from the current session
+.EXAMPLE
+    $Posh.Errors
+#&gt;
+$global:Error
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ExecutionContext</Name>
+        <GetScriptBlock>
+                        $global:ExecutionContext
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>History</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell History
+.DESCRIPTION
+    Gets the history of commands run in this PowerShell session.
+.EXAMPLE
+    $posh.History
+.LINK
+    Get-History
+#&gt;
+Get-History
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Host</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell Host
+.DESCRIPTION
+    Gets the current PowerShell Host
+.EXAMPLE
+    $posh.Host
+
+#&gt;
+$global:host
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Jobs</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets PowerShell Jobs
+.DESCRIPTION
+    Gets PowerShell Background Jobs
+.EXAMPLE
+    $posh.Jobs
+.Link
+    Get-Job
+.Link
+    Start-Job
+#&gt;
+Get-Job
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Modules</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the loaded modules
+.DESCRIPTION
+    Gets the PowerShell modules loaded in the current session.
+#&gt;
+Get-Module
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Presets</Name>
+        <GetScriptBlock>
+                        # Get-Module 
+$moduleRoots = Get-Module | Split-Path | Select-Object -Unique
+
+
+foreach ($extensionFile in $posh.Commands.FindExtensions.Invoke(@(
+        $posh
+        $moduleRoots
+    ))
+) {
+    if ($extensionFile.pstypenames -contains 'Posh.Preset.Command') {
+        $extensionFile
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Process</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell Process
+.DESCRIPTION
+    Gets the process currently hosting PowerShell
+.EXAMPLE
+    $posh.Process
+#&gt;
+Get-Process -id $PID
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Profiles</Name>
+        <GetScriptBlock>
+                        $profile
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Runspace</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the PowerShell Runspaces
+.DESCRIPTION
+    Gets the current PowerShell Runspace.
+.EXAMPLE
+    $posh.Runspace
+#&gt;
+$host.Runspace
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Commands</Name>
     <Members>
       <MemberSet>
