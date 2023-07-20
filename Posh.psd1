@@ -4,6 +4,10 @@
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
     Description = 'PowerShell made Posh - Spice up Your Shell'
+    Guid = 'd4d3a0b9-0c65-4474-bcfc-5b85b2670312'
+    Author = 'James Brundage'
+    CompanyName = 'Start-Automating'
+    Copyright = '2023 Start-Automating'
     PrivateData = @{
         ProjectURI = 'https://github.com/StartAutomating/Posh'
         LicenseURI = 'https://github.com/StartAutomating/Posh/blob/main/LICENSE'
