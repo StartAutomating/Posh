@@ -1012,6 +1012,95 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>ProcessGroupControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'Posh'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+
+        . ${Posh_Indent} $_.ProcessName
+    </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>
+        . ${Posh_Indent} $_.Path
+    </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>${Posh_Indent}</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>&lt;#
+.Synopsis
+    Indents content
+.Description
+    Indents content.
+
+    In most scenarios, content is indented by a number of spaces
+
+    If $request or $host.UI.SupportsHTML, this will render a div tag with margin-left set to $Length ex 
+    (this is the equivilent of N characters of indentation in HTML)
+.Notes
+    IsFormatPart: true
+#&gt;
+param(
+$Content,
+
+[ValidateRange(0,100)]
+[Alias('Spaces')]
+[uint32]
+$Length = 4
+)
+
+if ($Request -or $Host.UI.SupportsHTML) {
+    return "&lt;div style='margin-left:${Length}ex'&gt;$content&lt;/div&gt;"
+}
+
+(' ' * $Length) + "$content"</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>${Posh_Format-RichText}</Name>
       <CustomControl>
         <CustomEntries>
@@ -1425,6 +1514,91 @@ $script:TreeDepth++;</ScriptBlock>
         }
 
         $allOutput -join ''
+    }
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>${Posh_Format-Heatmap}</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    &lt;#
+    .SYNOPSIS
+        Formats a value as a heatmap
+    .DESCRIPTION
+        Returns the color used to generate a heatmap for a given value.
+    #&gt;
+    [Management.Automation.Cmdlet("Format", "Object")]
+    [ValidateScript({return $true})]
+    param(
+    # The value that will be heatmapped.
+    [Parameter(ValueFromPipeline)]    
+    $InputObject,
+    
+    # The Heatmap maximum, by default 1gb
+    [Parameter(Mandatory)]    
+    $HeatMapMax = 1gb,
+    
+    # The Heatmap middle value, by default 512mb
+    $HeatMapMiddle = 512mb,
+    
+    # The Heatmap minimum value, by default 0
+    $HeatMapMin = 0,
+    
+    # The color for cool.
+    # To pass a Hex color as an int, simply replace # with 0x
+    # (e.g. 0x00ff00 for green instead of '#00ff00') 
+    [int]
+    $HeatMapCool =0x05dd00,
+    
+    # The color for hot.
+    # To pass a Hex color as an int, simply replace # with 0x
+    # (e.g. 0xff0000 for red instead of '#ff0000') 
+    [int]
+    $HeatMapHot = 0xef1100
+    )
+
+    process {
+        # Separate out the segments of the color,
+        $coolRedPart = [byte](($HeatMapCool -band 0xff0000) -shr 16) # by bitmasking and then shifting right until it's bytes
+        $coolGreenPart = [byte](($HeatMapCool -band 0x00ff00) -shr 8)
+        $coolBluePart = [byte]($HeatMapCool -band 0x0000ff)
+
+        $hotRedPart = [byte](($HeatMapHot  -band 0xff0000) -shr 16)
+        $hotGreenPart = [byte](($HeatMapHot -band 0x00ff00) -shr 8)
+        $hotBluePart = [byte]($HeatMapHot -band 0x0000ff)
+
+        "#{0:x2}{1:x2}{2:x2}" -f @(
+        if ($InputObject -le $HeatMapMin) 
+        {
+            $coolRedPart, $coolGreenPart, $coolBluePart
+        }
+        elseif ($InputObject -ge $HeatMapMax) 
+        {
+            $hotRedPart, $hotGreenPart, $hotBluePart
+        } else {
+            if ($InputObject -le $HeatMapMiddle) 
+            {
+                $d = 1 - ([double]$InputObject / ($HeatMapMiddle - $HeatMapMin))
+                [Byte][Math]::Min(255, $hotRedPart * $d + $coolRedPart)
+                [Byte][Math]::Min(255, $hotGreenPart * $d + $coolGreenPart)            
+                [Byte][Math]::Min(255, $hotBluePart * $d + $coolBluePart)
+            } else
+            {
+                $d = 1 - ([double]$InputObject / ($HeatMapMax - $HeatMapMiddle))
+                [Byte][Math]::Min(255, $coolRedPart * $d + $hotRedPart)
+                [Byte][Math]::Min(255, $coolGreenPart * $d + $hotGreenPart)            
+                [Byte][Math]::Min(255, $coolBluePart * $d + $hotBluePart)
+            }
+        })
     }
 </ScriptBlock>
               </ExpressionBinding>
@@ -2522,6 +2696,166 @@ $script:TreeDepth++;</ScriptBlock>
           </TableRowEntry>
         </TableRowEntries>
       </TableControl>
+    </View>
+    <View>
+      <Name>Process.Heatmap</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Diagnostics.Process</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>NPM(K)</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>PM(K)</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>WS(K)</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>CPU(S)</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Handles</PropertyName>
+              </TableColumnItem>
+              <!-- {ConditionalColor:"
+        Format-Heatmap -InputObject $_.NPM -HeatMapMin 16mb -HeatMapMiddle .5gb -HeatMapMax 1gb 
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>$moduleName = 'Posh'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        &amp; ${Posh_Format-Heatmap} -InputObject $_.NPM -HeatMapMin 16mb -HeatMapMiddle .5gb -HeatMapMax 1gb 
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            if ($CellColorValue -and $CellColorValue -is [string]) {
+                                $CellColorValue = &amp; ${Posh_Format-RichText} -NoClear -ForegroundColor $CellColorValue
+                            } elseif (`$CellColorValue -is [Collections.IDictionary]) {
+                                $CellColorValue = &amp; ${Posh_Format-RichText} -NoClear @CellColorValue
+                            }
+                                                    
+                        $output = . { [long]($_.NPM / 1024) }
+                        @($CellColorValue; $output; &amp; ${Posh_Format-RichText}) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <!-- {ConditionalColor:" 
+        Format-Heatmap -InputObject $_.PM -HeatMapMin 16mb -HeatMapMiddle .5GB -HeatMapMax 1gb 
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. { 
+        &amp; ${Posh_Format-Heatmap} -InputObject $_.PM -HeatMapMin 16mb -HeatMapMiddle .5GB -HeatMapMax 1gb 
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            if ($CellColorValue -and $CellColorValue -is [string]) {
+                                $CellColorValue = &amp; ${Posh_Format-RichText} -NoClear -ForegroundColor $CellColorValue
+                            } elseif (`$CellColorValue -is [Collections.IDictionary]) {
+                                $CellColorValue = &amp; ${Posh_Format-RichText} -NoClear @CellColorValue
+                            }
+                                                    
+                        $output = . { [long]($_.PM / 1024) }
+                        @($CellColorValue; $output; &amp; ${Posh_Format-RichText}) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <!-- {ConditionalColor:"
+        Format-Heatmap -InputObject $_.WS -HeatMapMin 16mb -HeatMapMiddle 512mb -HeatMapMax 1gb 
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        &amp; ${Posh_Format-Heatmap} -InputObject $_.WS -HeatMapMin 16mb -HeatMapMiddle 512mb -HeatMapMax 1gb 
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            if ($CellColorValue -and $CellColorValue -is [string]) {
+                                $CellColorValue = &amp; ${Posh_Format-RichText} -NoClear -ForegroundColor $CellColorValue
+                            } elseif (`$CellColorValue -is [Collections.IDictionary]) {
+                                $CellColorValue = &amp; ${Posh_Format-RichText} -NoClear @CellColorValue
+                            }
+                                                    
+                        $output = . { [long]($_.WS / 1024) }
+                        @($CellColorValue; $output; &amp; ${Posh_Format-RichText}) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock> 
+        if ($_.CPU -ne $()) { 
+            $_.CPU.ToString("N") 
+        }
+    </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ID</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SI</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ProcessName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>process</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Diagnostics.Process</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>ProcessName</PropertyName>
+        <CustomControlName>ProcessGroupControl</CustomControlName>
+      </GroupBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>ID</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
     </View>
     <View>
       <Name>Default</Name>
