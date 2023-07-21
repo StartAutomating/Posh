@@ -49,7 +49,7 @@ foreach ($stackableFunctionKeyValue in $stackableFunctions.GetEnumerator()) {
 }
 
 $Posh |
-    Add-Member NoteProperty "Posh.Parameters" (
+    Add-Member NoteProperty Parameters (
         [PSCustomObject]@{
             PSTypeName    = "Posh.Parameters"
             DefaultValues = $global:PSDefaultParameterValues
@@ -74,7 +74,7 @@ $posh | Add-Member NoteProperty Commands $poshCommands -Force
 $PoshResources = [Ordered]@{
     PSTypeName = 'Posh.Resources'
     'PowerShell Guide'   = 'https://PowerShellGuide.com/'
-    'PowerShell.Org'   = 'https://powershell.org/'
+    'PowerShell.Org'     = 'https://powershell.org/'
     'PowerShell Discord' = 'https://discord.com/invite/powershell'
     'PowerShell Project' = 'https://github.com/PowerShell/PowerShell'    
     'PowerShell GitHub'  = 'https://github.com/topics/powershell'
@@ -84,6 +84,8 @@ $PoshResources = [Ordered]@{
 }
 
 $posh | Add-Member NoteProperty Resources ([PSCustomObject]$PoshResources)
+
+$posh | Add-Member NoteProperty Recommends ([PSCustomObject]@{PSTypeName='Posh.Recommends'})
 
 Export-ModuleMember -Variable posh 
 
