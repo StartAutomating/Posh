@@ -77,14 +77,15 @@ $posh | Add-Member NoteProperty Commands $poshCommands -Force
 
 $PoshResources = [Ordered]@{
     PSTypeName = 'Posh.Resources'
-    'PowerShell Guide'   = 'https://PowerShellGuide.com/'
-    'PowerShell.Org'     = 'https://powershell.org/'
-    'PowerShell Discord' = 'https://discord.com/invite/powershell'
-    'PowerShell Project' = 'https://github.com/PowerShell/PowerShell'    
-    'PowerShell GitHub'  = 'https://github.com/topics/powershell'
-    'PowerShell Twitter' = 'https://twitter.com/search?q=%23PowerShell'
+    'PowerShell Guide'    = 'https://PowerShellGuide.com/'
+    'PowerShell.Org'      = 'https://powershell.org/'
+    'PowerShell Discord'  = 'https://discord.com/invite/powershell'
+    'PowerShell Project'  = 'https://github.com/PowerShell/PowerShell'    
+    'PowerShell GitHub'   = 'https://github.com/topics/powershell'
+    'PowerShell Twitter'  = 'https://twitter.com/search?q=%23PowerShell'
     'PowerShell Facebook' = 'https://www.facebook.com/groups/powershell/'
-    'PoshProject' = $posh.PrivateData.PSData.ProjectURI
+    'PowerShell LinkedIn' = 'https://www.linkedin.com/feed/hashtag/?keywords=powershell'
+    'PoshProject'         = $posh.PrivateData.PSData.ProjectURI
 }
 
 $posh | Add-Member NoteProperty Resources ([PSCustomObject]$PoshResources)
