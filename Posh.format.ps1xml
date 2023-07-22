@@ -3469,6 +3469,135 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </CustomControl>
     </View>
     <View>
+      <Name>System.Management.Automation.ApplicationInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Management.Automation.ApplicationInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Source</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>System.Management.Automation.CommandInfoSystem.Management.Automation.AliasInfoSystem.Management.Automation.ApplicationInfoSystem.Management.Automation.CmdletInfoSystem.Management.Automation.ExternalScriptInfoSystem.Management.Automation.FilterInfoSystem.Management.Automation.FunctionInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Management.Automation.CommandInfo</TypeName>
+        <TypeName>System.Management.Automation.AliasInfo</TypeName>
+        <TypeName>System.Management.Automation.ApplicationInfo</TypeName>
+        <TypeName>System.Management.Automation.CmdletInfo</TypeName>
+        <TypeName>System.Management.Automation.ExternalScriptInfo</TypeName>
+        <TypeName>System.Management.Automation.FilterInfo</TypeName>
+        <TypeName>System.Management.Automation.FunctionInfo</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>CommandType</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <!-- {ConditionalStyle:"
+            switch -regex ($_.Name) 
+            {
+                &apos;^(?&gt;Add|New)\p{P}&apos; { &apos;Foreground.Green&apos; }
+                &apos;^(?&gt;Get|Test|Sort|Select|Compare)\p{P}&apos; { &apos;Foreground.Green&apos;, &apos;Bold&apos; }
+                &apos;^(?&gt;Out|Format|Show)\p{P}&apos; { &apos;Foreground.Magenta&apos;, &apos;Bold&apos; }
+                &apos;^(?&gt;Measure|Write|Read|Push|Pop)\p{P}&apos; { &apos;Foreground.Magenta&apos; }
+                &apos;^(?&gt;Convert|Import|Export)\p{P}&apos; { &apos;Foreground.Blue&apos;, &apos;Bold&apos; }
+                &apos;^(?&gt;ConvertTo|ConvertFrom|Copy)\p{P}&apos; { &apos;Foreground.BrightBlue&apos; }
+                &apos;^(?&gt;Move)\p{P}&apos; { &apos;Foreground.BrightBlue&apos;,&apos;Bold&apos; }
+                &apos;^(?&gt;Send|Receive)\p{P}&apos; { &apos;Foreground.BrightBlue&apos; }
+                &apos;^(?&gt;Lock|Unlock|Block|Unblock)\p{P}&apos; { &apos;Foreground.BrightBlue&apos; }
+                &apos;^(?&gt;Protect|Unprotect)\p{P}&apos; { &apos;Foreground.Red&apos; }
+                &apos;^(?&gt;Start|Stop)\p{P}&apos;   { &apos;Foreground.Magenta&apos;, &apos;Bold&apos; }
+                &apos;^(?&gt;Install|Uninstall)\p{P}&apos;   { &apos;Foreground.Magenta&apos;, &apos;Bold&apos; }
+                &apos;^(?&gt;Register|Unregister)\p{P}&apos;   { &apos;Foreground.Yellow&apos; }
+                &apos;^(?&gt;Connect|Disconnect)\p{P}&apos;   { &apos;Foreground.BrightBlue&apos; }
+                &apos;^(?&gt;Enter|Exit)\p{P}&apos;   { &apos;Foreground.Yellow&apos; }
+                &apos;^(?&gt;Wait)\p{P}&apos; { &apos;Foreground.Yellow&apos;, &apos;Italic&apos;}
+                &apos;^(?&gt;Remove|Rename|Exit|Debug)\p{P}&apos; { &apos;Foreground.Red&apos;, &apos;Bold&apos; }
+                &apos;^(?&gt;Invoke|Use)\p{P}&apos; { &apos;Foreground.BrightYellow&apos;, &apos;Italic&apos;}
+                &apos;^(?&gt;Set|Restart|Reset|Update|Clear)\p{P}&apos; { &apos;Foreground.Yellow&apos; }
+                &apos;^(?&gt;Enable|Resume)\p{P}&apos;  { &apos;Foreground.Green&apos; }
+                &apos;^(?&gt;Disable|Suspend)\p{P}&apos; { &apos;Foreground.Yellow&apos; }
+            }
+        "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+            switch -regex ($_.Name) 
+            {
+                '^(?&gt;Add|New)\p{P}' { 'Foreground.Green' }
+                '^(?&gt;Get|Test|Sort|Select|Compare)\p{P}' { 'Foreground.Green', 'Bold' }
+                '^(?&gt;Out|Format|Show)\p{P}' { 'Foreground.Magenta', 'Bold' }
+                '^(?&gt;Measure|Write|Read|Push|Pop)\p{P}' { 'Foreground.Magenta' }
+                '^(?&gt;Convert|Import|Export)\p{P}' { 'Foreground.Blue', 'Bold' }
+                '^(?&gt;ConvertTo|ConvertFrom|Copy)\p{P}' { 'Foreground.BrightBlue' }
+                '^(?&gt;Move)\p{P}' { 'Foreground.BrightBlue','Bold' }
+                '^(?&gt;Send|Receive)\p{P}' { 'Foreground.BrightBlue' }
+                '^(?&gt;Lock|Unlock|Block|Unblock)\p{P}' { 'Foreground.BrightBlue' }
+                '^(?&gt;Protect|Unprotect)\p{P}' { 'Foreground.Red' }
+                '^(?&gt;Start|Stop)\p{P}'   { 'Foreground.Magenta', 'Bold' }
+                '^(?&gt;Install|Uninstall)\p{P}'   { 'Foreground.Magenta', 'Bold' }
+                '^(?&gt;Register|Unregister)\p{P}'   { 'Foreground.Yellow' }
+                '^(?&gt;Connect|Disconnect)\p{P}'   { 'Foreground.BrightBlue' }
+                '^(?&gt;Enter|Exit)\p{P}'   { 'Foreground.Yellow' }
+                '^(?&gt;Wait)\p{P}' { 'Foreground.Yellow', 'Italic'}
+                '^(?&gt;Remove|Rename|Exit|Debug)\p{P}' { 'Foreground.Red', 'Bold' }
+                '^(?&gt;Invoke|Use)\p{P}' { 'Foreground.BrightYellow', 'Italic'}
+                '^(?&gt;Set|Restart|Reset|Update|Clear)\p{P}' { 'Foreground.Yellow' }
+                '^(?&gt;Enable|Resume)\p{P}'  { 'Foreground.Green' }
+                '^(?&gt;Disable|Suspend)\p{P}' { 'Foreground.Yellow' }
+            }
+        };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '\.') {
+                                            $styleGroup, $styleProp = $styleProp -split '\.'
+                                            $psStyle.$styleGroup.$styleProp
+                                    } else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'Name'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Module</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Microsoft.PowerShell.Commands.MemberDefinition</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.PowerShell.Commands.MemberDefinition</TypeName>
