@@ -387,14 +387,17 @@ jobs:
     steps: 
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Use PSSVG Action
+      - name: PSSVG
         uses: StartAutomating/PSSVG@main
         id: PSSVG
+      - name: Splatter
+        uses: StartAutomating/Splatter@main
+        id: Splatter
       - name: BuildPipeScript
         uses: StartAutomating/PipeScript@main
-      - name: Run EZOut  (on master)
+      - name: EZOut
         uses: StartAutomating/EZOut@master
-        id: EZOutMaster
+        id: EZOut
       - name: UseHelpOut
         uses: StartAutomating/HelpOut@master
       - name: GitLogger

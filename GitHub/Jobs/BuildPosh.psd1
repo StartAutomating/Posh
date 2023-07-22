@@ -7,15 +7,20 @@
             uses = 'actions/checkout@v2'
         },
         @{    
-            name = 'Use PSSVG Action'
+            name = 'PSSVG'
             uses = 'StartAutomating/PSSVG@main'
             id = 'PSSVG'
-        }
+        },
+        @{    
+            name = 'Splatter'
+            uses = 'StartAutomating/Splatter@main'
+            id = 'Splatter'
+        },
         'RunPipeScript',
         @{
-            name = 'Run EZOut  (on master)'
+            name = 'EZOut'
             uses = 'StartAutomating/EZOut@master'
-            id = 'EZOutMaster'
+            id = 'EZOut'
         }
         'RunHelpOut',
         @{
