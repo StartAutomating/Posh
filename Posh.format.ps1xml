@@ -2894,6 +2894,35 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </CustomControl>
     </View>
     <View>
+      <Name>Posh.Recommendation</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Recommendation</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Posh.Resources</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Resources</TypeName>
