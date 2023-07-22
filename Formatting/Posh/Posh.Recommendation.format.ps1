@@ -1,0 +1,1 @@
+Write-FormatView -TypeName Posh.Recommendation -Property Name, Type -GroupByProperty Source

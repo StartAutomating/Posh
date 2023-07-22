@@ -86,8 +86,6 @@ $PoshResources = [Ordered]@{
 
 $posh | Add-Member NoteProperty Resources ([PSCustomObject]$PoshResources)
 
-$posh | Add-Member NoteProperty Recommends ([PSCustomObject]@{PSTypeName='Posh.Recommends'})
-
 Export-ModuleMember -Variable posh 
 
 $posh.OnRemove = {
@@ -99,6 +97,5 @@ $posh.OnRemove = {
     $global:ExecutionContext.pstypenames.clear()
     $global:error.pstypenames.clear()
     $global:PROFILE.pstypenames.clear()
-    $global:PSDefaultParameterValues.pstypenames.clear()
-    
+    $global:PSDefaultParameterValues.pstypenames.clear()   
 }
