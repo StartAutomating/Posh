@@ -1092,6 +1092,151 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Parameters</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Clear</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Clears default parameter values.
+.DESCRIPTION
+    Clears all default parameter values.
+.EXAMPLE
+    $posh.Parameters.Clear()
+#&gt;
+$global:PSDefaultParameterValues.Clear()
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Remove</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Removes parameter default values.
+.DESCRIPTION
+    Removes the default values for a command.
+.EXAMPLE
+    $Posh.Parameters.Remove("Out-Default")
+#&gt;
+param(
+# The name of the command.
+$Command,
+
+# The command parameters.
+# If this is a dictionary, each value will be used.
+# Otherwise, this will be treated as the name of the parameter.
+$Parameter
+)
+
+$DefaultValueKey =
+    if ($command -is [Management.Automation.CommandInfo]) {
+        if ($command.Source) {
+            $command.Source
+        } else {
+            $command.Name
+        }        
+    }
+    else {
+        "$command"
+    }
+
+if ($Parameter -is [Collections.IDictionary]) {
+    foreach ($parameterKeyValue in $Parameter.GetEnumerator()) {
+        $null = $global:PSDefaultParameterValues.Remove("${defaultValueKey}:$($parameterKeyValue.Key)")
+    }
+} elseif ($Parameter) {
+    $null = $global:PSDefaultParameterValues["${defaultValueKey}:$Parameter"] = $DefaultValue
+} else {
+    $toRemoveKeys = $global:PSDefaultParameterValues.Keys -like "${defaultValueKey}:*"
+    foreach ($toRemove in $toRemoveKeys) {
+        $null = $global:PSDefaultParameterValues.Remove($toRemove)
+    }
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>SetDefault</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Sets parameter default values.
+.DESCRIPTION
+    Sets the default value for a parameter.
+.EXAMPLE
+    $Posh.Parameters.SetDefault("Out-Default", "OutVariable", 'LastOutput')
+#&gt;
+param(
+# The name of the command.
+$Command,
+
+# The command parameters.
+# If this is a dictionary, each value will be used.
+# Otherwise, this will be treated as the name of the parameter.
+$Parameter,
+
+# The default value.
+$DefaultValue
+)
+
+$DefaultValueKey =
+    if ($command -is [Management.Automation.CommandInfo]) {
+        if ($command.Source) {
+            $command.Source
+        } else {
+            $command.Name
+        }        
+    }
+    else {
+        "$command"
+    }
+
+if ($Parameter -is [Collections.IDictionary]) {
+    foreach ($parameterKeyValue in $Parameter.GetEnumerator()) {
+        $global:PSDefaultParameterValues["${defaultValueKey}:$($parameterKeyValue.Key)"] = 
+            $parameterKeyValue.Value
+    }
+} else {
+    $global:PSDefaultParameterValues["${defaultValueKey}:$Parameter"] = $DefaultValue
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Defaults</Name>
+        <GetScriptBlock>
+                        $defaultsByCommand = [Ordered]@{}
+foreach ($key in $global:PSDefaultParameterValues.Keys) {
+    $commandName, $parameterName = $key -split ':',2
+    if (-not $defaultsByCommand[$commandName]) {
+        $defaultsByCommand[$commandName] = [Ordered]@{}
+    }
+    $defaultsByCommand[$commandName][$parameterName] = $global:PSDefaultParameterValues[$key]
+}
+$defaultsByCommand
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        $argArray = @(
+    foreach ($arg in $args) {
+        $arg
+    }
+)
+$this.SetDefault.Invoke($argArray)
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>One of the strengths of PowerShell is how it treats parameters.
+
+You can find metadata about any command's parameters.
+
+You can also provide default values for any command's parameters.
+
+`$Posh.Parameters` helps you Find PowerShell parameters and manage their default values.</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Profiles</Name>
     <Members>
       <ScriptMethod>
