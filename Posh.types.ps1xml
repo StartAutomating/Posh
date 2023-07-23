@@ -1934,4 +1934,25 @@ foreach ($recommendation in $recommendations) {
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>System.TimeZoneInfo</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>LocalTime</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the local time
+.DESCRIPTION
+    Gets the local time for a timezone.
+.EXAMPLE
+    Get-TimeZone -ListAvailable
+.EXAMPLE
+    Get-TimeZone | Select LocalTime
+#&gt;
+[DateTime]::UTCNow + $this.GetUtcOffset([DateTime]::UtcNow)
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
