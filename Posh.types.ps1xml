@@ -1859,7 +1859,7 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
       </AliasProperty>
       <AliasProperty>
         <Name>Videos</Name>
-        <ReferencedMemberName>Videos</ReferencedMemberName>
+        <ReferencedMemberName>Video</ReferencedMemberName>
       </AliasProperty>
       <ScriptMethod>
         <Name>LinkList</Name>
@@ -1968,10 +1968,10 @@ $this.LinkList(@(
         <Name>Video</Name>
         <GetScriptBlock>
                         $this.LinkList(@(
-    $this.PrivateData.Screenshot
-    $this.PrivateData.Screenshots
-    $this.PrivateData.PSData.Screenshot
-    $this.PrivateData.PSData.Screenshots
+    $this.PrivateData.Video
+    $this.PrivateData.Videos
+    $this.PrivateData.PSData.Video
+    $this.PrivateData.PSData.Videos
 ), "Posh.Module.Video")
 
 
