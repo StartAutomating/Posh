@@ -31,10 +31,11 @@ if ($global:PSStyle) {
     # These pieces of information will be used later in our File Table View.
 }
 
-
+# The next neat trick we do is decorate ourselves.
 $Posh = $MyInvocation.MyCommand.ScriptBlock.Module
 $Posh.pstypenames.Insert(0,'Posh')
 
+#region Stackable Functions
 $stackableFunctions = [Ordered]@{
     Prompt = 'prompt'
     Input  = 'PSConsoleHostReadLine'
@@ -51,7 +52,11 @@ foreach ($stackableFunctionKeyValue in $stackableFunctions.GetEnumerator()) {
     $posh |
         Add-Member NoteProperty $functionStackType $stackableFunction -Force
 }
+#endregion Stackable Functions
 
+#region $Posh.Parameters
+
+# Add a Posh.Parameters psuedo object to $Posh.
 $Posh |
     Add-Member NoteProperty Parameters (
         [PSCustomObject]@{
@@ -59,6 +64,12 @@ $Posh |
             DefaultValues = $global:PSDefaultParameterValues
         }
     ) -Force
+
+# Add $LastOutput
+$Posh.Parameters.Defaults = "Out-Default", "OutVariable", "LastOutput"
+$Posh.Parameters.Defaults = "Out-Default", "ErrorVariable", "LastOutputError"
+#endregion $Posh.Parameters
+
 
 $poshCommands = 
     # Neat tricks, explained:
