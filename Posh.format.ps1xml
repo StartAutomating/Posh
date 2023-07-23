@@ -4288,9 +4288,15 @@ $module = $_
         <AutoSize />
         <TableHeaders>
           <TableColumnHeader>
+            <Label>ID</Label>
             <Alignment>Right</Alignment>
           </TableColumnHeader>
           <TableColumnHeader>
+            <Label>LocalTime</Label>
+            <Alignment>Center</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>DisplayName</Label>
             <Alignment>Left</Alignment>
           </TableColumnHeader>
         </TableHeaders>
@@ -4298,10 +4304,70 @@ $module = $_
           <TableRowEntry>
             <TableColumnItems>
               <TableColumnItem>
-                <PropertyName>ID</PropertyName>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+    if ($_.LocalTime.Hour -lt 6 -or $_.LocalTime.Hour -gt 18) {
+        'Foreground.Blue','Italic'
+    }
+    else {
+        'Foreground.Yellow','Bold'
+    }
+};$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '\.') {
+                                            $styleGroup, $styleProp = $styleProp -split '\.'
+                                            $psStyle.$styleGroup.$styleProp
+                                    } else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'ID'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>DisplayName</PropertyName>
+                <ScriptBlock>                        
+                        $CellColorValue = $Script:_LastCellStyle
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '\.') {
+                                            $styleGroup, $styleProp = $styleProp -split '\.'
+                                            $psStyle.$styleGroup.$styleProp
+                                    } else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . { 
+        ' ' + $_.LocalTime.ToShortTimeString() + ' '
+    }
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $Script:_LastCellStyle
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '\.') {
+                                            $styleGroup, $styleProp = $styleProp -split '\.'
+                                            $psStyle.$styleGroup.$styleProp
+                                    } else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'DisplayName'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
