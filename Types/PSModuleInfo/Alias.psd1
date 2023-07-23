@@ -1,5 +1,5 @@
 @{
     Recommendations = 'Recommendation'
     Screenshots = 'Screenshot'
-    Videos = 'Videos'
+    Videos = 'Video'
 }

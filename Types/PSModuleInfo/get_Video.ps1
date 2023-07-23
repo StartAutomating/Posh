@@ -1,7 +1,7 @@
 $this.LinkList(@(
-    $this.PrivateData.Screenshot
-    $this.PrivateData.Screenshots
-    $this.PrivateData.PSData.Screenshot
-    $this.PrivateData.PSData.Screenshots
+    $this.PrivateData.Video
+    $this.PrivateData.Videos
+    $this.PrivateData.PSData.Video
+    $this.PrivateData.PSData.Videos
 ), "Posh.Module.Video")
 
