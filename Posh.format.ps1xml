@@ -2693,6 +2693,138 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </CustomControl>
     </View>
     <View>
+      <Name>Posh.Module.Screenshot</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Module.Screenshot</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    @(
+    if ($_.Name -and $_.Url) {
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Name, $_.Url)
+        } else {
+            "![$($_.Name)]($($_.Url))"
+        }
+    } elseif ($_.Url) {
+        $uri = [uri]$_.Url
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Url, $uri)
+        } else {
+            "![$($_.Url)]($($uri))"
+        }        
+    }    
+    ) -join ''    
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.Module.Screenshot</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Module.Screenshot</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Url</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Posh.Module.Video</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Module.Video</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    @(
+    if ($_.Name -and $_.Url) {
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Name, $_.Url)
+        } else {
+            "[$($_.Name)]($($_.Url))"
+        }
+    } elseif ($_.Url) {
+        $uri = [uri]$_.Url
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Url, $uri)
+        } else {
+            "[$($_.Url)]($($uri))"
+        }        
+    }    
+    ) -join ''    
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.Module.Video</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Module.Video</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Url</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Posh.Parameters</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Parameters</TypeName>
@@ -2982,6 +3114,47 @@ if ($Request -or $Host.UI.SupportsHTML) {
       <GroupBy>
         <PropertyName>Source</PropertyName>
       </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    @(
+    if ($_.Name -and $_.Url) {
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Name, $_.Url)
+        } else {
+            "[$($_.Name)]($($_.Url))"
+        }
+    } elseif ($_.Url) {
+        $uri = [uri]$_.Url
+        if (-not $uri.Authority) {
+            $uri = "https://www.powershellgallery.com/packages/$($uri)"
+        }
+
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Url, $uri)
+        } else {
+            "[$($_.Url)]($($uri))"
+        }        
+    }    
+    ) -join ''    
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.Recommendation</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Recommendation</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
       <TableControl>
         <TableHeaders>
           <TableColumnHeader>
@@ -2996,7 +3169,7 @@ if ($Request -or $Host.UI.SupportsHTML) {
                 <PropertyName>Name</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Type</PropertyName>
+                <PropertyName>Url</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
