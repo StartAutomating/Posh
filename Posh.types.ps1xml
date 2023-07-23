@@ -1967,7 +1967,15 @@ $this.LinkList(@(
       <ScriptProperty>
         <Name>Video</Name>
         <GetScriptBlock>
-                        $this.LinkList(@(
+                        &lt;#
+.SYNOPSIS
+    Gets Module Videos
+.DESCRIPTION
+    Lists videos about this module.
+.EXAMPLE
+    $posh.Videos
+#&gt;
+$this.LinkList(@(
     $this.PrivateData.Video
     $this.PrivateData.Videos
     $this.PrivateData.PSData.Video
