@@ -1,77 +1,27 @@
+<#
+.SYNOPSIS
+    Gets Module Recommendations
+.DESCRIPTION
+    Lists other modules this module recommends.
+.EXAMPLE    
+    # $Posh.Recommends gets every loaded module's recommendations.
+    $posh.Recommends
+.EXAMPLE
+    $posh.Recommendations
+#>
 $module = $this
 
-$recommendations = @(
+$this.LinkList(@(
+    
     $module.PrivateData.Recommends
     $module.PrivateData.Recommend
     $module.PrivateData.Recommendation
     $module.PrivateData.Recommendations
-) -ne $null
 
-foreach ($recommendation in $recommendations) {
-    
-    # If the recommendation was a dictionary
-    if ($recommendation -is [Collections.IDictionary]) {
-        # walk over each key/value in the dictionary
-        foreach ($recommendationKeyValue in $recommendation.GetEnumerator()) {
-            $recommendationValue = $recommendationKeyValue.Value
-            if ($recommendationKeyValue.Key -is [string] -and 
-                $recommendationValue -is [string]
-            ) { 
-                if ($recommendationValue -match '://') {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'URL'
-                        Source     = $module
-                    }
-                } else {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'Module'
-                        Source     = $module
-                    }
-                }
-                continue
-            }
+    $module.PrivateData.PSData.Recommends
+    $module.PrivateData.PSData.Recommend
+    $module.PrivateData.PSData.Recommendation
+    $module.PrivateData.PSData.Recommendations
+), "Posh.Recommendation")
 
-            foreach ($recommendationValue in $recommendationKeyValue.Value) {
-                if ($recommendationValue -match '://') {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'URL'
-                        Source     = $module
-                    }
-                } elseif ($recommendationValue -is [string]) {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'Module'
-                        Source     = $module
-                    }
-                } elseif ($recommendationValue -is [Collections.IDictionary]) {
-                    [PSCustomObject][Ordered]@{
-                        PSTypeName = 'Posh.Recommendation'
-                    } + $recommendationValue
-                }
-            }    
-        }        
-    } else {
-        
-        foreach ($recommendationValue in $recommendation) {
-            if ($recommendationValue -is [string]) {
-                [PSCustomObject]@{
-                    PSTypeName = 'Posh.Recommendation'
-                    Name       = $recommendationValue
-                    Type       = 'Module'
-                    Source     = $module
-                }
-            } elseif ($recommendationValue -is [Collections.IDictionary]) {
-                [PSCustomObject][Ordered]@{
-                    PSTypeName = 'Posh.Recommendation'
-                } + $recommendationValue
-            }            
-        }
-    }
-}
+
