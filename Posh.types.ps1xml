@@ -1849,86 +1849,131 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
   <Type>
     <Name>System.Management.Automation.PSModuleInfo</Name>
     <Members>
+      <AliasProperty>
+        <Name>Recommendations</Name>
+        <ReferencedMemberName>Recommendation</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Screenshots</Name>
+        <ReferencedMemberName>Screenshot</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Videos</Name>
+        <ReferencedMemberName>Videos</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>LinkList</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Returns a link list.
+.DESCRIPTION
+    Returns a list of links from one or more properties in a module's manifest.
+.EXAMPLE
+    $posh.LinkList(@(
+        $this.PrivateData.Screenshot
+        $this.PrivateData.Screenshots
+        $this.PrivateData.PSData.Screenshot
+        $this.PrivateData.PSData.Screenshots
+    ), "Posh.Module.Screenshot")
+#&gt;
+param(
+# One or more inputs to the list.
+[PSObject[]]
+$InputObject,
+
+[string]
+$PSTypeName = 'Posh.Module.Link'
+)
+
+filter ToLink {
+    if ($_ -is [string]) {
+        [PSCustomObject]@{
+            PSTypeName = $PSTypeName
+            Url        = $_
+            Source     = $this
+        }
+    } elseif ($_ -is [Collections.IDictionary]) {
+        $_.GetEnumerator() | . ToLink
+    } elseif ($_ -is [Collections.DictionaryEntry]) {
+        [PSCustomObject][Ordered]@{
+            PSTypeName = $PSTypeName
+            Name = $_.key
+            Url = $_.Value
+            Source = $this
+        }
+    }
+}
+
+
+$inputObject | . ToLink | Sort-Object Name
+
+                    </Script>
+      </ScriptMethod>
       <ScriptProperty>
         <Name>Recommendation</Name>
         <GetScriptBlock>
-                        $module = $this
+                        &lt;#
+.SYNOPSIS
+    Gets Module Recommendations
+.DESCRIPTION
+    Lists other modules this module recommends.
+.EXAMPLE    
+    # $Posh.Recommends gets every loaded module's recommendations.
+    $posh.Recommends
+.EXAMPLE
+    $posh.Recommendations
+#&gt;
+$module = $this
 
-$recommendations = @(
+$this.LinkList(@(
+    
     $module.PrivateData.Recommends
     $module.PrivateData.Recommend
     $module.PrivateData.Recommendation
     $module.PrivateData.Recommendations
-) -ne $null
 
-foreach ($recommendation in $recommendations) {
-    
-    # If the recommendation was a dictionary
-    if ($recommendation -is [Collections.IDictionary]) {
-        # walk over each key/value in the dictionary
-        foreach ($recommendationKeyValue in $recommendation.GetEnumerator()) {
-            $recommendationValue = $recommendationKeyValue.Value
-            if ($recommendationKeyValue.Key -is [string] -and 
-                $recommendationValue -is [string]
-            ) { 
-                if ($recommendationValue -match '://') {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'URL'
-                        Source     = $module
-                    }
-                } else {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'Module'
-                        Source     = $module
-                    }
-                }
-                continue
-            }
+    $module.PrivateData.PSData.Recommends
+    $module.PrivateData.PSData.Recommend
+    $module.PrivateData.PSData.Recommendation
+    $module.PrivateData.PSData.Recommendations
+), "Posh.Recommendation")
 
-            foreach ($recommendationValue in $recommendationKeyValue.Value) {
-                if ($recommendationValue -match '://') {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'URL'
-                        Source     = $module
-                    }
-                } elseif ($recommendationValue -is [string]) {
-                    [PSCustomObject]@{
-                        PSTypeName = 'Posh.Recommendation'
-                        Name       = $recommendationValue
-                        Type       = 'Module'
-                        Source     = $module
-                    }
-                } elseif ($recommendationValue -is [Collections.IDictionary]) {
-                    [PSCustomObject][Ordered]@{
-                        PSTypeName = 'Posh.Recommendation'
-                    } + $recommendationValue
-                }
-            }    
-        }        
-    } else {
-        
-        foreach ($recommendationValue in $recommendation) {
-            if ($recommendationValue -is [string]) {
-                [PSCustomObject]@{
-                    PSTypeName = 'Posh.Recommendation'
-                    Name       = $recommendationValue
-                    Type       = 'Module'
-                    Source     = $module
-                }
-            } elseif ($recommendationValue -is [Collections.IDictionary]) {
-                [PSCustomObject][Ordered]@{
-                    PSTypeName = 'Posh.Recommendation'
-                } + $recommendationValue
-            }            
-        }
-    }
-}
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Screenshot</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Module Screenshots
+.DESCRIPTION
+    Lists screenshots from this module.
+.EXAMPLE
+    $posh.Screenshots
+#&gt;
+$this.LinkList(@(
+    $this.PrivateData.Screenshot
+    $this.PrivateData.Screenshots
+    $this.PrivateData.PSData.Screenshot
+    $this.PrivateData.PSData.Screenshots
+), "Posh.Module.Screenshot")
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Video</Name>
+        <GetScriptBlock>
+                        $this.LinkList(@(
+    $this.PrivateData.Screenshot
+    $this.PrivateData.Screenshots
+    $this.PrivateData.PSData.Screenshot
+    $this.PrivateData.PSData.Screenshots
+), "Posh.Module.Video")
+
 
                     </GetScriptBlock>
       </ScriptProperty>
