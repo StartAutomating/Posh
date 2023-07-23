@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+    Gets Module Videos
+.DESCRIPTION
+    Lists videos about this module.
+.EXAMPLE
+    $posh.Videos
+#>
 $this.LinkList(@(
     $this.PrivateData.Video
     $this.PrivateData.Videos
