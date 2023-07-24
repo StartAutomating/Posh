@@ -28,7 +28,7 @@ filter ToLink {
             Source     = $this
         }
     } elseif ($_ -is [Collections.IDictionary]) {
-        $_.GetEnumerator() | . ToLink
+        $_.GetEnumerator() | Sort-Object Key | . ToLink
     } elseif ($_ -is [Collections.DictionaryEntry]) {
         [PSCustomObject][Ordered]@{
             PSTypeName = $PSTypeName
@@ -40,4 +40,4 @@ filter ToLink {
 }
 
 
-$inputObject | . ToLink | Sort-Object Name
+$inputObject | . ToLink
