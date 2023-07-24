@@ -27,10 +27,11 @@ if ($global:PSStyle) {
     # These pieces of information will be used later in our File Table View.
 }
 
-
+# The next neat trick we do is decorate ourselves.
 $Posh = $MyInvocation.MyCommand.ScriptBlock.Module
 $Posh.pstypenames.Insert(0,'Posh')
 
+#region Stackable Functions
 $stackableFunctions = [Ordered]@{
     Prompt = 'prompt'
     Input  = 'PSConsoleHostReadLine'
@@ -47,14 +48,24 @@ foreach ($stackableFunctionKeyValue in $stackableFunctions.GetEnumerator()) {
     $posh |
         Add-Member NoteProperty $functionStackType $stackableFunction -Force
 }
+#endregion Stackable Functions
 
+#region $Posh.Parameters
+
+# Add a Posh.Parameters psuedo object to $Posh.
 $Posh |
-    Add-Member NoteProperty "Posh.Parameters" (
+    Add-Member NoteProperty Parameters (
         [PSCustomObject]@{
             PSTypeName    = "Posh.Parameters"
             DefaultValues = $global:PSDefaultParameterValues
         }
     ) -Force
+
+# Add $LastOutput
+$Posh.Parameters.Defaults = "Out-Default", "OutVariable", "LastOutput"
+$Posh.Parameters.Defaults = "Out-Default", "ErrorVariable", "LastOutputError"
+#endregion $Posh.Parameters
+
 
 $poshCommands = 
     # Neat tricks, explained:
@@ -73,14 +84,15 @@ $posh | Add-Member NoteProperty Commands $poshCommands -Force
 
 $PoshResources = [Ordered]@{
     PSTypeName = 'Posh.Resources'
-    'PowerShell Guide'   = 'https://PowerShellGuide.com/'
-    'PowerShell.Org'   = 'https://powershell.org/'
-    'PowerShell Discord' = 'https://discord.com/invite/powershell'
-    'PowerShell Project' = 'https://github.com/PowerShell/PowerShell'    
-    'PowerShell GitHub'  = 'https://github.com/topics/powershell'
-    'PowerShell Twitter' = 'https://twitter.com/search?q=%23PowerShell'
+    'PowerShell Guide'    = 'https://PowerShellGuide.com/'
+    'PowerShell.Org'      = 'https://powershell.org/'
+    'PowerShell Discord'  = 'https://discord.com/invite/powershell'
+    'PowerShell Project'  = 'https://github.com/PowerShell/PowerShell'    
+    'PowerShell GitHub'   = 'https://github.com/topics/powershell'
+    'PowerShell Twitter'  = 'https://twitter.com/search?q=%23PowerShell'
     'PowerShell Facebook' = 'https://www.facebook.com/groups/powershell/'
-    'PoshProject' = $posh.PrivateData.PSData.ProjectURI
+    'PowerShell LinkedIn' = 'https://www.linkedin.com/feed/hashtag/?keywords=powershell'
+    'PoshProject'         = $posh.PrivateData.PSData.ProjectURI
 }
 
 $posh | Add-Member NoteProperty Resources ([PSCustomObject]$PoshResources)
@@ -96,6 +108,5 @@ $posh.OnRemove = {
     $global:ExecutionContext.pstypenames.clear()
     $global:error.pstypenames.clear()
     $global:PROFILE.pstypenames.clear()
-    $global:PSDefaultParameterValues.pstypenames.clear()
-    
+    $global:PSDefaultParameterValues.pstypenames.clear()   
 }

@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1'
+    ModuleVersion = '0.1.1'
     FormatsToProcess = 'Posh.format.ps1xml'
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
@@ -9,10 +9,31 @@
     CompanyName = 'Start-Automating'
     Copyright = '2023 Start-Automating'
     PrivateData = @{
-        ProjectURI = 'https://github.com/StartAutomating/Posh'
-        LicenseURI = 'https://github.com/StartAutomating/Posh/blob/main/LICENSE'
-        Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized'
-        ReleaseNotes = @'
+        PSData = @{
+            ProjectURI = 'https://github.com/StartAutomating/Posh'
+            LicenseURI = 'https://github.com/StartAutomating/Posh/blob/main/LICENSE'
+            IconURI    = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
+            Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized', 'Prompt', 'Customization'
+            ReleaseNotes = @'
+## Posh 0.1.1:
+
+* Posh can be sponsored (please show your support) (#77)
+* Added $Posh.Recommends (#65)
+* Added LinkedIn to $Posh.Resources (#66)
+* Added Logo (#67)
+* Expanding $Posh.Parameters (#68)
+* Adding LocalTime to TimeZone formatting (#84, #85)
+* $LastOutput/$LastOutputError (#74)
+* Adding $profile.Directory (#75)
+* Expanding PSModuleInfo
+  * Recommendations (#65) 
+  * Screenshots (#79)
+  * Videos (#80)
+  * Demos (#81)
+  * Logo (#89)
+
+---
+
 ## Posh 0.1:
 
 * Initial Version of Posh, including:
@@ -26,6 +47,7 @@
   * Colorized Regex
   * Process HeatMap
 '@
+        }
         FileTypes = @{
             "Posh.Prompt" = @{
                 Pattern = '(?>^prompt|\.prompt\.ps1$)'
@@ -42,6 +64,19 @@
             "Posh.Trivia" = @{
                 Pattern = '\.(?>PowerShell|Posh)\.Trivia\.psd1$'
             }
+        }
+
+        Recommends = "EZOut", "PipeScript", "HelpOut", "PSSVG", "Splatter", "ShowDemo"
+
+        Screenshot = @{
+            "Improved-File-Formatting" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Improved-File-Formatting.gif"
+            "Get-Command-In-Color" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Get-Command-In-Color.gif"
+            "Get-Member-In-Color" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Get-Member-In-Color.gif"
+            "Reflection-Formatting" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Reflection-Formatting.gif"
+            "Regex-In-Color" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Regex-In-Color.gif"
+            "XML-In-Color" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/XML-In-Color.gif"
+        }, @{
+            "Logo" = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
         }
 
         ExtendedDescription = "

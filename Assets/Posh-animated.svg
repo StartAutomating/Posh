@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated with PSSVG 0.2.10 <https://github.com/StartAutomating/PSSVG> -->
+<svg viewBox="0 0 300 185" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <style type="text/css">@import url('')</style>
+  <symbol viewBox="0 0 100 100" id="psChevron">
+    <polygon points="40,20 45,20 60,50 35,80 32.5,80 55,50" xmlns="http://www.w3.org/2000/svg" />
+  </symbol>
+  <use href="#psChevron" x="75%" y="-2.75%" width="19%" stroke="#4488ff" fill="#4488ff" />
+  <text font-size="48" fill="#4488ff" x="50%" dominant-baseline="middle" text-anchor="middle" y="50%" font-family="sans-serif">
+    <tspan font-size="1em">
+      <animate dur="1.875" attributeName="font-size" values="1em;1.02em;1em" repeatCount="indefinite" />P</tspan>
+    <tspan font-size="1em">
+      <animate begin="0" dur="1.875" attributeName="font-size" values="1em;1.02em;1em" repeatCount="indefinite" />O</tspan>
+    <tspan font-size="1em">
+      <animate begin="0" dur="1.875" attributeName="font-size" values="1em;1.02em;1em" repeatCount="indefinite" />S</tspan>
+    <tspan font-size="1em">
+      <animate begin="0" dur="1.875" attributeName="font-size" values="1em;1.02em;1em" repeatCount="indefinite" />H</tspan>
+  </text>
+</svg>

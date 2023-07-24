@@ -1,5 +1,10 @@
 <#
-
+.SYNOPSIS
+    Gets Errors By Type
+.DESCRIPTION
+    Returns all errors, by type of error.
+.EXAMPLE
+    $posh.Errors.ByType
 #>
 $errorsByType = 
     [Collections.Generic.Dictionary[
