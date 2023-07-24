@@ -4,21 +4,44 @@ Posh is a PowerShell module that makes PowerShell more fun to work with.
 
 Posh provides PowerShell formatting for all sorts of fun scenarios, like:
 
+### Get-Command in color
+
+Posh colorizes commands by verb.
+
+~~~PowerShell
+Get-Command
+~~~
+
+![Get-Command-In-Color](Assets/Get-Command-In-Color.gif)
+
 ### Get-Member in color
 
 ~~~PowerShell
-Get-Item $pwd | Get-Member 
+Get-Command | Get-Member 
 ~~~
+
+![Get-Member-In-Color](Assets/Get-Member-In-Color.gif)
 
 ### Reflection Formatter
 
+Posh provides a formatter for reflection, to help you explore types.
+
 ~~~PowerShell
-[type] | Format-Custom
+[int] | Format-Custom
 ~~~
 
 ~~~PowerShell
-[type] | Format-Custom -View System.Type.Full
+[int] | Format-Custom -View System.Type.Full
 ~~~
+
+It even works on generic types
+
+~~~PowerShell
+[Collections.Generic.Dictionary[string, PSObject]] | 
+    Format-Custom -View System.Type.Full
+~~~
+
+![Reflection-Formatting](Assets/Reflection-Formatting.gif)
 
 ### Colorized XML
 
@@ -26,6 +49,7 @@ Get-Item $pwd | Get-Member
 [xml]"<a><b attr='c'/></a>"
 ~~~
 
+![XML-In-Color](Assets/XML-In-Color.gif)
 
 ## How Posh Works
 
