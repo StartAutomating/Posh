@@ -6,6 +6,14 @@
 .EXAMPLE
     # Replace both ends of the prompt
     $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('>', 0x27d5, $true)
+.EXAMPLE
+    $Posh.Prompt.Replace($(
+        if ($env:User) {
+            $env:User
+        } elseif ($env:UserName) {
+            $env:UserName
+        }
+    ),'***')
 #>
 param(
 # The content to replace
