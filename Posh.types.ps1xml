@@ -972,6 +972,14 @@ $this.Current = $Value
 .EXAMPLE
     # Replace both ends of the prompt
     $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+.EXAMPLE
+    $Posh.Prompt.Replace($(
+        if ($env:User) {
+            $env:User
+        } elseif ($env:UserName) {
+            $env:UserName
+        }
+    ),'***')
 #&gt;
 param(
 # The content to replace
@@ -1512,6 +1520,14 @@ $this.Current = $Value
 .EXAMPLE
     # Replace both ends of the prompt
     $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+.EXAMPLE
+    $Posh.Prompt.Replace($(
+        if ($env:User) {
+            $env:User
+        } elseif ($env:UserName) {
+            $env:UserName
+        }
+    ),'***')
 #&gt;
 param(
 # The content to replace
@@ -1754,6 +1770,14 @@ $this.Current = $Value
 .EXAMPLE
     # Replace both ends of the prompt
     $Posh.Prompt.Replace('PS ', 0x27d6,$true).Replace('&gt;', 0x27d5, $true)
+.EXAMPLE
+    $Posh.Prompt.Replace($(
+        if ($env:User) {
+            $env:User
+        } elseif ($env:UserName) {
+            $env:UserName
+        }
+    ),'***')
 #&gt;
 param(
 # The content to replace
