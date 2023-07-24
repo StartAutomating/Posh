@@ -1867,6 +1867,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
     <Name>System.Management.Automation.PSModuleInfo</Name>
     <Members>
       <AliasProperty>
+        <Name>Demos</Name>
+        <ReferencedMemberName>Demo</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Recommendations</Name>
         <ReferencedMemberName>Recommendation</ReferencedMemberName>
       </AliasProperty>
@@ -1927,6 +1931,12 @@ $inputObject | . ToLink | Sort-Object Name
 
                     </Script>
       </ScriptMethod>
+      <ScriptProperty>
+        <Name>Demo</Name>
+        <GetScriptBlock>
+                        $this | Split-Path | Get-ChildItem -Recurse -Filter *.demo.ps1 | Select-Object -Unique
+                    </GetScriptBlock>
+      </ScriptProperty>
       <ScriptProperty>
         <Name>Recommendation</Name>
         <GetScriptBlock>
