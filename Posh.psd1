@@ -17,6 +17,7 @@
             ReleaseNotes = @'
 ## Posh 0.1.1:
 
+* Posh can be sponsored (please show your support) (#77)
 * Added $Posh.Recommends (#65)
 * Added LinkedIn to $Posh.Resources (#66)
 * Added Logo (#67)
@@ -29,7 +30,7 @@
   * Screenshots (#79)
   * Videos (#80)
   * Demos (#81)
-  * Logo (#91)
+  * Logo (#89)
 
 ---
 
