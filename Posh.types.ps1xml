@@ -765,7 +765,12 @@ $errorsByLine
         <Name>ByType</Name>
         <GetScriptBlock>
                         &lt;#
-
+.SYNOPSIS
+    Gets Errors By Type
+.DESCRIPTION
+    Returns all errors, by type of error.
+.EXAMPLE
+    $posh.Errors.ByType
 #&gt;
 $errorsByType = 
     [Collections.Generic.Dictionary[
