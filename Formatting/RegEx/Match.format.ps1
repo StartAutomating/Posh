@@ -1,0 +1,1 @@
+Write-FormatView -TypeName System.Text.RegularExpressions.Match -Property Index, Length, Value -Wrap -AutoSize
