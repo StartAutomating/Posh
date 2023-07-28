@@ -3647,6 +3647,40 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </CustomControl>
     </View>
     <View>
+      <Name>System.Text.RegularExpressions.Match</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Text.RegularExpressions.Match</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Length</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap />
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Index</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>1</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Value</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>System.Xml.XmlElement</Name>
       <ViewSelectedBy>
         <TypeName>System.Xml.XmlElement</TypeName>
