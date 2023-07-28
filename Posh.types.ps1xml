@@ -1373,6 +1373,22 @@ $profileContent | Set-Content -Path $profilePath -PassThru
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>File</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the profile file
+.DESCRIPTION
+    Gets the profile file for the current user in the current host.
+.EXAMPLE
+    $Posh.Profile.File    
+#&gt;
+if (Test-Path "$profile") {
+    Get-Item -LiteralPath "$profile"
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Files</Name>
         <GetScriptBlock>
                         &lt;#
