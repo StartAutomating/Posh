@@ -4067,6 +4067,64 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </TableControl>
     </View>
     <View>
+      <Name>System.Management.Automation.PSVariable</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Management.Automation.PSVariable</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock>
+    "In $($psStyle.Foreground.Green;$psStyle.Bold)Bold Green$($psStyle.Foreground.Reset)"    
+</ScriptBlock>
+        <Label>ReadOnly / Constant Variables</Label>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <!-- {ConditionalStyle:"
+        if ($_.Options -band &apos;ReadOnly&apos; -or $_.Options -band &apos;Constant&apos;) {
+            &quot;Bold&quot;, &quot;Foreground.Green&quot;
+        }        
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        if ($_.Options -band 'ReadOnly' -or $_.Options -band 'Constant') {
+            "Bold", "Foreground.Green"
+        }        
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '\.') {
+                                            $styleGroup, $styleProp = $styleProp -split '\.'
+                                            $psStyle.$styleGroup.$styleProp
+                                    } else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'Name'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Value</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>System.Text.RegularExpressions.RegEx</Name>
       <ViewSelectedBy>
         <TypeName>System.Text.RegularExpressions.RegEx</TypeName>
