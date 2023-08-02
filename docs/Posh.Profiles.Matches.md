@@ -37,6 +37,10 @@ $Posh.Profile.Matches("Posh")
 ### Parameters
 #### **Pattern**
 
+The pattern to match.
+
+
+
 
 
 
