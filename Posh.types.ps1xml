@@ -865,6 +865,10 @@ $this.UI.RawUI.BufferSize.Width
         <Name>Before</Name>
         <ReferencedMemberName>Prepend</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Undo</Name>
+        <ReferencedMemberName>Pop</ReferencedMemberName>
+      </AliasProperty>
       <ScriptMethod>
         <Name>Append</Name>
         <Script>
@@ -1544,6 +1548,10 @@ To see how to manipulate PowerShell profiles with Posh, use $posh.Profiles | Get
         <Name>Before</Name>
         <ReferencedMemberName>Prepend</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Undo</Name>
+        <ReferencedMemberName>Pop</ReferencedMemberName>
+      </AliasProperty>
       <ScriptMethod>
         <Name>Append</Name>
         <Script>
@@ -1793,6 +1801,10 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
       <AliasProperty>
         <Name>Before</Name>
         <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Undo</Name>
+        <ReferencedMemberName>Pop</ReferencedMemberName>
       </AliasProperty>
       <ScriptMethod>
         <Name>Append</Name>
