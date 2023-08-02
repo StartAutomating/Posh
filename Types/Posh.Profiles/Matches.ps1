@@ -9,6 +9,7 @@
     $Posh.Profile.Matches("Posh")
 #>
 param(
+# The pattern to match.
 [regex]
 $Pattern,
 
