@@ -2051,6 +2051,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>Screenshot</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Tests</Name>
+        <ReferencedMemberName>Test</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Videos</Name>
         <ReferencedMemberName>Video</ReferencedMemberName>
       </AliasProperty>
@@ -2106,7 +2110,20 @@ $inputObject | . ToLink
       <ScriptProperty>
         <Name>Demo</Name>
         <GetScriptBlock>
-                        $this | Split-Path | Get-ChildItem -Recurse -Filter *.demo.ps1 | Select-Object -Unique
+                        &lt;#
+.SYNOPSIS
+    Gets module demos
+.DESCRIPTION
+    Gets demo files related to a module.
+.EXAMPLE
+    $Posh.Demos
+.LINK
+    https://github.com/StartAutomating/ShowDemo
+#&gt;
+$this |
+    Split-Path |
+    Get-ChildItem -Recurse -Filter *.demo.ps1 |
+    Select-Object -Unique
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
@@ -2183,6 +2200,21 @@ $this.LinkList(@(
 ), "Posh.Module.Screenshot")
 
 
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Test</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets module tests
+.DESCRIPTION
+    Gets Pester Tests located within a module.
+#&gt;
+$this |
+    Split-Path |
+    Get-ChildItem -Recurse -Filter *.tests.ps1 |
+    Select-Object -Unique
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
