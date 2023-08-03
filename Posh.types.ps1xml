@@ -865,6 +865,10 @@ $this.UI.RawUI.BufferSize.Width
         <Name>Before</Name>
         <ReferencedMemberName>Prepend</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Undo</Name>
+        <ReferencedMemberName>Pop</ReferencedMemberName>
+      </AliasProperty>
       <ScriptMethod>
         <Name>Append</Name>
         <Script>
@@ -1295,6 +1299,101 @@ $profileContent | Set-Content -Path $profilePath -PassThru
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>ImportModule</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Imports a module in a profile
+.DESCRIPTION
+    Adds code to import a module in your profile.
+    This will ensure the module is loaded whenever you're running PowerShell.
+.EXAMPLE
+    $Posh.Profile.ImportModule("Posh")
+#&gt;
+param(
+# The name of the module to import.
+[string]
+$Module,
+
+# Which profile should the content be added to?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+
+$AlreadyAdded = $this.Matches("Import-Module $Module", $WhichProfile)
+if (-not $AlreadyAdded) {
+    $this.Add(
+        [scriptblock]::Create("Import-Module $module -Force$([Environment]::Newline)"),
+        $WhichProfile
+    )
+}
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Matches</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Matches patterns within profiles
+.DESCRIPTION
+    Matches a pattern within profile files.
+    
+    All places the pattern is found will be returned.
+.EXAMPLE
+    $Posh.Profile.Matches("Posh")
+#&gt;
+param(
+# The pattern to match.
+[regex]
+$Pattern,
+
+# Which profile should the content be removed from?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string[]]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+@(foreach ($prof in $WhichProfile) {
+    if (Test-Path ($profile.$prof)) {
+        $pattern.Matches((Get-Content -Raw ($profile.$prof)))
+    } 
+})
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>New</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Creates a new profile
+.DESCRIPTION
+    Creates a new profile, or returns an existing profile.
+.EXAMPLE
+    $Posh.Profile.New()
+#&gt;
+param(
+# Which profile should be created?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+$profilePath = $PROFILE.$WhichProfile
+
+if (Test-Path -LiteralPath $profilePath) {
+    Get-Item -LiteralPath $profilePath
+} else {
+    New-Item -ItemType File -Path $profilePath -Force
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Remove</Name>
         <Script>
                         &lt;#
@@ -1316,6 +1415,67 @@ $Content,
 $WhichProfile = 'CurrentUserCurrentHost'
 )
 
+$this.Replace($Content, '', $WhichProfile)
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>RemoveModule</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Remove a module from a profile
+.DESCRIPTION
+    Remove code that imports a module in your profile.
+.EXAMPLE
+    $Posh.Profile.RemoveModule("Posh")
+#&gt;
+param(    
+# The name of the module to no longer import.
+[string]
+$Module,    
+
+# Which profile should the content be added to?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
+
+$AlreadyAdded = $this.Matches("Import-Module $Module", $WhichProfile)
+if ($AlreadyAdded) {
+    $this.Remove("Import-Module $Module", $WhichProfile)
+}
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Replace</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Replaces content in a profile
+.DESCRIPTION
+    Replaces content in a PowerShell profile.
+#&gt;
+param(
+# The content to replace.
+# If the content is a regular expression pattern, any matches will be replaced.
+# Otherwise, any case-insensitive occurances of the string will be replaced.
+$Content,
+
+# The content to replace.
+# If content replaced was a regular expression,
+# this will be treated as a [Regular Expression substitution](https://learn.microsoft.com/en-us/dotnet/standard/base-types/substitutions-in-regular-expressions).
+$Replacement = '',
+
+# Which profile should the content be removed from?
+# The default is the current user's current host.
+[ValidateSet('AllUsersAllHosts','AllUsersCurrentHosts','CurrentUserAllHosts','CurrentUserCurrentHost')]
+[string]
+$WhichProfile = 'CurrentUserCurrentHost'
+)
+
 $profilePath = $PROFILE.$WhichProfile
 
 $profileContent = 
@@ -1326,13 +1486,13 @@ $profileContent =
     }
 
 if ($Content -is [regex]) {
-    $profileContent = $Content.Replace($profileContent, '')
+    $profileContent = $Content.Replace($profileContent, $Replacement)
 } else {
     $Content = "$content"
     if ($Content) {
         $profileContent = 
             $profileContent.Replace(
-                $content, '', [StringComparison]::OrdinalIgnoreCase
+                $content, $Replacement, [StringComparison]::OrdinalIgnoreCase
             )
     }
 }
@@ -1370,6 +1530,22 @@ $profileContent | Set-Content -Path $profilePath -PassThru
     $Profile.Directory
 #&gt;
 ($profile | Split-Path) -as [IO.DirectoryInfo]
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>File</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the profile file
+.DESCRIPTION
+    Gets the profile file for the current user in the current host.
+.EXAMPLE
+    $Posh.Profile.File    
+#&gt;
+if (Test-Path "$profile") {
+    Get-Item -LiteralPath "$profile"
+}
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
@@ -1412,6 +1588,10 @@ To see how to manipulate PowerShell profiles with Posh, use $posh.Profiles | Get
       <AliasProperty>
         <Name>Before</Name>
         <ReferencedMemberName>Prepend</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Undo</Name>
+        <ReferencedMemberName>Pop</ReferencedMemberName>
       </AliasProperty>
       <ScriptMethod>
         <Name>Append</Name>
@@ -1663,6 +1843,10 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
         <Name>Before</Name>
         <ReferencedMemberName>Prepend</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Undo</Name>
+        <ReferencedMemberName>Pop</ReferencedMemberName>
+      </AliasProperty>
       <ScriptMethod>
         <Name>Append</Name>
         <Script>
@@ -1908,6 +2092,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>Screenshot</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Tests</Name>
+        <ReferencedMemberName>Test</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Videos</Name>
         <ReferencedMemberName>Video</ReferencedMemberName>
       </AliasProperty>
@@ -1963,7 +2151,20 @@ $inputObject | . ToLink
       <ScriptProperty>
         <Name>Demo</Name>
         <GetScriptBlock>
-                        $this | Split-Path | Get-ChildItem -Recurse -Filter *.demo.ps1 | Select-Object -Unique
+                        &lt;#
+.SYNOPSIS
+    Gets module demos
+.DESCRIPTION
+    Gets demo files related to a module.
+.EXAMPLE
+    $Posh.Demos
+.LINK
+    https://github.com/StartAutomating/ShowDemo
+#&gt;
+$this |
+    Split-Path |
+    Get-ChildItem -Recurse -Filter *.demo.ps1 |
+    Select-Object -Unique
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
@@ -2040,6 +2241,21 @@ $this.LinkList(@(
 ), "Posh.Module.Screenshot")
 
 
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Test</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets module tests
+.DESCRIPTION
+    Gets Pester Tests located within a module.
+#&gt;
+$this |
+    Split-Path |
+    Get-ChildItem -Recurse -Filter *.tests.ps1 |
+    Select-Object -Unique
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>

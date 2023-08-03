@@ -17,25 +17,4 @@ $Content,
 $WhichProfile = 'CurrentUserCurrentHost'
 )
 
-$profilePath = $PROFILE.$WhichProfile
-
-$profileContent = 
-    if (Test-Path $profilePath) {
-        Get-Content -Raw $profilePath 
-    } else {
-        ''
-    }
-
-if ($Content -is [regex]) {
-    $profileContent = $Content.Replace($profileContent, '')
-} else {
-    $Content = "$content"
-    if ($Content) {
-        $profileContent = 
-            $profileContent.Replace(
-                $content, '', [StringComparison]::OrdinalIgnoreCase
-            )
-    }
-}
-
-$profileContent | Set-Content -Path $profilePath -PassThru
+$this.Replace($Content, '', $WhichProfile)

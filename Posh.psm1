@@ -31,6 +31,8 @@ if ($global:PSStyle) {
     # These pieces of information will be used later in our File Table View.
 }
 
+. (Join-Path $PSScriptRoot '@.ps1')
+
 # The next neat trick we do is decorate ourselves.
 $Posh = $MyInvocation.MyCommand.ScriptBlock.Module
 $Posh.pstypenames.Insert(0,'Posh')
