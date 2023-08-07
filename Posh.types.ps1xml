@@ -944,7 +944,7 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($prompt)
+$toPrepend = $this.Stringify($Value)
 $currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
 $this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
                     </Script>
@@ -1015,7 +1015,7 @@ foreach ($arg in $args) {
     }
 }
 $newFunc = "@(
-    `$existingOutput =. { $function:prompt };
+    `$existingOutput =. { $currentFunction };
     `$replacePattern = $replaceRegex
     `$replaceWith = $toReplace 
     `$replacePattern.Replace(`$existingOutput, `$replaceWith)
@@ -1668,7 +1668,7 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($prompt)
+$toPrepend = $this.Stringify($Value)
 $currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
 $this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
                     </Script>
@@ -1739,7 +1739,7 @@ foreach ($arg in $args) {
     }
 }
 $newFunc = "@(
-    `$existingOutput =. { $function:prompt };
+    `$existingOutput =. { $currentFunction };
     `$replacePattern = $replaceRegex
     `$replaceWith = $toReplace 
     `$replacePattern.Replace(`$existingOutput, `$replaceWith)
@@ -1922,7 +1922,7 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($prompt)
+$toPrepend = $this.Stringify($Value)
 $currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
 $this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
                     </Script>
@@ -1993,7 +1993,7 @@ foreach ($arg in $args) {
     }
 }
 $newFunc = "@(
-    `$existingOutput =. { $function:prompt };
+    `$existingOutput =. { $currentFunction };
     `$replacePattern = $replaceRegex
     `$replaceWith = $toReplace 
     `$replacePattern.Replace(`$existingOutput, `$replaceWith)
