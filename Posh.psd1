@@ -84,8 +84,12 @@
                 Pattern = '\.(?>PowerShell|Posh)\.Preset\.(?>psd1|json|clixml)$'
                 Description = "A data file that defines a PowerShell preset."
             }
-            "Posh.Trivia" = @{
-                Pattern = '\.(?>PowerShell|Posh)\.Trivia\.psd1$'
+            "Posh.Tip" = @{
+                Pattern = '
+                (?:\.(?>PowerShell|Posh))? # Optional Posh or PowerShell
+                \.(?>Tips?|Trivia)         # dot followed by Tip(s), or Trivia
+                (?:\.(?>psd1|ps1|txt)$)?   # PSD1 and PS1 files are acceptable (extension is optional)
+                '
             }
             "Posh.Trick" = @{
                 Pattern = '
