@@ -13,6 +13,6 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($prompt)
+$toPrepend = $this.Stringify($Value)
 $currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
 $this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 

@@ -40,7 +40,7 @@ foreach ($arg in $args) {
     }
 }
 $newFunc = "@(
-    `$existingOutput =. { $function:prompt };
+    `$existingOutput =. { $currentFunction };
     `$replacePattern = $replaceRegex
     `$replaceWith = $toReplace 
     `$replacePattern.Replace(`$existingOutput, `$replaceWith)
