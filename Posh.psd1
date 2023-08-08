@@ -87,6 +87,13 @@
             "Posh.Trivia" = @{
                 Pattern = '\.(?>PowerShell|Posh)\.Trivia\.psd1$'
             }
+            "Posh.Trick" = @{
+                Pattern = '
+                (?:\.(?>PowerShell|Posh))? # Optional Posh or PowerShell
+                \.(?>Example|Tricks?)      # dot followed by Example, Trick, or Tricks
+                \.(?>psd1|ps1)$            # PSD1 and PS1 files are acceptable
+                '
+            }
         }
 
         Recommends = "EZOut", "PipeScript", "HelpOut", "PSSVG", "Splatter", "ShowDemo"
