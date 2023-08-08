@@ -12,8 +12,9 @@
             $matchInfo.ToString()
         }
     )
-
+    
     if ($PSStyle) {
+        $PoshModule = $posh
         if ($isFileMatch) {
             # Match in a file item
             $colorTable = @(
@@ -21,7 +22,7 @@
                 $PSStyle.Foreground.Yellow
             )
 
-            $colorIndex = & $Posh {
+            $colorIndex = . $PoshModule {
                 # Create a module scope variable
                 if (-not $script:MatchInfoColorIndex) {
                     $script:MatchInfoColorIndex = @{
