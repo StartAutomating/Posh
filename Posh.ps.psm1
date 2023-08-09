@@ -37,6 +37,7 @@ $Posh.pstypenames.Insert(0,'Posh')
 $stackableFunctions = [Ordered]@{
     Prompt = 'prompt'
     Input  = 'PSConsoleHostReadLine'
+    TabExpansion = 'TabExpansion2'
 }
 
 foreach ($stackableFunctionKeyValue in $stackableFunctions.GetEnumerator()) {
