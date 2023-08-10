@@ -818,6 +818,38 @@ Get-History -Id $historyIDS
     </Members>
   </Type>
   <Type>
+    <Name>Posh.ExtensionCollection</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Module</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's module
+.DESCRIPTION
+    Gets the module that defines extended types in an extension collection.
+#&gt;
+return $this.'.Module'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's module
+.DESCRIPTION
+    Sets the module that defines extended command types in an extension collection.
+#&gt;
+param(
+# The module.
+[Management.Automation.PSModuleInfo]
+$Module
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.Module' -Value $module -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Host</Name>
     <Members>
       <ScriptProperty>
