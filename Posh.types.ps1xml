@@ -821,6 +821,35 @@ Get-History -Id $historyIDS
     <Name>Posh.ExtensionCollection</Name>
     <Members>
       <ScriptProperty>
+        <Name>CommandType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's CommandType
+.DESCRIPTION
+    Gets the extended CommandTypes(s) that are stored in an extension collection.
+
+    CommandTypes can be defined in a module's manifest.
+#&gt;
+return $this.'.CommandType'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's command type
+.DESCRIPTION
+    Sets the extended command types in an extension collection.
+#&gt;
+param(
+# The path.  If this is empty all extended commands will be present in the collection
+[string[]]
+$CommandType
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.CommandType' -Value $CommandType -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Module</Name>
         <GetScriptBlock>
                         &lt;#
