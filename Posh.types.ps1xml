@@ -820,6 +820,12 @@ Get-History -Id $historyIDS
   <Type>
     <Name>Posh.ExtensionCollection</Name>
     <Members>
+      <ScriptMethod>
+        <Name>Refresh</Name>
+        <Script>
+                        $this | Add-Member NoteProperty '.Cache' @() -Force
+                    </Script>
+      </ScriptMethod>
       <ScriptProperty>
         <Name>All</Name>
         <GetScriptBlock>
