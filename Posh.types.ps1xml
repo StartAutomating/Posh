@@ -941,6 +941,18 @@ $Path
 Add-Member -InputObject $this -MemberType NoteProperty -Name '.Path' -Value $Path -Force
                     </SetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Random</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a random extended command
+.DESCRIPTION
+    Gets a random extended command from an ExtensionCollection.
+#&gt;
+$this.All | Get-Random
+                    </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
   <Type>
