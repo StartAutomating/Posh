@@ -20,8 +20,8 @@ if (-not $this.'.Preset') {
             Path        = @(Get-Module | Split-Path) -as [string[]]
             CommandType = 'Posh.Preset.Command'
         }
-
     $PresetCollection.pstypenames.insert(0,'Posh.Preset.Collection')
-    $this | Add-Member NoteProperty '.Preset' $PresetCollection -Force
+    $this |
+        Add-Member NoteProperty '.Preset' $PresetCollection -Force
 }
 $this.'.Preset'
