@@ -9,5 +9,6 @@
     Tricks = 'Tip'
     Links = 'Link'
     Resource = 'Link'
-    Resources = 'Link'    
+    Resources = 'Link'
+    Presets = 'Preset'
 }
