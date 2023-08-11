@@ -86,16 +86,9 @@
             }
             "Posh.Tip" = @{
                 Pattern = '
-                (?:\.(?>PowerShell|Posh))? # Optional Posh or PowerShell
-                \.(?>Tips?|Trivia)         # dot followed by Tip(s), or Trivia
-                (?:\.(?>psd1|ps1|txt)$)?   # PSD1 and PS1 files are acceptable (extension is optional)
-                '
-            }
-            "Posh.Trick" = @{
-                Pattern = '
-                (?:\.(?>PowerShell|Posh))? # Optional Posh or PowerShell
-                \.(?>Example|Tricks?)      # dot followed by Example, Trick, or Tricks
-                \.(?>psd1|ps1)$            # PSD1 and PS1 files are acceptable
+                (?:\.(?>PowerShell|Posh))?  # Optional Posh or PowerShell
+                \.(?>Tips?|Tricks?|Trivia)  # dot followed by Tip(s), Tricks(s), or Trivia
+                (?:\.(?>psd1|ps1|txt|md|json|clixml)$)  # match the extension
                 '
             }
         }
