@@ -95,6 +95,17 @@
 
         Recommends = "EZOut", "PipeScript", "HelpOut", "PSSVG", "Splatter", "ShowDemo"
 
+        Links = @{
+            'PowerShell Guide'    = 'https://PowerShellGuide.com/'
+            'PowerShell.Org'      = 'https://powershell.org/'
+            'PowerShell Discord'  = 'https://discord.com/invite/powershell'
+            'PowerShell Project'  = 'https://github.com/PowerShell/PowerShell'    
+            'PowerShell GitHub'   = 'https://github.com/topics/powershell'
+            'PowerShell Twitter'  = 'https://twitter.com/search?q=%23PowerShell'
+            'PowerShell Facebook' = 'https://www.facebook.com/groups/powershell/'
+            'PowerShell LinkedIn' = 'https://www.linkedin.com/feed/hashtag/?keywords=powershell'    
+        }
+
         Screenshot = @{
             "Improved-File-Formatting" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Improved-File-Formatting.gif"
             "Get-Command-In-Color" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Get-Command-In-Color.gif"
