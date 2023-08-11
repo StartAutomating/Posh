@@ -6,3 +6,5 @@ $OddNumbers =
             $n
         }
     }
+
+$OddNumbers
