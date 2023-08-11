@@ -3300,6 +3300,24 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </CustomControl>
     </View>
     <View>
+      <Name>Posh.Tip.Collection</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Tip.Collection</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <PropertyName>Random</PropertyName>
+                <CustomControlName>Posh.Tip.Control</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
       <Name>System.Reflection.MemberInfo</Name>
       <ViewSelectedBy>
         <TypeName>System.Reflection.MemberInfo</TypeName>
