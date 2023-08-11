@@ -2290,8 +2290,20 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>Demo</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Links</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Recommendations</Name>
         <ReferencedMemberName>Recommendation</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Resource</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Resources</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>Screenshots</Name>
@@ -2383,6 +2395,31 @@ $this |
     Split-Path |
     Get-ChildItem -Recurse -Filter *.demo.ps1 |
     Select-Object -Unique
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Link</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Module Links
+.DESCRIPTION
+    Lists hyperlinks from this module.
+.EXAMPLE
+    $posh.Links
+#&gt;
+$this.LinkList(@(
+    $this.PrivateData.Link
+    $this.PrivateData.Links
+    $this.PrivateData.Resource
+    $this.PrivateData.Resources
+    $this.PrivateData.PSData.Link
+    $this.PrivateData.PSData.Links
+    $this.PrivateData.PSData.Resource
+    $this.PrivateData.PSData.Resources
+), "Posh.Module.Link")
+
+
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
