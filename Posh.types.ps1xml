@@ -98,24 +98,6 @@ Get-Module
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
-        <Name>Presets</Name>
-        <GetScriptBlock>
-                        # Get-Module 
-$moduleRoots = Get-Module | Split-Path | Select-Object -Unique
-
-
-foreach ($extensionFile in $posh.Commands.FindExtensions.Invoke(@(
-        $posh
-        $moduleRoots
-    ))
-) {
-    if ($extensionFile.pstypenames -contains 'Posh.Preset.Command') {
-        $extensionFile
-    }
-}
-                    </GetScriptBlock>
-      </ScriptProperty>
-      <ScriptProperty>
         <Name>Process</Name>
         <GetScriptBlock>
                         &lt;#
@@ -2294,6 +2276,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>Link</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Presets</Name>
+        <ReferencedMemberName>Preset</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Recommendations</Name>
         <ReferencedMemberName>Recommendation</ReferencedMemberName>
       </AliasProperty>
@@ -2442,6 +2428,38 @@ $this.LinkList(@(
 ), "Posh.Module.Logo")
 
 
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Preset</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Get's a module's presets
+.DESCRIPTION
+    Gets presets from a module.
+
+    Any module can contain `*.preset(s)` files, of the extensions:
+    
+    * .psd1
+    * .json
+    * .clixml
+
+    The collection of presets can be accessed in a Module's .Preset(s) properties    
+#&gt;
+if (-not $this.'.Preset') {
+    $PresetCollection =
+        [PSCustomObject][Ordered]@{
+            PSTypeName  = 'Posh.ExtensionCollection'
+            Module      = $posh
+            Path        = @(Get-Module | Split-Path) -as [string[]]
+            CommandType = 'Posh.Preset.Command'
+        }
+
+    $PresetCollection.pstypenames.insert(0,'Posh.Preset.Collection')
+    $this | Add-Member NoteProperty '.Preset' $PresetCollection -Force
+}
+$this.'.Preset'
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
