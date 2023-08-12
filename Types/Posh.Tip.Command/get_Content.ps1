@@ -10,8 +10,8 @@ switch -regex ($this.Source) {
     }
     '\.ps1$' {
         $showDemoCommand = $ExecutionContext.SessionState.InvokeCommand.GetCommand('Show-Demo', 'Function')
-        if ($showDemoCommand) {
-            Show-Demo -DemoFile $this.Source -AutoPlay | Out-Null
+        if ($showDemoCommand) {            
+            $this.ScriptBlock
         } else {
             Get-Content $this.Source -Raw
         }
