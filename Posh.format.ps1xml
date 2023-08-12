@@ -3884,7 +3884,6 @@ if ($Request -or $Host.UI.SupportsHTML) {
       <TableControl>
         <TableHeaders>
           <TableColumnHeader>
-            <Label>Node</Label>
           </TableColumnHeader>
           <TableColumnHeader>
           </TableColumnHeader>
@@ -3893,7 +3892,7 @@ if ($Request -or $Host.UI.SupportsHTML) {
           <TableRowEntry>
             <TableColumnItems>
               <TableColumnItem>
-                <ScriptBlock>$_.Node.LocalName </ScriptBlock>
+                <PropertyName>Node</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Pattern</PropertyName>
