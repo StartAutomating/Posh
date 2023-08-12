@@ -85,7 +85,7 @@ Invoke-RestMethod https://pssvg.start-automating.com/Examples/HelloWorld.svg
 # Regular Expressions are also syntax highlighted, helping us all hopefully understand them better.
 
 [Regex]::new('
-(?<NameOfCaputre>Pattern) # Comment
+(?<NameOfCapture>Pattern) # Comment
 ','IgnoreCase,IgnorePatternWhitespace')
 
 
