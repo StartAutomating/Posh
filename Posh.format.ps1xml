@@ -2617,6 +2617,58 @@ if ($Request -or $Host.UI.SupportsHTML) {
                     }
                 </ScriptBlock>
               </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        "To see PowerShell tips, use `$posh.Tips"
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        "To see PowerShell links, use `$posh.Links"
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
             </CustomItem>
           </CustomEntry>
         </CustomEntries>
