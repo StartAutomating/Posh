@@ -27,8 +27,13 @@ Write-FormatView -TypeName FileSystemTypes -Property LastWriteTime, Length, Name
         } else {
             
             $(if ($_ -is [IO.DirectoryInfo]) {                
-                $PSStyle.FileInfo.Directory                
-                "`u{1F5BF} "
+                $PSStyle.FileInfo.Directory
+                if ($PSStyle.FileInfo.DirectoryIcon) {
+                    "$($PSStyle.FileInfo.DirectoryIcon)" + " "
+                } else {
+                    "▶ "
+                }
+                
             } else {
                 if (
                     $PSStyle.FileInfo.Extension.Keys -and 
@@ -56,8 +61,8 @@ Write-FormatView -TypeName FileSystemTypes -Property LastWriteTime, Length, Name
                 
                 
                 $extraSpace = $true
-                if ($Posh.FileIcons) {
-
+                if ($psStyle.FileInfo.ExtensionIcon -and $psStyle.FileInfo.ExtensionIcon[$_.Extension]) {
+                    "$($psStyle.FileInfo.ExtensionIcon[$_.Extension]) "
                 } else {
                     
                     $(switch ($_.Extension) {
