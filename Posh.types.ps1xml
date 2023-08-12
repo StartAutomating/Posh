@@ -1425,6 +1425,174 @@ You can also provide default values for any command's parameters.
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Preset.Collection</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Refresh</Name>
+        <Script>
+                        $this | Add-Member NoteProperty '.Cache' @() -Force
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>All</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets all items in an extension collection.
+.DESCRIPTION
+    Gets all items in a collection of extended commands.
+#&gt;
+if (-not $this.'.Cache') {
+    if (-not $this.'.Module') { return @() }
+
+    $findExtensionArgs  = @($this.'.Module') + @($this.'.Path')
+    $allExtensionsFound = 
+        @(:nextExtension 
+            foreach ($foundExtension in 
+                $posh.Commands.FindExtensions.Invoke($findExtensionArgs)
+            ) 
+            {
+            if ($this.'.CommandType') {
+                foreach ($typename in $this.'.CommandType') {
+                    if ($foundExtension.pstypenames -contains $typename) {
+                        $foundExtension
+                        continue nextExtension
+                    }
+                }
+            } else {
+                $foundExtension
+            }
+            }
+        )
+    $this |
+        Add-Member NoteProperty '.Cache' $allExtensionsFound -Force
+}
+
+return $this.'.Cache'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>CommandType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's CommandType
+.DESCRIPTION
+    Gets the extended CommandTypes(s) that are stored in an extension collection.
+
+    CommandTypes can be defined in a module's manifest.
+#&gt;
+return $this.'.CommandType'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's command type
+.DESCRIPTION
+    Sets the extended command types in an extension collection.
+#&gt;
+param(
+# The path.  If this is empty all extended commands will be present in the collection
+[string[]]
+$CommandType
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.CommandType' -Value $CommandType -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Count</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the extension count.
+.DESCRIPTION
+    Gets the count of all extensions in a collection.
+#&gt;
+$this.All.Length
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Module</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's module
+.DESCRIPTION
+    Gets the module that defines extended types in an extension collection.
+#&gt;
+return $this.'.Module'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's module
+.DESCRIPTION
+    Sets the module that defines extended command types in an extension collection.
+#&gt;
+param(
+# The module.
+[Management.Automation.PSModuleInfo]
+$Module
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.Module' -Value $module -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Path</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's Path
+.DESCRIPTION
+    Gets the Path(s) that store extensions in an extension collection.        
+#&gt;
+return $this.'.Path'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's path
+.DESCRIPTION
+    Sets the path that defines extended command types in an extension collection.
+#&gt;
+param(
+# The path.  If this is empty, only extensions that are functions or aliases will be found.
+[string[]]
+$Path
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.Path' -Value $Path -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Random</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a random extended command
+.DESCRIPTION
+    Gets a random extended command from an ExtensionCollection.
+#&gt;
+$this.All | Get-Random
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>## Posh Presets
+
+Posh Presets provide a way to store and apply presets for a variable.
+
+They are simply data files, where each key or property repesents a expression and it's value represents what it will be set to.
+
+Preset files can be .psd1, .json, or .clixml.
+
+To see what presets can do, use $Posh.Presets | Get-Member</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Preset.Command</Name>
     <Members>
       <AliasProperty>
