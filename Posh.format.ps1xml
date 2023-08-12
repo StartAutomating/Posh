@@ -124,6 +124,27 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>Posh.Tip.Control</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $showDemoCommand = $ExecutionContext.SessionState.InvokeCommand.GetCommand('Show-Demo', 'Function')
+        if ($showDemoCommand -and $_.Content -is [scriptblock]) {
+            Show-Demo -DemoScript $_.Content -AutoPlay | Out-Null
+        } else {
+            $_.Content
+        }                
+    </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>TypeBase</Name>
       <CustomControl>
         <CustomEntries>
@@ -3322,6 +3343,24 @@ if ($Request -or $Host.UI.SupportsHTML) {
             <CustomItem>
               <ExpressionBinding>
                 <PropertyName>Random</PropertyName>
+                <CustomControlName>Posh.Tip.Control</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.Tip.Command</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Tip.Command</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
                 <CustomControlName>Posh.Tip.Control</CustomControlName>
               </ExpressionBinding>
             </CustomItem>
