@@ -876,6 +876,18 @@ Add-Member -InputObject $this -MemberType NoteProperty -Name '.CommandType' -Val
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Count</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the extension count.
+.DESCRIPTION
+    Gets the count of all extensions in a collection.
+#&gt;
+$this.All.Length
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Module</Name>
         <GetScriptBlock>
                         &lt;#
