@@ -93,6 +93,58 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>Posh.Link</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    @(
+    if ($_.Name -and $_.Url) {
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Name, $_.Url)
+        } else {
+            "[$($_.Name)]($($_.Url))"
+        }
+    } elseif ($_.Url) {
+        $uri = [uri]$_.Url
+        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+            $psStyle.FormatHyperlink($_.Url, $uri)
+        } else {
+            "[$($_.Url)]($($uri))"
+        }        
+    }    
+    ) -join ''
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Posh.Tip.Control</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $showDemoCommand = $ExecutionContext.SessionState.InvokeCommand.GetCommand('Show-Demo', 'Function')
+        if ($showDemoCommand -and $_.Content -is [scriptblock]) {
+            Show-Demo -DemoScript $_.Content -AutoPlay | Out-Null
+        } else {
+            $_.Content
+        }                
+    </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>TypeBase</Name>
       <CustomControl>
         <CustomEntries>
@@ -2298,8 +2350,13 @@ if ($Request -or $Host.UI.SupportsHTML) {
         } else {
             
             $(if ($_ -is [IO.DirectoryInfo]) {                
-                $PSStyle.FileInfo.Directory                
-                "`u{1F5BF} "
+                $PSStyle.FileInfo.Directory
+                if ($PSStyle.FileInfo.DirectoryIcon) {
+                    "$($PSStyle.FileInfo.DirectoryIcon)" + " "
+                } else {
+                    "▶ "
+                }
+                
             } else {
                 if (
                     $PSStyle.FileInfo.Extension.Keys -and 
@@ -2327,8 +2384,8 @@ if ($Request -or $Host.UI.SupportsHTML) {
                 
                 
                 $extraSpace = $true
-                if ($Posh.FileIcons) {
-
+                if ($psStyle.FileInfo.ExtensionIcon -and $psStyle.FileInfo.ExtensionIcon[$_.Extension]) {
+                    "$($psStyle.FileInfo.ExtensionIcon[$_.Extension]) "
                 } else {
                     
                     $(switch ($_.Extension) {
@@ -2565,6 +2622,58 @@ if ($Request -or $Host.UI.SupportsHTML) {
                     }
                 </ScriptBlock>
               </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        "To see PowerShell tips, use `$posh.Tips"
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan') {
+       if ($styleProp -match '\.') {
+           $styleGroup, $styleProp = $styleProp -split '\.'
+           $psStyle.$styleGroup.$styleProp
+       } else {
+           $psStyle.$styleProp
+       }
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        "To see PowerShell links, use `$posh.Links"
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
             </CustomItem>
           </CustomEntry>
         </CustomEntries>
@@ -2693,6 +2802,56 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </CustomControl>
     </View>
     <View>
+      <Name>Posh.Module.Link</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Module.Link</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Posh.Link</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.Module.Link</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Module.Link</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Url</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Posh.Module.Logo</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Module.Logo</TypeName>
@@ -2771,24 +2930,8 @@ if ($Request -or $Host.UI.SupportsHTML) {
           <CustomEntry>
             <CustomItem>
               <ExpressionBinding>
-                <ScriptBlock>
-    @(
-    if ($_.Name -and $_.Url) {
-        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
-            $psStyle.FormatHyperlink($_.Name, $_.Url)
-        } else {
-            "![$($_.Name)]($($_.Url))"
-        }
-    } elseif ($_.Url) {
-        $uri = [uri]$_.Url
-        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
-            $psStyle.FormatHyperlink($_.Url, $uri)
-        } else {
-            "![$($_.Url)]($($uri))"
-        }        
-    }    
-    ) -join ''    
-</ScriptBlock>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Posh.Link</CustomControlName>
               </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
@@ -2837,24 +2980,8 @@ if ($Request -or $Host.UI.SupportsHTML) {
           <CustomEntry>
             <CustomItem>
               <ExpressionBinding>
-                <ScriptBlock>
-    @(
-    if ($_.Name -and $_.Url) {
-        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
-            $psStyle.FormatHyperlink($_.Name, $_.Url)
-        } else {
-            "[$($_.Name)]($($_.Url))"
-        }
-    } elseif ($_.Url) {
-        $uri = [uri]$_.Url
-        if ($psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
-            $psStyle.FormatHyperlink($_.Url, $uri)
-        } else {
-            "[$($_.Url)]($($uri))"
-        }        
-    }    
-    ) -join ''    
-</ScriptBlock>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Posh.Link</CustomControlName>
               </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
@@ -2966,6 +3093,26 @@ if ($Request -or $Host.UI.SupportsHTML) {
         &amp; ${Posh_Format-Yaml} -InputObject ($_.Defaults)
     </ScriptBlock>
               </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.Preset.Collection</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Preset.Collection</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+        Show-Markdown -InputObject $_.README
+    </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
             </CustomItem>
           </CustomEntry>
         </CustomEntries>
@@ -3243,56 +3390,35 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </TableControl>
     </View>
     <View>
-      <Name>Posh.Resources</Name>
+      <Name>Posh.Tip.Collection</Name>
       <ViewSelectedBy>
-        <TypeName>Posh.Resources</TypeName>
+        <TypeName>Posh.Tip.Collection</TypeName>
       </ViewSelectedBy>
       <CustomControl>
         <CustomEntries>
           <CustomEntry>
             <CustomItem>
               <ExpressionBinding>
-                <ItemSelectionCondition>
-                  <ScriptBlock> $_.README </ScriptBlock>
-                </ItemSelectionCondition>
-                <ScriptBlock>
-        Show-Markdown -InputObject $_.README
-    </ScriptBlock>
+                <PropertyName>Random</PropertyName>
+                <CustomControlName>Posh.Tip.Control</CustomControlName>
               </ExpressionBinding>
-              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.Tip.Command</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Tip.Command</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
               <ExpressionBinding>
-                <ScriptBlock>$moduleName = 'Posh'
-
-            do {
-                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
-                if (-not $lm) { continue } 
-                if ($lm.FormatPartsLoaded) { break }
-                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
-                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
-                        $ParentNode = $partNodeName.Node.ParentNode
-                        "$($ParentNode.Name)={
-            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
-                    }
-                }) -join [Environment]::NewLine
-                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
-                    Import-Module -Global
-                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
-                
-                if (-not $lm.OnRemove) {
-                    $lm.OnRemove = $onRemove
-                } else {
-                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
-                }
-                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
-            
-            } while ($false)
-            
-        
-
-        $_ | 
-            Select-Object -ExcludeProperty README -Property * | 
-            &amp; ${Posh_Format-Yaml}
-    </ScriptBlock>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Posh.Tip.Control</CustomControlName>
               </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
@@ -3674,6 +3800,107 @@ if ($Request -or $Host.UI.SupportsHTML) {
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Value</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.PowerShell.Commands.MatchInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.MatchInfo</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    $matchInfo = $_
+    $isFileMatch = $matchInfo.Path -and ($matchInfo.Path -ne 'InputStream')
+    $currentLocation = $ExecutionContext.SessionState.Path.CurrentLocation
+    $relativePath = $matchInfo.RelativePath($currentLocation)
+    $originalLine = $(
+        if ($matchInfo.ToEmphasizedString) {
+            $matchInfo.ToEmphasizedString($currentLocation)
+        } elseif ($isFileMatch) {
+            $matchInfo.ToString().Replace($matchInfo.Path, $relativePath)
+        } else {
+            $matchInfo.ToString()
+        }
+    )
+    
+    if ($PSStyle) {
+        $PoshModule = $posh
+        if ($isFileMatch) {
+            # Match in a file item
+            $colorTable = @(
+                $PSStyle.Foreground.Green
+                $PSStyle.Foreground.Yellow
+            )
+
+            $colorIndex = . $PoshModule {
+                # Create a module scope variable
+                if (-not $script:MatchInfoColorIndex) {
+                    $script:MatchInfoColorIndex = @{
+                        index = 0
+                        lastFilepath = $args[0]
+                    }
+                }
+                $script:MatchInfoColorIndex
+            } $relativePath
+            if ($colorIndex.lastFilepath -ne $relativePath) {
+                $colorIndex.index = ($colorIndex.index + 1) % $colorTable.Count
+                $colorIndex.lastFilepath = $relativePath
+            }
+
+            $color = $colorTable[$colorIndex.index]
+            $coloredPath = $color + $relativePath + $PSStyle.Reset
+            
+            if ($PSStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
+                $hyperLink = $PSStyle.FormatHyperlink($coloredPath, $matchInfo.Path)
+                $originalLine.Replace($relativePath, $hyperLink)
+            } else {
+                $originalLine.Replace($relativePath, $coloredPath)
+            }
+        } else {
+            # Match in a text input
+            $originalLine
+        }
+    } else {
+        $originalLine
+    }
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Microsoft.PowerShell.Commands.SelectXmlInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.SelectXmlInfo</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Path</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Node</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Pattern</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>

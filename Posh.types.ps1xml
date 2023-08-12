@@ -98,24 +98,6 @@ Get-Module
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
-        <Name>Presets</Name>
-        <GetScriptBlock>
-                        # Get-Module 
-$moduleRoots = Get-Module | Split-Path | Select-Object -Unique
-
-
-foreach ($extensionFile in $posh.Commands.FindExtensions.Invoke(@(
-        $posh
-        $moduleRoots
-    ))
-) {
-    if ($extensionFile.pstypenames -contains 'Posh.Preset.Command') {
-        $extensionFile
-    }
-}
-                    </GetScriptBlock>
-      </ScriptProperty>
-      <ScriptProperty>
         <Name>Process</Name>
         <GetScriptBlock>
                         &lt;#
@@ -818,6 +800,162 @@ Get-History -Id $historyIDS
     </Members>
   </Type>
   <Type>
+    <Name>Posh.ExtensionCollection</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Refresh</Name>
+        <Script>
+                        $this | Add-Member NoteProperty '.Cache' @() -Force
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>All</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets all items in an extension collection.
+.DESCRIPTION
+    Gets all items in a collection of extended commands.
+#&gt;
+if (-not $this.'.Cache') {
+    if (-not $this.'.Module') { return @() }
+
+    $findExtensionArgs  = @($this.'.Module') + @($this.'.Path')
+    $allExtensionsFound = 
+        @(:nextExtension 
+            foreach ($foundExtension in 
+                $posh.Commands.FindExtensions.Invoke($findExtensionArgs)
+            ) 
+            {
+            if ($this.'.CommandType') {
+                foreach ($typename in $this.'.CommandType') {
+                    if ($foundExtension.pstypenames -contains $typename) {
+                        $foundExtension
+                        continue nextExtension
+                    }
+                }
+            } else {
+                $foundExtension
+            }
+            }
+        )
+    $this |
+        Add-Member NoteProperty '.Cache' $allExtensionsFound -Force
+}
+
+return $this.'.Cache'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>CommandType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's CommandType
+.DESCRIPTION
+    Gets the extended CommandTypes(s) that are stored in an extension collection.
+
+    CommandTypes can be defined in a module's manifest.
+#&gt;
+return $this.'.CommandType'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's command type
+.DESCRIPTION
+    Sets the extended command types in an extension collection.
+#&gt;
+param(
+# The path.  If this is empty all extended commands will be present in the collection
+[string[]]
+$CommandType
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.CommandType' -Value $CommandType -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Count</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the extension count.
+.DESCRIPTION
+    Gets the count of all extensions in a collection.
+#&gt;
+$this.All.Length
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Module</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's module
+.DESCRIPTION
+    Gets the module that defines extended types in an extension collection.
+#&gt;
+return $this.'.Module'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's module
+.DESCRIPTION
+    Sets the module that defines extended command types in an extension collection.
+#&gt;
+param(
+# The module.
+[Management.Automation.PSModuleInfo]
+$Module
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.Module' -Value $module -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Path</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's Path
+.DESCRIPTION
+    Gets the Path(s) that store extensions in an extension collection.        
+#&gt;
+return $this.'.Path'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's path
+.DESCRIPTION
+    Sets the path that defines extended command types in an extension collection.
+#&gt;
+param(
+# The path.  If this is empty, only extensions that are functions or aliases will be found.
+[string[]]
+$Path
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.Path' -Value $Path -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Random</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a random extended command
+.DESCRIPTION
+    Gets a random extended command from an ExtensionCollection.
+#&gt;
+$this.All | Get-Random
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Host</Name>
     <Members>
       <ScriptProperty>
@@ -835,6 +973,39 @@ Get-History -Id $historyIDS
 #&gt;
 $this.UI.RawUI.BufferSize.Height
                     </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Title</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the host's title
+.DESCRIPTION
+    Gets the host's window title.
+.EXAMPLE
+    $Posh.Title
+#&gt;
+$this.UI.RawUI.WindowTitle
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the host's title
+.DESCRIPTION
+    Sets the host's window title.
+
+    Unfortunately, this will be ignored if running in Visual Studio Code.
+.EXAMPLE
+    $Posh.Title = "Sup?"
+#&gt;
+param(
+[string]
+$Title
+)
+$this.UI.RawUI.WindowTitle = $title
+
+                    </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
         <Name>Width</Name>
@@ -944,7 +1115,7 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($prompt)
+$toPrepend = $this.Stringify($Value)
 $currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
 $this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
                     </Script>
@@ -1015,7 +1186,7 @@ foreach ($arg in $args) {
     }
 }
 $newFunc = "@(
-    `$existingOutput =. { $function:prompt };
+    `$existingOutput =. { $currentFunction };
     `$replacePattern = $replaceRegex
     `$replaceWith = $toReplace 
     `$replacePattern.Replace(`$existingOutput, `$replaceWith)
@@ -1251,6 +1422,250 @@ You can also provide default values for any command's parameters.
 
 `$Posh.Parameters` helps you Find PowerShell parameters and manage their default values.</Value>
       </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Preset.Collection</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Refresh</Name>
+        <Script>
+                        $this | Add-Member NoteProperty '.Cache' @() -Force
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>All</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets all items in an extension collection.
+.DESCRIPTION
+    Gets all items in a collection of extended commands.
+#&gt;
+if (-not $this.'.Cache') {
+    if (-not $this.'.Module') { return @() }
+
+    $findExtensionArgs  = @($this.'.Module') + @($this.'.Path')
+    $allExtensionsFound = 
+        @(:nextExtension 
+            foreach ($foundExtension in 
+                $posh.Commands.FindExtensions.Invoke($findExtensionArgs)
+            ) 
+            {
+            if ($this.'.CommandType') {
+                foreach ($typename in $this.'.CommandType') {
+                    if ($foundExtension.pstypenames -contains $typename) {
+                        $foundExtension
+                        continue nextExtension
+                    }
+                }
+            } else {
+                $foundExtension
+            }
+            }
+        )
+    $this |
+        Add-Member NoteProperty '.Cache' $allExtensionsFound -Force
+}
+
+return $this.'.Cache'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>CommandType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's CommandType
+.DESCRIPTION
+    Gets the extended CommandTypes(s) that are stored in an extension collection.
+
+    CommandTypes can be defined in a module's manifest.
+#&gt;
+return $this.'.CommandType'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's command type
+.DESCRIPTION
+    Sets the extended command types in an extension collection.
+#&gt;
+param(
+# The path.  If this is empty all extended commands will be present in the collection
+[string[]]
+$CommandType
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.CommandType' -Value $CommandType -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Count</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the extension count.
+.DESCRIPTION
+    Gets the count of all extensions in a collection.
+#&gt;
+$this.All.Length
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Module</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's module
+.DESCRIPTION
+    Gets the module that defines extended types in an extension collection.
+#&gt;
+return $this.'.Module'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's module
+.DESCRIPTION
+    Sets the module that defines extended command types in an extension collection.
+#&gt;
+param(
+# The module.
+[Management.Automation.PSModuleInfo]
+$Module
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.Module' -Value $module -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Path</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an extension collection's Path
+.DESCRIPTION
+    Gets the Path(s) that store extensions in an extension collection.        
+#&gt;
+return $this.'.Path'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an extension collection's path
+.DESCRIPTION
+    Sets the path that defines extended command types in an extension collection.
+#&gt;
+param(
+# The path.  If this is empty, only extensions that are functions or aliases will be found.
+[string[]]
+$Path
+)
+
+Add-Member -InputObject $this -MemberType NoteProperty -Name '.Path' -Value $Path -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Random</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a random extended command
+.DESCRIPTION
+    Gets a random extended command from an ExtensionCollection.
+#&gt;
+$this.All | Get-Random
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>## Posh Presets
+
+Posh Presets provide a way to store and apply presets for a variable.
+
+They are simply data files, where each key or property repesents a expression and it's value represents what it will be set to.
+
+Preset files can be .psd1, .json, or .clixml.
+
+To see what presets can do, use $Posh.Presets | Get-Member</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.Preset.Command</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Apply</Name>
+        <ReferencedMemberName>Use</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Use</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Uses a preset
+.DESCRIPTION
+    Uses or applies a Posh preset.
+
+    Posh presets will take the data in a *.preset.* file and apply it to a variable.    
+#&gt;
+
+$importedData = 
+    switch -regex ($this.Source) {
+        '\.psd1$' {
+            $importedAsLocalizedData = Import-LocalizedData -BaseDirectory ($this.Source | Split-Path) -FileName ($this.Source | Split-Path -Leaf)            
+            if ($importedAsLocalizedData) {
+                $replacedContent = [IO.File]::ReadAllText($this.Source) -replace '\@\{', '[Ordered]@{'
+                &amp; ([ScriptBlock]::Create($replacedContent))
+            }
+        }
+        '\.json$' {
+            Get-Content $this.Source -Raw | ConvertFrom-Json
+        }
+        '.\clixml' {
+            Import-Clixml $this.Source
+        }
+    }
+
+
+if ($importedData -is [Collections.IDictionary]) {
+    $importedData = [PSCustomObject]$importedData
+}
+
+foreach ($importedProperty in $importedData.psobject.properties) {
+    if ($importedProperty.Name -notmatch '^\$') { continue }
+    
+    $importedNameScript = [ScriptBlock]::Create($importedProperty.Name)
+    $valueToImport = $importedProperty.Value
+    if (-not $importedNameScript) { continue }
+    
+    $statements = $importedNameScript.Ast.EndBlock.Statements
+    
+    $currentValue = try { . $importedNameScript } catch {$null}     
+
+    # If we are importing a dictionary value, try to set each value within the dictionary
+    if ($valueToImport -is [Collections.IDictionary]) {        
+        if ($currentValue -is [Collections.IDictionary]) {            
+            foreach ($ToImport in $valueToImport.GetEnumerator()) {
+                $currentValue[$ToImport.Key] = $ToImport.Value
+            }
+        }
+    } elseif ($valueToImport.GetType -and (
+        $valueToImport.GetType().IsPrimitive -or 
+        $valueToImport.GetType() -in [string], [DateTime], [timespan] 
+    )) {
+        $global:ExecutionContext.SessionState.InvokeCommand.InvokeScript(        
+            "$importedNameScript = $valueToImport"
+        )
+    } elseif ($currentValue -is [Collections.IDictionary]) {
+        foreach ($ToImport in $valueToImport.psobject.properties) {
+            $currentValue[$ToImport.Name] = $ToImport.Value
+        }
+    }   
+}
+                    </Script>
+      </ScriptMethod>
     </Members>
   </Type>
   <Type>
@@ -1668,7 +2083,7 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($prompt)
+$toPrepend = $this.Stringify($Value)
 $currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
 $this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
                     </Script>
@@ -1739,7 +2154,7 @@ foreach ($arg in $args) {
     }
 }
 $newFunc = "@(
-    `$existingOutput =. { $function:prompt };
+    `$existingOutput =. { $currentFunction };
     `$replacePattern = $replaceRegex
     `$replaceWith = $toReplace 
     `$replacePattern.Replace(`$existingOutput, `$replaceWith)
@@ -1922,7 +2337,7 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($prompt)
+$toPrepend = $this.Stringify($Value)
 $currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
 $this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
                     </Script>
@@ -1993,7 +2408,7 @@ foreach ($arg in $args) {
     }
 }
 $newFunc = "@(
-    `$existingOutput =. { $function:prompt };
+    `$existingOutput =. { $currentFunction };
     `$replacePattern = $replaceRegex
     `$replaceWith = $toReplace 
     `$replacePattern.Replace(`$existingOutput, `$replaceWith)
@@ -2077,6 +2492,35 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Tip.Command</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Content</Name>
+        <GetScriptBlock>
+                        switch -regex ($this.Source) {
+    '\.psd1$' {
+        (Import-LocalizedData -BaseDirectory ($this.Source | Split-Path) -FileName ($this.Source | Split-Path -Leaf)).Content
+    }
+    '\.json$' {
+        (Get-Content $this.Source -Raw | ConvertFrom-Json).Content
+    }
+    '\.md$' {
+        Show-Markdown -LiteralPath $this.Source        
+    }
+    '\.ps1$' {
+        $showDemoCommand = $ExecutionContext.SessionState.InvokeCommand.GetCommand('Show-Demo', 'Function')
+        if ($showDemoCommand) {            
+            $this.ScriptBlock
+        } else {
+            Get-Content $this.Source -Raw
+        }
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>System.Management.Automation.PSModuleInfo</Name>
     <Members>
       <AliasProperty>
@@ -2084,8 +2528,24 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>Demo</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Links</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Presets</Name>
+        <ReferencedMemberName>Preset</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Recommendations</Name>
         <ReferencedMemberName>Recommendation</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Resource</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Resources</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>Screenshots</Name>
@@ -2094,6 +2554,18 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
       <AliasProperty>
         <Name>Tests</Name>
         <ReferencedMemberName>Test</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Tips</Name>
+        <ReferencedMemberName>Tip</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Trick</Name>
+        <ReferencedMemberName>Tip</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Tricks</Name>
+        <ReferencedMemberName>Tip</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>Videos</Name>
@@ -2168,6 +2640,31 @@ $this |
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Link</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Module Links
+.DESCRIPTION
+    Lists hyperlinks from this module.
+.EXAMPLE
+    $posh.Links
+#&gt;
+$this.LinkList(@(
+    $this.PrivateData.Link
+    $this.PrivateData.Links
+    $this.PrivateData.Resource
+    $this.PrivateData.Resources
+    $this.PrivateData.PSData.Link
+    $this.PrivateData.PSData.Links
+    $this.PrivateData.PSData.Resource
+    $this.PrivateData.PSData.Resources
+), "Posh.Module.Link")
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Logo</Name>
         <GetScriptBlock>
                         &lt;#
@@ -2187,6 +2684,38 @@ $this.LinkList(@(
 ), "Posh.Module.Logo")
 
 
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Preset</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Get's a module's presets
+.DESCRIPTION
+    Gets presets from a module.
+
+    Any module can contain `*.preset(s)` files, of the extensions:
+    
+    * .psd1
+    * .json
+    * .clixml
+
+    The collection of presets can be accessed in a Module's .Preset(s) properties    
+#&gt;
+if (-not $this.'.Preset') {
+    $PresetCollection =
+        [PSCustomObject][Ordered]@{
+            PSTypeName  = 'Posh.ExtensionCollection'
+            Module      = $posh
+            Path        = @(Get-Module | Split-Path) -as [string[]]
+            CommandType = 'Posh.Preset.Command'
+        }
+    $PresetCollection.pstypenames.insert(0,'Posh.Preset.Collection')
+    $this |
+        Add-Member NoteProperty '.Preset' $PresetCollection -Force
+}
+$this.'.Preset'
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
@@ -2256,6 +2785,42 @@ $this |
     Split-Path |
     Get-ChildItem -Recurse -Filter *.tests.ps1 |
     Select-Object -Unique
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Tip</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Get's a module's tips
+.DESCRIPTION
+    Gets tips and tricks from a module.
+
+    Any module can contain `*.tip(s)` or `*.trick(s)` files, of the extensions:
+
+    * .md
+    * .txt
+    * .ps1
+    * .psd1
+    * .json
+    * .clixml
+
+    The collection of tips can be accessed in a Module's .Tip(s) or .Trick(s) properties
+    
+#&gt;
+if (-not $this.'.Tip') {
+    $tipCollection =
+        [PSCustomObject][Ordered]@{
+            PSTypeName  = 'Posh.ExtensionCollection'
+            Module      = $posh
+            Path        = $this.Path | Split-Path
+            CommandType = 'Posh.Tip.Command'
+        }
+
+    $tipCollection.pstypenames.insert(0,'Posh.Tip.Collection')
+    $this | Add-Member NoteProperty '.Tip' $tipCollection -Force
+}
+$this.'.Tip'
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>

@@ -1,0 +1,1 @@
+$this | Add-Member NoteProperty '.Cache' @() -Force

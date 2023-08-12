@@ -14,4 +14,19 @@ Write-FormatView -TypeName Posh -Action {
     Write-FormatViewExpression -Style "Foreground.Green" -ScriptBlock {
         $_.PrivateData.ExtendedDescription
     }
+
+    Write-FormatViewExpression -Newline
+    Write-FormatViewExpression -Newline
+
+    Write-FormatViewExpression -Style 'Foreground.Cyan' -ScriptBlock {
+        "To see PowerShell tips, use `$posh.Tips"
+    }
+
+    Write-FormatViewExpression -Newline
+
+    Write-FormatViewExpression -Style 'Foreground.Cyan' -ScriptBlock {
+        "To see PowerShell links, use `$posh.Links"
+    }
+
+    Write-FormatViewExpression -Newline
 }
