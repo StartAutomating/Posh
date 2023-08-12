@@ -3021,6 +3021,26 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </CustomControl>
     </View>
     <View>
+      <Name>Posh.Preset.Collection</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Preset.Collection</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+        Show-Markdown -InputObject $_.README
+    </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
       <Name>Posh.Profiles</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Profiles</TypeName>
