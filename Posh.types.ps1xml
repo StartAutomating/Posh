@@ -2312,6 +2312,37 @@ $this.'.Article'
     </Members>
   </Type>
   <Type>
+    <Name>Posh.RSS.FeedCollection</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>RecentDuration</Name>
+        <GetScriptBlock>
+                        if (-not $this.'.RecentDuration') {
+    $this | 
+        Add-Member NoteProperty '.RecentDuration' (New-TimeSpan -Days 45) -Force
+}
+
+$this.'.RecentDuration'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the duration considered recent
+.DESCRIPTION
+    Set the duration that is used to determine how recent an article is.
+#&gt;
+param(
+[Timespan]
+$RecentDuration
+)
+
+$this | 
+    Add-Member NoteProperty '.RecentDuration' $RecentDuration -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Stackable</Name>
     <Members>
       <AliasProperty>
