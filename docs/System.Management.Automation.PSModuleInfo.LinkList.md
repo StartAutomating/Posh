@@ -55,12 +55,32 @@ One or more inputs to the list.
 
 #### **PSTypeName**
 
+The name of each item in the list.
+
+
+
 
 
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
+
+
+
+#### **CollectionTypeName**
+
+The name of a collection.  
+If this is provided, a collection containing all items will be returned.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
 
 
 
