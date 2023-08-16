@@ -1,3 +1,13 @@
+<div align='center'>
+<img src='assets/Posh.svg' alt='posh' />
+<a href='https://www.powershellgallery.com/packages/posh/'>
+<img src='https://img.shields.io/powershellgallery/dt/posh' />
+</a>
+<br/>
+<a href='https://github.com/sponsors/StartAutomating'>❤️</a>
+<a href='https://github.com/StartAutomating/posh/stargazers'>⭐</a>
+</div>
+
 Posh is a PowerShell module that makes PowerShell more fun to work with.
 
 ## Improving Formatting
