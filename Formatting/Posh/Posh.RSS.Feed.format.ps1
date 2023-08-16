@@ -3,5 +3,5 @@ Write-FormatView -TypeName Posh.RSS.Feed -GroupByProperty Name -Action {
 }
 
 Write-FormatView -TypeName Posh.RSS.Feed -GroupByProperty Name -Action {
-    Write-FormatViewExpression -ScriptBlock { $_.All } -ControlName Posh.Link.Line -Enumerate
+    Write-FormatViewExpression -ScriptBlock { $_.Article } -ControlName Posh.Link.Line -Enumerate
 } -Name "All"
