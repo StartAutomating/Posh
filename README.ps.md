@@ -1,5 +1,5 @@
 <div align='center'>
-<img src='assets/Posh.svg' alt='posh' />
+<img src='Assets/Posh.svg' alt='posh' />
 <a href='https://www.powershellgallery.com/packages/posh/'>
 <img src='https://img.shields.io/powershellgallery/dt/posh' />
 </a>
