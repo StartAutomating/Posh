@@ -157,6 +157,25 @@
             'PowerShell LinkedIn' = 'https://www.linkedin.com/feed/hashtag/?keywords=powershell'    
         }
 
+        News = 
+            @{"PowerShell Blog" = "https://devblogs.microsoft.com/powershell/feed/"}, 
+            @{"Evotec"="https://evotec.xyz/feed/"},
+            @{"DBATools"="https://dbatools.io/feed/"},            
+            @{"The Lazy Admin" = "https://lazyadmin.nl/feed/"}, 
+            @{"The Command Line Ninja" = "https://www.commandline.ninja/rss/"},            
+            @{"PowerShell Geek"="https://www.powershellgeek.com/feed/"},
+            @{"PowerShell District" = "http://www.powershelldistrict.com/feed"}, 
+            @{"Adam the Automator"="https://adamtheautomator.com/feed/"},
+            @{"The Lonely Administrator" = "https://jdhitsolutions.com/blog/feed/"},
+            @{"MDGRS Factory"="https://mdgrs.hashnode.dev/rss.xml"},
+            @{"Pipe How"="https://pipe.how/index.xml"},
+            @{"PowerShell is Fun"="https://powershellisfun.com/feed/"}
+
+        # Got more News?  Feel free to file and issue and open a PR to add your feed.
+
+        # Any module can contain it's own .News.
+        # If Posh and that module are loaded, your module will have .News/.Feed/.RSS properties.
+            
         Screenshot = @{
             "Improved-File-Formatting" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Improved-File-Formatting.gif"
             "Get-Command-In-Color" = "https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Get-Command-In-Color.gif"
@@ -168,17 +187,15 @@
             "Logo" = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
         }
 
-        ExtendedDescription = "
-        
-
+        ExtendedDescription = "      
         Posh is a PowerShell module that improves the shell experience.
         
         It :
         
            * Helps you to customize the shell.
-           * Improves built-in formatting
-           * Extends built-in types
            * Helps you learn PowerShell
+           * Improves built-in formatting
+           * Extends built-in types           
         "
     }
 
