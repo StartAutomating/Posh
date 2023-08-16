@@ -3469,6 +3469,50 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </TableControl>
     </View>
     <View>
+      <Name>Posh.RSS.Feed</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.RSS.Feed</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Name</PropertyName>
+      </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> $_.Recent </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>Posh.Link.Line</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>All</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.RSS.Feed</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Name</PropertyName>
+      </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> $_.All </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>Posh.Link.Line</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
       <Name>Posh.Tip.Collection</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Tip.Collection</TypeName>
