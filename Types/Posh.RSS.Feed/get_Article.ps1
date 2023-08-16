@@ -9,12 +9,13 @@
     $Posh.News.Article # Get all articles from all feeds associated with Posh.
 #>
 if (-not $this.'.Article') {    
+    Write-Progress "Getting Feeds" $this.Url 
     Add-Member -InputObject $this -MemberType NoteProperty -Name '.Article' -Value @(
         foreach ($feedItem in Invoke-RestMethod -Uri $this.Url) {
             $feedItem.pstypenames.insert(0,'Posh.RSS.Article')
             $feedItem | 
                 Add-Member NoteProperty Source $this.Name -Force -PassThru
         }        
-    ) -Force
+    ) -Force    
 }
 $this.'.Article'
