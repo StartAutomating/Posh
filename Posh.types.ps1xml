@@ -2250,10 +2250,27 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
   <Type>
     <Name>Posh.RSS.Article</Name>
     <Members>
+      <AliasProperty>
+        <Name>Name</Name>
+        <ReferencedMemberName>Title</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Url</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>DatePublished</Name>
         <GetScriptBlock>
-                        $pubDateTime = $this.pubDate -as [DateTime]
+                        &lt;#
+.SYNOPSIS
+    Gets an article's date published
+.DESCRIPTION
+    Gets the date an article was published, as a `[DateTime]`.
+.EXAMPLE
+    $Posh.News.Article.DatePublished
+#&gt;
+$pubDateTime = $this.pubDate -as [DateTime]
+
 if ($pubDateTime) {
     $pubDateTime
 }
