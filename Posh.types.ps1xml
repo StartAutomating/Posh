@@ -2248,6 +2248,23 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
     </Members>
   </Type>
   <Type>
+    <Name>Posh.RSS.Article</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>DatePublished</Name>
+        <GetScriptBlock>
+                        $pubDateTime = $this.pubDate -as [DateTime]
+if ($pubDateTime) {
+    $pubDateTime
+}
+else {
+    [datetime]::MinValue
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.RSS.Feed</Name>
     <Members>
       <ScriptProperty>
