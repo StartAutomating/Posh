@@ -2349,6 +2349,22 @@ $this.All | Get-Random
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Recent</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets all recent articles
+.DESCRIPTION
+    Gets all recent articles in a feed collection, sorted by date published.
+.NOTES
+    How "Recent" is defined in the a feed collection's `.RecentDuration` property.
+#&gt;
+@(foreach ($feed in $this.All) {
+    $feed.Recent
+}) | Sort-Object DatePublished -Descending
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>RecentDuration</Name>
         <GetScriptBlock>
                         &lt;#
