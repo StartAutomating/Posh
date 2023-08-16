@@ -1,0 +1,4 @@
+@{
+    Name = "Title"
+    Url  = "Link"
+}
