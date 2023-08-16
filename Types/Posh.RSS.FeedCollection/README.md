@@ -19,3 +19,9 @@ To view all articles from all feeds, use
 ~~~PowerShell
     $Posh.News.All.Article
 ~~~
+
+To see a specific feed, use:
+
+~~~PowerShell
+    $Posh.News.Feed["PowerShell Team"]
+~~~
