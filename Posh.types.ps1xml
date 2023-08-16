@@ -2296,6 +2296,10 @@ if ($this.Title -isnot [string]) {
   <Type>
     <Name>Posh.RSS.Feed</Name>
     <Members>
+      <AliasProperty>
+        <Name>Articles</Name>
+        <ReferencedMemberName>Article</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>Article</Name>
         <GetScriptBlock>
