@@ -2658,7 +2658,7 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <NewLine />
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
-   @(foreach ($styleProp in 'Foreground.Cyan') {
+   @(foreach ($styleProp in 'Foreground.Magenta') {
        if ($styleProp -match '\.') {
            $styleGroup, $styleProp = $styleProp -split '\.'
            $psStyle.$styleGroup.$styleProp
@@ -2669,8 +2669,11 @@ if ($Request -or $Host.UI.SupportsHTML) {
 }</ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
-                <ScriptBlock>
-        "To see PowerShell tips, use `$posh.Tips"
+                <ScriptBlock>        
+        "To see PowerShell tips, try `$posh.Tips",
+        "To see PowerShell links, use `$Posh.Links",
+        "To see PowerShell module recommendations, get `$Posh.Recommends",
+        "To see PowerShell news, get `$Posh.News" | Get-Random
     </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
@@ -2680,6 +2683,7 @@ if ($Request -or $Host.UI.SupportsHTML) {
                     }
                 </ScriptBlock>
               </ExpressionBinding>
+              <NewLine />
               <NewLine />
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
@@ -2695,7 +2699,9 @@ if ($Request -or $Host.UI.SupportsHTML) {
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock>
-        "To see PowerShell links, use `$posh.Links"
+"
+To see everything Posh can do: `$posh | Get-Member
+"
     </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
