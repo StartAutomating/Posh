@@ -3390,6 +3390,53 @@ if ($Request -or $Host.UI.SupportsHTML) {
       </TableControl>
     </View>
     <View>
+      <Name>Posh.RSS.Article</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.RSS.Article</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Source</PropertyName>
+      </GroupBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Posh.Link</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Posh.RSS.Article</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.RSS.Article</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Title</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Link</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Posh.Tip.Collection</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Tip.Collection</TypeName>
