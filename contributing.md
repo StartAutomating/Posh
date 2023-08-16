@@ -20,7 +20,9 @@ You can add data to your module manifest to integrate with Posh.
 
 * Screenshots
 * Videos
+* Links
 * Recommendations
+* News
 
 This data will generally be in a hashtable or list of links.
 
@@ -32,6 +34,3 @@ Posh looks for some standardized file types to help improve a module's experienc
 
 * .demo.ps1 files will be available in a module's .Demo(s)
 * .tests.ps1 files will be available in a module's .Tests(s)
-
-
-
