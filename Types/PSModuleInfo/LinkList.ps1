@@ -16,8 +16,14 @@ param(
 [PSObject[]]
 $InputObject,
 
+# The name of each item in the list.
 [string]
-$PSTypeName = 'Posh.Module.Link'
+$PSTypeName = 'Posh.Module.Link',
+
+# The name of a collection.  
+# If this is provided, a collection containing all items will be returned.
+[string]
+$CollectionTypeName
 )
 
 filter ToLink {
@@ -40,4 +46,12 @@ filter ToLink {
 }
 
 
-$inputObject | . ToLink
+if ($CollectionTypeName) {
+    [PSCustomObject][Ordered]@{
+        PSTypeName = $CollectionTypeName
+        All = @($inputObject | . ToLink)
+    }
+} else {
+    $inputObject | . ToLink
+}
+
