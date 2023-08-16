@@ -3503,7 +3503,7 @@ if ($Request -or $Host.UI.SupportsHTML) {
           <CustomEntry>
             <CustomItem>
               <ExpressionBinding>
-                <ScriptBlock> $_.All </ScriptBlock>
+                <ScriptBlock> $_.Article </ScriptBlock>
                 <EnumerateCollection />
                 <CustomControlName>Posh.Link.Line</CustomControlName>
               </ExpressionBinding>
