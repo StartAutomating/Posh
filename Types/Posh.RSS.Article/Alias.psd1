@@ -1,4 +1,3 @@
-@{
-    Name = "Title"
+@{    
     Url  = "Link"
 }
