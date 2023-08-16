@@ -2251,10 +2251,6 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
     <Name>Posh.RSS.Article</Name>
     <Members>
       <AliasProperty>
-        <Name>Name</Name>
-        <ReferencedMemberName>Title</ReferencedMemberName>
-      </AliasProperty>
-      <AliasProperty>
         <Name>Url</Name>
         <ReferencedMemberName>Link</ReferencedMemberName>
       </AliasProperty>
@@ -2276,6 +2272,22 @@ if ($pubDateTime) {
 }
 else {
     [datetime]::MinValue
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Name</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an article's name
+.DESCRIPTION
+    Gets the name of an article in an RSS feed.
+#&gt;
+if ($this.Title -isnot [string]) {
+    $this.Title.InnerText
+} else {
+    $this.Title
 }
                     </GetScriptBlock>
       </ScriptProperty>
