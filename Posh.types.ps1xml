@@ -2352,6 +2352,23 @@ foreach ($article in $this.Article) {
   <Type>
     <Name>Posh.RSS.FeedCollection</Name>
     <Members>
+      <AliasProperty>
+        <Name>ByName</Name>
+        <ReferencedMemberName>Feed</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Feed</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets feeds by name
+.DESCRIPTION
+    Gets all feeds in a collection by name.
+#&gt;
+param()
+$this.All | Group-Object Name -AsHashTable
+                    </GetScriptBlock>
+      </ScriptProperty>
       <ScriptProperty>
         <Name>Random</Name>
         <GetScriptBlock>
