@@ -17,8 +17,9 @@ if (-not $this.'.News') {
                 $this.PrivateData.PSData.RSS
                 $this.PrivateData.PSData.News
                 $this.PrivateData.PSData.Feed
-            ), "Posh.RSS.Feed")
-        ) -Force
+            ), "Posh.RSS.Feed", "Posh.RSS.FeedCollection") | 
+                Add-Member NoteProperty Module $this -Force -PassThru
+        ) -Force       
 }
 
 $this.'.News'
