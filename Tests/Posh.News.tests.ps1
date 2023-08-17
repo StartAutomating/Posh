@@ -19,4 +19,8 @@ describe "Posh News" {
         })
         ([DateTime]::Now - $startTime) | Should -BeLessThan ([timespan]"00:00:01")
     }
+
+    it "Ensures all articles have a [string].Name" {
+        $Posh.News.All.Article.Name | Should -BeOfType ([string])
+    }
 }
