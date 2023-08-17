@@ -1,0 +1,16 @@
+name: Add PowerShell News Feed
+description: Ask for an RSS feed to be added to Posh
+title: "Tip: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us about the blog you want to add
+  - type: textarea
+    id: Links
+    attributes:
+      label: Links
+      description: Provide one or more RSS urls
+    validations:
+      required: false

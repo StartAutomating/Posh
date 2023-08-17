@@ -18,14 +18,20 @@ Write-FormatView -TypeName Posh -Action {
     Write-FormatViewExpression -Newline
     Write-FormatViewExpression -Newline
 
-    Write-FormatViewExpression -Style 'Foreground.Cyan' -ScriptBlock {
-        "To see PowerShell tips, use `$posh.Tips"
+    Write-FormatViewExpression -Style 'Foreground.Magenta' -ScriptBlock {        
+        "To see PowerShell tips, try `$posh.Tips",
+        "To see PowerShell links, use `$Posh.Links",
+        "To see PowerShell module recommendations, get `$Posh.Recommends",
+        "To see PowerShell news, get `$Posh.News" | Get-Random
     }
 
     Write-FormatViewExpression -Newline
+    Write-FormatViewExpression -Newline
 
     Write-FormatViewExpression -Style 'Foreground.Cyan' -ScriptBlock {
-        "To see PowerShell links, use `$posh.Links"
+"
+To see everything Posh can do: `$posh | Get-Member
+"
     }
 
     Write-FormatViewExpression -Newline

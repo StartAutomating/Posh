@@ -2248,6 +2248,224 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
     </Members>
   </Type>
   <Type>
+    <Name>Posh.RSS.Article</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Url</Name>
+        <ReferencedMemberName>Link</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>DatePublished</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an article's date published
+.DESCRIPTION
+    Gets the date an article was published, as a `[DateTime]`.
+.EXAMPLE
+    $Posh.News.Article.DatePublished
+#&gt;
+$pubDateTime = $this.pubDate -as [DateTime]
+
+if ($pubDateTime) {
+    $pubDateTime
+}
+else {
+    [datetime]::MinValue
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Name</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets an article's name
+.DESCRIPTION
+    Gets the name of an article in an RSS feed.
+#&gt;
+if ($this.Title -isnot [string]) {
+    $this.Title.InnerText
+} else {
+    $this.Title
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.RSS.Feed</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Articles</Name>
+        <ReferencedMemberName>Article</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Article</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets articles in a feed.
+.DESCRIPTION
+    Gets the articles in a RSS feed.
+
+    Articles will be cached for performance.
+.EXAMPLE
+    $Posh.News.Article # Get all articles from all feeds associated with Posh.
+#&gt;
+if (-not $this.'.Article') {    
+    Write-Progress "Getting Feeds" $this.Url 
+    Add-Member -InputObject $this -MemberType NoteProperty -Name '.Article' -Value @(
+        foreach ($feedItem in Invoke-RestMethod -Uri $this.Url) {
+            $feedItem.pstypenames.insert(0,'Posh.RSS.Article')
+            $feedItem | 
+                Add-Member NoteProperty Source $this.Name -Force -PassThru
+        }        
+    ) -Force    
+}
+$this.'.Article'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Recent</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets recent articles
+.DESCRIPTION
+    Gets recent articles in an RSS feed.
+#&gt;
+$after = $this.Source.News.RecentDuration
+if (-not $after) {
+    return       
+}
+
+foreach ($article in $this.Article) {    
+    if (([DateTime]::Now - $article.DatePublished) -gt $after) {
+        continue
+    }
+    $article
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.RSS.FeedCollection</Name>
+    <Members>
+      <AliasProperty>
+        <Name>ByName</Name>
+        <ReferencedMemberName>Feed</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Feed</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets feeds by name
+.DESCRIPTION
+    Gets all feeds in a collection by name.
+#&gt;
+param()
+$this.All | Group-Object Name -AsHashTable
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Random</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a random feed
+.DESCRIPTION
+    Gets a random feed from a feed collection
+#&gt;
+$this.All | Get-Random
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Recent</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets all recent articles
+.DESCRIPTION
+    Gets all recent articles in a feed collection, sorted by date published.
+.NOTES
+    How "Recent" is defined in the a feed collection's `.RecentDuration` property.
+#&gt;
+@(foreach ($feed in $this.All) {
+    $feed.Recent
+}) | Sort-Object DatePublished -Descending
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>RecentDuration</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the duration considered recent
+.DESCRIPTION
+    Gets the duration that is used to determine how recent an article is.
+
+    By default, this is 45 days.    
+#&gt;
+if (-not $this.'.RecentDuration') {
+    $this | 
+        Add-Member NoteProperty '.RecentDuration' (New-TimeSpan -Days 45) -Force
+}
+
+$this.'.RecentDuration'
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the duration considered recent
+.DESCRIPTION
+    Set the duration that is used to determine how recent an article is.
+#&gt;
+param(
+[Timespan]
+$RecentDuration
+)
+
+$this | 
+    Add-Member NoteProperty '.RecentDuration' $RecentDuration -Force
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>Modules can put News in their module manifest.
+
+Posh provides a simple RSS reader to help you stay up to date.
+
+To view recent articles, use
+
+~~~PowerShell
+    $Posh.News.Recent
+~~~
+
+To view all feeds, use
+
+~~~PowerShell
+    $Posh.News.All
+~~~
+
+To view all articles from all feeds, use
+
+~~~PowerShell
+    $Posh.News.All.Article
+~~~
+
+To see a specific feed, use:
+
+~~~PowerShell
+    $Posh.News.Feed["PowerShell Team"]
+~~~
+</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Stackable</Name>
     <Members>
       <AliasProperty>
@@ -2528,6 +2746,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>Demo</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Feed</Name>
+        <ReferencedMemberName>News</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Links</Name>
         <ReferencedMemberName>Link</ReferencedMemberName>
       </AliasProperty>
@@ -2546,6 +2768,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
       <AliasProperty>
         <Name>Resources</Name>
         <ReferencedMemberName>Link</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>RSS</Name>
+        <ReferencedMemberName>News</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>Screenshots</Name>
@@ -2592,8 +2818,14 @@ param(
 [PSObject[]]
 $InputObject,
 
+# The name of each item in the list.
 [string]
-$PSTypeName = 'Posh.Module.Link'
+$PSTypeName = 'Posh.Module.Link',
+
+# The name of a collection.  
+# If this is provided, a collection containing all items will be returned.
+[string]
+$CollectionTypeName
 )
 
 filter ToLink {
@@ -2616,7 +2848,15 @@ filter ToLink {
 }
 
 
-$inputObject | . ToLink
+if ($CollectionTypeName) {
+    [PSCustomObject][Ordered]@{
+        PSTypeName = $CollectionTypeName
+        All = @($inputObject | . ToLink)
+    }
+} else {
+    $inputObject | . ToLink
+}
+
 
                     </Script>
       </ScriptMethod>
@@ -2684,6 +2924,36 @@ $this.LinkList(@(
 ), "Posh.Module.Logo")
 
 
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>News</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Module's News
+.DESCRIPTION
+    Lists RSS NewsFeeds from this module
+.EXAMPLE
+    $posh.News
+#&gt;
+
+if (-not $this.'.News') {
+    $this | 
+        Add-Member NoteProperty '.News' @(
+            $this.LinkList(@(
+                $this.PrivateData.RSS
+                $this.PrivateData.News
+                $this.PrivateData.Feed
+                $this.PrivateData.PSData.RSS
+                $this.PrivateData.PSData.News
+                $this.PrivateData.PSData.Feed
+            ), "Posh.RSS.Feed", "Posh.RSS.FeedCollection") | 
+                Add-Member NoteProperty Module $this -Force -PassThru
+        ) -Force       
+}
+
+$this.'.News'
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>

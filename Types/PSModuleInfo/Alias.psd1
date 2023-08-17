@@ -11,4 +11,6 @@
     Resource = 'Link'
     Resources = 'Link'
     Presets = 'Preset'
+    RSS = 'News'
+    Feed = 'News'
 }

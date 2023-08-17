@@ -1,3 +1,14 @@
+## Posh 0.1.4: Some Posh News
+
+* Added .News to every module (#173)
+* Populated Posh with lots of blogs (#176)
+
+Try $Posh.News after importing.
+
+Also, added tests (#204).
+
+---
+
 ## Posh 0.1.3: Posh Tips and Tricks
 
 * New Formatting:

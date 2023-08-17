@@ -2,9 +2,10 @@
 #requires -Module PSDevOps
 Import-BuildStep -ModuleName Posh
 Push-Location ($PSScriptRoot | Split-Path)
-New-GitHubWorkflow -Name "Test, Tag, Release, and Publish" -On Demand, Push -Job TagReleaseAndPublish,
+New-GitHubWorkflow -Name "Build and Publish Posh" -On Demand, Push -Job TagReleaseAndPublish,
+    TestPowerShellOnLinux,
     BuildPosh -OutputPath (
-        Join-Path $pwd .\.github\workflows\TestReleaseAndPublish.yml
+        Join-Path $pwd .\.github\workflows\BuildAndPublishPosh.yml
     )    
 
 Pop-Location

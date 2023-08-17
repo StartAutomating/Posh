@@ -20,7 +20,9 @@ You can add data to your module manifest to integrate with Posh.
 
 * Screenshots
 * Videos
+* Links
 * Recommendations
+* News
 
 This data will generally be in a hashtable or list of links.
 
