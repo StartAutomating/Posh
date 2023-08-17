@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1.3'
+    ModuleVersion = '0.1.4'
     FormatsToProcess = 'Posh.format.ps1xml'
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
@@ -15,6 +15,17 @@
             IconURI    = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
             Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized', 'Prompt', 'Customization'
             ReleaseNotes = @'
+## Posh 0.1.4: Some Posh News
+
+* Added .News to every module (#173)
+* Populated Posh with lots of blogs (#176)
+
+Try $Posh.News after importing.
+
+Also, added tests (#204).
+
+---
+
 ## Posh 0.1.3: Posh Tips and Tricks
 
 * New Formatting:
