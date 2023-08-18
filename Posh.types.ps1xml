@@ -2746,6 +2746,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>Demo</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Discussions</Name>
+        <ReferencedMemberName>Discussion</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Feed</Name>
         <ReferencedMemberName>News</ReferencedMemberName>
       </AliasProperty>
@@ -2884,6 +2888,26 @@ $this |
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Discussion</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a module's discussions URL.
+.DESCRIPTION
+    Gets the discussions URL related to a module.
+.NOTES
+    The Module must set it's ProjectURI, and it must be on GitHub, or this will return nothing.
+#&gt;
+if ($this.ProjectURI.Host -eq 'github.com') {
+    [PSCustomObject][Ordered]@{
+        Name = "$($this.Name) Discussions"
+        Url = "$($this.ProjectURI)/discussions"
+        PSTypeName = 'Posh.Module.Link'
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Issue</Name>
         <GetScriptBlock>
                         &lt;#
@@ -2896,10 +2920,10 @@ $this |
 #&gt;
 if ($this.ProjectURI.Host -eq 'github.com') {
     [PSCustomObject][Ordered]@{
-        Name = $this.Name
+        Name = "$($this.Name) Issues"
         Url = "$($this.ProjectURI)/issues"
-        PSTypeName = 'Posh.Module.IssueURL'
-    }    
+        PSTypeName = 'Posh.Module.Link'
+    }
 }
                     </GetScriptBlock>
       </ScriptProperty>
