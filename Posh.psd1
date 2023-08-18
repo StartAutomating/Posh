@@ -180,9 +180,10 @@ Also, added tests (#204).
             @{"The Lonely Administrator" = "https://jdhitsolutions.com/blog/feed/"},
             @{"MDGRS Factory"="https://mdgrs.hashnode.dev/rss.xml"},
             @{"Pipe How"="https://pipe.how/index.xml"},
-            @{"PowerShell is Fun"="https://powershellisfun.com/feed/"}
+            @{"PowerShell is Fun"="https://powershellisfun.com/feed/"},
+            @{"Blog - Stefan Stranger"="https://stefanstranger.github.io/feed"}
 
-        # Got more News?  Feel free to file and issue and open a PR to add your feed.
+        # Got more News?  Feel free to file an issue and open a PR to add your feed.
 
         # Any module can contain it's own .News.
         # If Posh and that module are loaded, your module will have .News/.Feed/.RSS properties.
