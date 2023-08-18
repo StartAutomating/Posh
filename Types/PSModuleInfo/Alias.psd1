@@ -13,4 +13,5 @@
     Presets = 'Preset'
     RSS = 'News'
     Feed = 'News'
+    Issues = 'Issue'
 }
