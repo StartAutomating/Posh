@@ -1,3 +1,13 @@
+## Posh 0.1.5: Posh Issues and Discussions
+
+* Adding PSModuleInfo.Discussion (Fixes #212)
+* Adding PSModuleInfo.Issue (Fixes #137)
+* Improving Issue Templates
+* Adding Stefan Stanger's Blog to $Posh.News (#209) (thanks @stefanstranger !)
+* Adding RTPSUG Video to Posh (#213) (`$posh.Video`)
+
+---
+
 ## Posh 0.1.4: Some Posh News
 
 * Added .News to every module (#173)
