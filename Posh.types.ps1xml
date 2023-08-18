@@ -2750,6 +2750,10 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
         <ReferencedMemberName>News</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Issues</Name>
+        <ReferencedMemberName>Issue</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Links</Name>
         <ReferencedMemberName>Link</ReferencedMemberName>
       </AliasProperty>
@@ -2877,6 +2881,26 @@ $this |
     Split-Path |
     Get-ChildItem -Recurse -Filter *.demo.ps1 |
     Select-Object -Unique
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Issue</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a module's issue URL.
+.DESCRIPTION
+    Gets the issues URL related to a module.
+.NOTES
+    The Module must set it's ProjectURI, and it must be on GitHub, or this will return nothing.
+#&gt;
+if ($this.ProjectURI.Host -eq 'github.com') {
+    [PSCustomObject][Ordered]@{
+        Name = $this.Name
+        Url = "$($this.ProjectURI)/issues"
+        PSTypeName = 'Posh.Module.IssueURL'
+    }    
+}
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
