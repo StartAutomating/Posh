@@ -9,6 +9,7 @@
     Write-FormatViewExpression -ScriptBlock {
         $MethodParameters = @($_.GetParameters())
         foreach ($n in 0..($MethodParameters.Count - 1)) {
+            if (-not $MethodParameters[$n]) { continue }
             $o =[PSObject]::new($MethodParameters[$n])
             $o.psobject.properties.add([PSNoteProperty]::new('N', $N))
             $o
