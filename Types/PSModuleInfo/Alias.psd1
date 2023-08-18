@@ -13,5 +13,6 @@
     Presets = 'Preset'
     RSS = 'News'
     Feed = 'News'
+    Discussions = 'Discussion'
     Issues = 'Issue'
 }
