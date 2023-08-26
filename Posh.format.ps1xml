@@ -709,51 +709,31 @@ $script:TreeDepth++;</ScriptBlock>
                 </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
-                <ItemSelectionCondition>
-                  <ScriptBlock> -not $_.IsConstructor </ScriptBlock>
-                </ItemSelectionCondition>
-                <ScriptBlock>if ($psStyle) {
-   @(foreach ($styleProp in 'Formatting.Warning') {
-
-        if ($styleProp -match '^\$') {
-            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
-        }
-        elseif ($styleProp -match '\.') {
-            $targetObject = $psStyle
-            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
-                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
-                    $targetObject -is [Collections.IDictionary]) {
-                    $targetObject = $targetObject[$dotProperty]
-                } else {
-                    $targetObject = $targetObject.$dotProperty
+                <ScriptBlock>
+        @(if (-not $_.IsConstructor) {
+            ' '
+            if ($_.IsPublic) {
+                if ($PSStyle) {
+                    $PSStyle.Formatting.Warning
                 }
             }
-            if ($targetObject) {
-                $targetObject
+            elseif ($_.IsPrivate) {
+                if ($PSStyle) {
+                    $PSStyle.Formatting.Error
+                }
             }
-        }
-        else {
-            $psStyle.$styleProp
-        }    
-
-   }) -ne '' -join ''
-}</ScriptBlock>
-              </ExpressionBinding>
-              <ExpressionBinding>
-                <ItemSelectionCondition>
-                  <ScriptBlock> -not $_.IsConstructor </ScriptBlock>
-                </ItemSelectionCondition>
-                <ScriptBlock> ' ' +  $_.Name </ScriptBlock>
-              </ExpressionBinding>
-              <ExpressionBinding>
-                <ItemSelectionCondition>
-                  <ScriptBlock> -not $_.IsConstructor </ScriptBlock>
-                </ItemSelectionCondition>
-                <ScriptBlock>
-                    if ($PSStyle) {
-                        $PSStyle.Reset
-                    }
-                </ScriptBlock>
+            else {
+                if ($PSStyle) {
+                    $PSStyle.Formatting.Warning
+                }
+            }
+            
+            $_.Name
+            if ($PSStyle) {
+                $PSStyle.Reset
+            }
+        }) -join ''
+    </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock> ' (' </ScriptBlock>
