@@ -1,64 +1,95 @@
 ﻿Write-FormatView -TypeName System.Type -Property FullName, BaseType, IsPublic, IsSerializable -AutoSize
 
-Write-FormatView -TypeName System.Type -Action {
+Write-FormatView -TypeName n/a -AsControl -Name TypeInheritanceControl -Action {
     Write-FormatViewExpression -Newline
-    Write-FormatViewExpression -ScriptBlock { '-' * ($Host.UI.RawUI.BufferSize.Width - 1) }
-    Write-FormatViewExpression -ScriptBlock { ' ' * 1 } 
-    Write-FormatViewExpression -ForegroundColor 'Verbose' -ScriptBlock { $_ } -ControlName TypeNameControl
+    Write-FormatViewExpression -ScriptBlock { ' ' * 1 }     
+    Write-FormatViewExpression -Style 'Formatting.Verbose' -ScriptBlock { $_ } -ControlName TypeNameControl
     Write-FormatViewExpression -ScriptBlock { ' ' * 1 }
     Write-FormatViewExpression -If { $_.BaseType -and -not $_.IsValueType } -ScriptBlock { 
         ':'
     }
     Write-FormatViewExpression -If { $_.BaseType -and -not $_.IsValueType -and $_.BaseType -ne [Object] } -Property BaseType -ControlName TypeBase      
-    Write-FormatViewExpression -If { $_.GetInterfaces() } -ScriptBlock { $_.GetInterfaces() | Sort-Object Name} -Enumerate -ControlName TypeBase
-} -GroupLabel 'Type Summary' -GroupByScript { '| Format-Custom -View System.Type.Full for more'} -Name System.Type.Summary
+    Write-FormatViewExpression -Newline
+    Write-FormatViewExpression -ScriptBlock { '=' * ($Host.UI.RawUI.BufferSize.Width - 1) }
+}
+
+
+$TypeGrouping = [Ordered]@{
+    GroupByScript = { 
+    "
+    ... | Format-Custom -View Full      # To show public and private members
+    ... | Format-Custom -View Public    # To show public members
+    ... | Format-Custom -View Private   # To show private members
+    "
+    }
+}
+
+Write-FormatView -TypeName System.Type -Action {    
+    Write-FormatViewExpression -ControlName TypeInheritanceControl -ScriptBlock { $_ }
+} -GroupLabel 'Type Inheritance' @TypeGrouping  -Name Inheritance
+
+Write-FormatView -TypeName System.Type -Action {    
+    Write-FormatViewExpression -ControlName TypeInheritanceControl -ScriptBlock { $_ }
+    Write-FormatViewExpression -If { $_.GetInterfaces() } -ScriptBlock { $_.GetInterfaces() | Sort-Object Name} -Enumerate -ControlName TypeInterfaceControl
+} -GroupLabel 'Type Inheritance' @TypeGrouping  -Name Interfaces
+
+foreach ($viewName in 'Public','Private','Full') {
+    $bindingFlags = 
+        switch ($viewName) {
+            Public { 
+                'Public'
+            }
+            Private {
+                'NonPublic'
+            }
+            Full {
+                'Public,NonPublic'
+            }
+        }
+    $assignView = [ScriptBlock]::Create("
+`$_ |
+    Add-Member NoteProperty '.View' '$viewName' -PassThru -Force | 
+    Add-Member NoteProperty '.BindingFlags' ([Reflection.BindingFlags]'$bindingFlags') -Force
+")
 
 Write-FormatView -TypeName System.Type -Action {
-    Write-FormatViewExpression -Newline
-    Write-FormatViewExpression -ScriptBlock { '-' * ($Host.UI.RawUI.BufferSize.Width - 1) }
-    Write-FormatViewExpression -ScriptBlock { ' ' * 1 } 
-    Write-FormatViewExpression -ForegroundColor 'Verbose' -ScriptBlock { $_ } -ControlName TypeNameControl
-    Write-FormatViewExpression -ScriptBlock { ' ' * 1 }
-    Write-FormatViewExpression -If { $_.BaseType -and -not $_.IsValueType -and $_.BaseType -ne [Object] } -ScriptBlock { 
-        ':'
+    Write-FormatViewExpression -If $assignView -ScriptBlock { "" }    
+    Write-FormatViewExpression -If { 
+        $_.GetInterfaces()
+    } -ScriptBlock { 
+        $_.GetInterfaces() | Sort-Object Name
+    } -Enumerate -ControlName TypeInterfaceControl
+    Write-FormatViewExpression -ControlName TypeInheritanceControl -ScriptBlock { $_ }
+    Write-FormatViewExpression -ControlName TypeConstructorsControl -ScriptBlock { 
+        if ($_.'.BindingFlags') {
+            @{Type=$_;BindingFlags="Instance,$($_.'.BindingFlags')"}
+        } else {
+            $_
+        }
     }
-    Write-FormatViewExpression -If { $_.BaseType -and -not $_.IsValueType -and $_.BaseType -ne [Object] } -Property BaseType -ControlName TypeBase      
-    Write-FormatViewExpression -If { $_.GetInterfaces() } -ScriptBlock { $_.GetInterfaces() | Sort-Object Name} -Enumerate -ControlName TypeBase
 
-    Write-FormatViewExpression -If { $_.GetConstructors('Instance,Public') } -ScriptBlock { 
-        [Environment]::NewLine + ('#' * 3) + ' Constructors:'           
+    Write-FormatViewExpression -ControlName TypeEventsControl -ScriptBlock { 
+        if ($_.'.BindingFlags') {
+            @{Type=$_;BindingFlags="Instance,$($_.'.BindingFlags')"}
+        } else {
+            $_
+        }
     }
-    Write-FormatViewExpression -If { $_.GetConstructors('Instance,Public') } -ScriptBlock {
-        $_.GetConstructors('Instance,Public')
-    } -Enumerate -ControlName TypeMethodControl
-    Write-FormatViewExpression -If { $_.GetEvents('Instance,Public') } -ScriptBlock {
-        [Environment]::NewLine + ('#' * 3) + ' Events:'    
+
+    Write-FormatViewExpression -ControlName TypePropertiesControl -ScriptBlock { 
+        if ($_.'.BindingFlags') {
+            @{Type=$_;BindingFlags="$($_.'.BindingFlags')"}
+        } else {
+            $_
+        }
     }
-    Write-FormatViewExpression -If { $_.GetEvents('Instance,Public') } -ScriptBlock {
-        $_.GetEvents('Instance,Public') | Sort-Object Name
-    } -Enumerate -ControlName TypeEventControl
-    Write-FormatViewExpression -If { $_.GetProperties('Static,Public') } -ScriptBlock {
-        [Environment]::NewLine + ('#' * 3) + ' Static Properties:'
-    }
-    Write-FormatViewExpression -If { $_.GetProperties('Static,Public')} -ScriptBlock {
-        $_.GetProperties('Static,Public') | Sort-Object Name
-    } -Enumerate -ControlName TypePropertyControl
-    Write-FormatViewExpression -If { $_.GetProperties('Instance,Public') } -ScriptBlock {
-        [Environment]::NewLine + ('#' * 3) + ' Properties:'
-    }
-    Write-FormatViewExpression -If { $_.GetProperties('Instance,Public')} -ScriptBlock {
-        $_.GetProperties('Instance,Public') | Sort-Object Name
-    } -Enumerate -ControlName TypePropertyControl
-    Write-FormatViewExpression -If { $_.GetMethods('Static,Public') } -ScriptBlock {
-        [Environment]::NewLine + ('#' * 3) + ' Static Methods:'
-    }
-    Write-FormatViewExpression -If { $_.GetMethods('Static,Public') } -ScriptBlock {
-        $_.GetMethods('Static,Public') | Sort-Object Name | Where-Object { -not $_.IsSpecialName }
-    } -Enumerate -ControlName TypeMethodControl
-    Write-FormatViewExpression -If { $_.GetMethods('Instance,Public') } -ScriptBlock {
-        [Environment]::NewLine + ('#' * 3) + ' Methods:'
-    }
-    Write-FormatViewExpression -If { $_.GetMethods('Instance,Public') } -ScriptBlock {
-        $_.GetMethods('Instance,Public') | Sort-Object Name | Where-Object { -not $_.IsSpecialName } 
-    } -Enumerate -ControlName TypeMethodControl
-} -Name System.Type.Full
+
+    Write-FormatViewExpression -ControlName TypeMethodsControl -ScriptBlock { 
+        if ($_.'.BindingFlags') {
+            @{Type=$_;BindingFlags="$($_.'.BindingFlags')"}
+        } else {
+            $_
+        }
+    }    
+} -Name "$ViewName" -GroupLabel "Type $ViewName" @TypeGrouping
+}
