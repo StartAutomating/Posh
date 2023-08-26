@@ -5691,6 +5691,24 @@ $module = $_
       </ListControl>
     </View>
     <View>
+      <Name>System.Version</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Version</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>VersionControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
       <Name>Default</Name>
       <ViewSelectedBy>
         <TypeName>System.TimeSpan</TypeName>
