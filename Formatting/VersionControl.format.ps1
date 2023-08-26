@@ -10,8 +10,8 @@ Write-FormatView -TypeName n/a -Name VersionControl -Action {
                 ) -join ''            
             }) -join "$(
                 @(
-                    $PSStyle.Foreground.Yellow
-                    '.'                
+                    $PSStyle.Foreground.Blue
+                    '.'
                 ) -join ''      
             )"
         } else {
