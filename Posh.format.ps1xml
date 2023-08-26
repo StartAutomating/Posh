@@ -352,6 +352,51 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>TypeEventsControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetEvents('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetEvents($_.BindingFlags)
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        [Environment]::NewLine + ('#' * 3) + ' Events:'
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetEvents('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetEvents($_.BindingFlags)
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetEvents('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetEvents($_.BindingFlags)
+    }
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeEventControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>TypeFieldControl</Name>
       <CustomControl>
         <CustomEntries>
