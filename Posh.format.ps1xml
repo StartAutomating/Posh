@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-16"?>
-<!-- Generated with EZOut 2.0: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<!-- Generated with EZOut 2.0.1: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
 <Configuration>
   <SelectionSets>
     <SelectionSet>
@@ -189,12 +189,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -232,12 +248,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Formatting.Warning') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -292,12 +324,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -315,12 +363,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Formatting.Warning') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -410,12 +474,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -442,12 +522,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -474,12 +570,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Formatting.Warning') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -538,12 +650,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Formatting.Verbose') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -561,12 +689,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Formatting.Warning') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -640,12 +784,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -663,12 +823,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Formatting.Warning') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -716,12 +892,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlack') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -747,12 +939,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlue','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -790,12 +998,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlack') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -827,12 +1051,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Green') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -858,12 +1098,28 @@ $script:TreeDepth++;</ScriptBlock>
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightGreen') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -899,12 +1155,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlack') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -927,12 +1199,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlue','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -951,12 +1239,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlack') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -995,12 +1299,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightCyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -1019,12 +1339,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlack') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -1046,12 +1382,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Magenta') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -1070,12 +1422,28 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.BrightBlack') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -1139,6 +1507,38 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock>
         . ${Posh_Indent} $_.Path
+    </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>VersionControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+        if ($PSStyle) {
+            @(foreach ($versionPart in $_.ToString() -split "\.") {
+                @(
+                    $PSStyle.Foreground.Cyan
+                    $PSStyle.Bold
+                    $versionPart
+                    $PSStyle.Reset
+                ) -join ''            
+            }) -join "$(
+                @(
+                    $PSStyle.Foreground.Yellow
+                    '.'                
+                ) -join ''      
+            )"
+        } else {
+            $_.ToString()
+        }
     </ScriptBlock>
               </ExpressionBinding>
             </CustomItem>
@@ -2544,12 +2944,28 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Blue','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2566,12 +2982,28 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2586,12 +3018,28 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2610,12 +3058,28 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Blue','Italic') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2635,12 +3099,28 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Green') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2661,12 +3141,28 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Magenta') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2690,12 +3186,28 @@ if ($Request -or $Host.UI.SupportsHTML) {
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2774,12 +3286,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -2805,12 +3333,28 @@ To see everything Posh can do: `$posh | Get-Member
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Yellow','Italic') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3075,12 +3619,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3180,12 +3740,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Italic') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3204,12 +3780,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3229,12 +3821,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3267,12 +3875,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Green','Bold') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3292,12 +3916,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3323,12 +3963,28 @@ To see everything Posh can do: `$posh | Get-Member
                 </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Yellow','Italic') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -3538,12 +4194,28 @@ To see everything Posh can do: `$posh | Get-Member
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Foreground.Cyan') {
-       if ($styleProp -match '\.') {
-           $styleGroup, $styleProp = $styleProp -split '\.'
-           $psStyle.$styleGroup.$styleProp
-       } else {
-           $psStyle.$styleProp
-       }
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
    }) -ne '' -join ''
 }</ScriptBlock>
               </ExpressionBinding>
@@ -4176,7 +4848,7 @@ To see everything Posh can do: `$posh | Get-Member
       </TableControl>
     </View>
     <View>
-      <Name>System.Management.Automation.CommandInfoSystem.Management.Automation.AliasInfoSystem.Management.Automation.ApplicationInfoSystem.Management.Automation.CmdletInfoSystem.Management.Automation.ExternalScriptInfoSystem.Management.Automation.FilterInfoSystem.Management.Automation.FunctionInfo</Name>
+      <Name>System.Management.Automation.CommandInfo</Name>
       <ViewSelectedBy>
         <TypeName>System.Management.Automation.CommandInfo</TypeName>
         <TypeName>System.Management.Automation.AliasInfo</TypeName>
@@ -4257,10 +4929,24 @@ To see everything Posh can do: `$posh | Get-Member
                         
                             $CellColorValue = if ($psStyle) {
                                 @(foreach ($styleProp in $CellColorValue) {
-                                    if ($styleProp -match '\.') {
-                                            $styleGroup, $styleProp = $styleProp -split '\.'
-                                            $psStyle.$styleGroup.$styleProp
-                                    } else {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
                                         $psStyle.$styleProp
                                     }
                                 }) -join ''
@@ -4322,10 +5008,24 @@ To see everything Posh can do: `$posh | Get-Member
                         
                             $CellColorValue = if ($psStyle) {
                                 @(foreach ($styleProp in $CellColorValue) {
-                                    if ($styleProp -match '\.') {
-                                            $styleGroup, $styleProp = $styleProp -split '\.'
-                                            $psStyle.$styleGroup.$styleProp
-                                    } else {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
                                         $psStyle.$styleProp
                                     }
                                 }) -join ''
@@ -4356,10 +5056,24 @@ To see everything Posh can do: `$posh | Get-Member
                         
                             $CellColorValue = if ($psStyle) {
                                 @(foreach ($styleProp in $CellColorValue) {
-                                    if ($styleProp -match '\.') {
-                                            $styleGroup, $styleProp = $styleProp -split '\.'
-                                            $psStyle.$styleGroup.$styleProp
-                                    } else {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
                                         $psStyle.$styleProp
                                     }
                                 }) -join ''
@@ -4511,10 +5225,24 @@ To see everything Posh can do: `$posh | Get-Member
                         
                             $CellColorValue = if ($psStyle) {
                                 @(foreach ($styleProp in $CellColorValue) {
-                                    if ($styleProp -match '\.') {
-                                            $styleGroup, $styleProp = $styleProp -split '\.'
-                                            $psStyle.$styleGroup.$styleProp
-                                    } else {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
                                         $psStyle.$styleProp
                                     }
                                 }) -join ''
@@ -4678,7 +5406,7 @@ To see everything Posh can do: `$posh | Get-Member
       </TableControl>
     </View>
     <View>
-      <Name>System.Management.Automation.PSModuleInfoPosh.RichModuleInfo</Name>
+      <Name>System.Management.Automation.PSModuleInfo</Name>
       <ViewSelectedBy>
         <TypeName>System.Management.Automation.PSModuleInfo</TypeName>
         <TypeName>Posh.RichModuleInfo</TypeName>
@@ -4716,7 +5444,7 @@ To see everything Posh can do: `$posh | Get-Member
       </TableControl>
     </View>
     <View>
-      <Name>System.Management.Automation.PSModuleInfoPosh.RichModuleInfo</Name>
+      <Name>System.Management.Automation.PSModuleInfo</Name>
       <ViewSelectedBy>
         <TypeName>System.Management.Automation.PSModuleInfo</TypeName>
         <TypeName>Posh.RichModuleInfo</TypeName>
@@ -5055,10 +5783,24 @@ $module = $_
                         
                             $CellColorValue = if ($psStyle) {
                                 @(foreach ($styleProp in $CellColorValue) {
-                                    if ($styleProp -match '\.') {
-                                            $styleGroup, $styleProp = $styleProp -split '\.'
-                                            $psStyle.$styleGroup.$styleProp
-                                    } else {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
                                         $psStyle.$styleProp
                                     }
                                 }) -join ''
@@ -5074,10 +5816,24 @@ $module = $_
                         
                             $CellColorValue = if ($psStyle) {
                                 @(foreach ($styleProp in $CellColorValue) {
-                                    if ($styleProp -match '\.') {
-                                            $styleGroup, $styleProp = $styleProp -split '\.'
-                                            $psStyle.$styleGroup.$styleProp
-                                    } else {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
                                         $psStyle.$styleProp
                                     }
                                 }) -join ''
@@ -5095,10 +5851,24 @@ $module = $_
                         
                             $CellColorValue = if ($psStyle) {
                                 @(foreach ($styleProp in $CellColorValue) {
-                                    if ($styleProp -match '\.') {
-                                            $styleGroup, $styleProp = $styleProp -split '\.'
-                                            $psStyle.$styleGroup.$styleProp
-                                    } else {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
                                         $psStyle.$styleProp
                                     }
                                 }) -join ''
