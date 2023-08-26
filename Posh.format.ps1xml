@@ -863,6 +863,85 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>TypeMethodsControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetMethods('Static,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetMethods("Static,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        [Environment]::NewLine + ('#' * 3) + ' Static Methods:'           
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetMethods('Static,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetMethods("Static,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetMethods('Static,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetMethods("Static,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetMethods('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetMethods("Instance,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        [Environment]::NewLine + ('#' * 3) + ' Methods:'           
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetMethods('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetMethods("Instance,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetMethods('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetMethods("Instance,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>TypeNameControl</Name>
       <CustomControl>
         <CustomEntries>
