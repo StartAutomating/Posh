@@ -748,7 +748,7 @@ $script:TreeDepth++;</ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock>if ($psStyle) {
-   @(foreach ($styleProp in 'Formatting.Verbose') {
+   @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
 
         if ($styleProp -match '^\$') {
             $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
@@ -786,6 +786,9 @@ $script:TreeDepth++;</ScriptBlock>
                 </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.Name </ScriptBlock>
+                </ItemSelectionCondition>
                 <ScriptBlock>if ($psStyle) {
    @(foreach ($styleProp in 'Formatting.Warning') {
 
@@ -814,17 +817,20 @@ $script:TreeDepth++;</ScriptBlock>
 }</ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
-                <ScriptBlock> '$' + $_.Name </ScriptBlock>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.Name </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> '$' + $_.Name + ' ' </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.Name </ScriptBlock>
+                </ItemSelectionCondition>
                 <ScriptBlock>
                     if ($PSStyle) {
                         $PSStyle.Reset
                     }
                 </ScriptBlock>
-              </ExpressionBinding>
-              <ExpressionBinding>
-                <ScriptBlock> ' ' </ScriptBlock>
               </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
