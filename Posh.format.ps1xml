@@ -404,6 +404,60 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>TypeInterfaceControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock> '  *' </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>if ($psStyle) {
+   @(foreach ($styleProp in 'Foreground.Cyan','Bold') {
+
+        if ($styleProp -match '^\$') {
+            $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+        }
+        elseif ($styleProp -match '\.') {
+            $targetObject = $psStyle
+            foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                    $targetObject -is [Collections.IDictionary]) {
+                    $targetObject = $targetObject[$dotProperty]
+                } else {
+                    $targetObject = $targetObject.$dotProperty
+                }
+            }
+            if ($targetObject) {
+                $targetObject
+            }
+        }
+        else {
+            $psStyle.$styleProp
+        }    
+
+   }) -ne '' -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>$_ </ScriptBlock>
+                <CustomControlName>TypeNameControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    if ($PSStyle) {
+                        $PSStyle.Reset
+                    }
+                </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>TypeMemberControl</Name>
       <CustomControl>
         <CustomEntries>
