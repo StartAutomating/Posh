@@ -917,6 +917,85 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>TypePropertiesControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetProperties('Static,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetProperties("Static,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        [Environment]::NewLine + ('#' * 3) + ' Static Properties:'           
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetProperties('Static,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetProperties("Static,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetProperties('Static,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetProperties("Static,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypePropertyControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetProperties('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetProperties("Instance,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        [Environment]::NewLine + ('#' * 3) + ' Properties:'           
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetProperties('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetProperties("Instance,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetProperties('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetProperties("Instance,$($_.BindingFlags)")
+    }
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypePropertyControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>TypePropertyControl</Name>
       <CustomControl>
         <CustomEntries>
