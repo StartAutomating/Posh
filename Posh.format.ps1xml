@@ -4683,9 +4683,10 @@ To see everything Posh can do: `$posh | Get-Member
       <GroupBy>
         <ScriptBlock> 
     "
-    ... | Format-Custom -View Full      # To show public and private members
-    ... | Format-Custom -View Public    # To show public members
-    ... | Format-Custom -View Private   # To show private members
+    ... | Format-Custom -View Full       # To show public and private members
+    ... | Format-Custom -View Public     # To show public members
+    ... | Format-Custom -View Private    # To show private members
+    ... | Format-Custom -View Interfaces # To show interfaces
     "
     </ScriptBlock>
         <Label>Type Inheritance</Label>
@@ -4711,9 +4712,10 @@ To see everything Posh can do: `$posh | Get-Member
       <GroupBy>
         <ScriptBlock> 
     "
-    ... | Format-Custom -View Full      # To show public and private members
-    ... | Format-Custom -View Public    # To show public members
-    ... | Format-Custom -View Private   # To show private members
+    ... | Format-Custom -View Full       # To show public and private members
+    ... | Format-Custom -View Public     # To show public members
+    ... | Format-Custom -View Private    # To show private members
+    ... | Format-Custom -View Interfaces # To show interfaces
     "
     </ScriptBlock>
         <Label>Type Inheritance</Label>
@@ -4747,9 +4749,10 @@ To see everything Posh can do: `$posh | Get-Member
       <GroupBy>
         <ScriptBlock> 
     "
-    ... | Format-Custom -View Full      # To show public and private members
-    ... | Format-Custom -View Public    # To show public members
-    ... | Format-Custom -View Private   # To show private members
+    ... | Format-Custom -View Full       # To show public and private members
+    ... | Format-Custom -View Public     # To show public members
+    ... | Format-Custom -View Private    # To show private members
+    ... | Format-Custom -View Interfaces # To show interfaces
     "
     </ScriptBlock>
         <Label>Type Public</Label>
@@ -4769,6 +4772,10 @@ $_ |
                 <ScriptBlock> "" </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>TypeInheritanceControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
                 <ItemSelectionCondition>
                   <ScriptBlock> 
         $_.GetInterfaces()
@@ -4779,10 +4786,6 @@ $_ |
     </ScriptBlock>
                 <EnumerateCollection />
                 <CustomControlName>TypeInterfaceControl</CustomControlName>
-              </ExpressionBinding>
-              <ExpressionBinding>
-                <ScriptBlock> $_ </ScriptBlock>
-                <CustomControlName>TypeInheritanceControl</CustomControlName>
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock> 
@@ -4837,9 +4840,10 @@ $_ |
       <GroupBy>
         <ScriptBlock> 
     "
-    ... | Format-Custom -View Full      # To show public and private members
-    ... | Format-Custom -View Public    # To show public members
-    ... | Format-Custom -View Private   # To show private members
+    ... | Format-Custom -View Full       # To show public and private members
+    ... | Format-Custom -View Public     # To show public members
+    ... | Format-Custom -View Private    # To show private members
+    ... | Format-Custom -View Interfaces # To show interfaces
     "
     </ScriptBlock>
         <Label>Type Private</Label>
@@ -4859,6 +4863,10 @@ $_ |
                 <ScriptBlock> "" </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>TypeInheritanceControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
                 <ItemSelectionCondition>
                   <ScriptBlock> 
         $_.GetInterfaces()
@@ -4869,10 +4877,6 @@ $_ |
     </ScriptBlock>
                 <EnumerateCollection />
                 <CustomControlName>TypeInterfaceControl</CustomControlName>
-              </ExpressionBinding>
-              <ExpressionBinding>
-                <ScriptBlock> $_ </ScriptBlock>
-                <CustomControlName>TypeInheritanceControl</CustomControlName>
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock> 
@@ -4927,9 +4931,10 @@ $_ |
       <GroupBy>
         <ScriptBlock> 
     "
-    ... | Format-Custom -View Full      # To show public and private members
-    ... | Format-Custom -View Public    # To show public members
-    ... | Format-Custom -View Private   # To show private members
+    ... | Format-Custom -View Full       # To show public and private members
+    ... | Format-Custom -View Public     # To show public members
+    ... | Format-Custom -View Private    # To show private members
+    ... | Format-Custom -View Interfaces # To show interfaces
     "
     </ScriptBlock>
         <Label>Type Full</Label>
@@ -4949,6 +4954,10 @@ $_ |
                 <ScriptBlock> "" </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>TypeInheritanceControl</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
                 <ItemSelectionCondition>
                   <ScriptBlock> 
         $_.GetInterfaces()
@@ -4959,10 +4968,6 @@ $_ |
     </ScriptBlock>
                 <EnumerateCollection />
                 <CustomControlName>TypeInterfaceControl</CustomControlName>
-              </ExpressionBinding>
-              <ExpressionBinding>
-                <ScriptBlock> $_ </ScriptBlock>
-                <CustomControlName>TypeInheritanceControl</CustomControlName>
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock> 
