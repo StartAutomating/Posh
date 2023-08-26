@@ -231,6 +231,51 @@ $script:TreeDepth++;</ScriptBlock>
       </CustomControl>
     </Control>
     <Control>
+      <Name>TypeConstructorsControl</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetConstructors('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetConstructors($_.BindingFlags)
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> 
+        [Environment]::NewLine + ('#' * 3) + ' Constructors:'           
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetConstructors('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetConstructors($_.BindingFlags)
+    }
+</ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+    if ($_ -is [Type]) {
+        $_.GetConstructors('Instance,Public')
+    } elseif ($_.Type -and $_.BindingFlags) {
+        $_.Type.GetConstructors($_.BindingFlags)
+    }
+</ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>TypeMethodControl</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
       <Name>TypeEventControl</Name>
       <CustomControl>
         <CustomEntries>
