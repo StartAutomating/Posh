@@ -2,7 +2,7 @@ Write-FormatView -TypeName Posh -Action {
     
     Write-FormatViewExpression -Style "Foreground.Blue", "Bold" -Property Name
     Write-FormatViewExpression -Style "Foreground.Cyan" -Text ' @ '
-    Write-FormatViewExpression -Style "Foreground.Cyan", "Bold" -Property Version
+    Write-FormatViewExpression -Property Version -ControlName VersionControl
     Write-FormatViewExpression -Newline
     Write-FormatViewExpression -Newline
     
