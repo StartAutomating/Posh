@@ -1532,8 +1532,8 @@ $script:TreeDepth++;</ScriptBlock>
                 ) -join ''            
             }) -join "$(
                 @(
-                    $PSStyle.Foreground.Yellow
-                    '.'                
+                    $PSStyle.Foreground.Blue
+                    '.'
                 ) -join ''      
             )"
         } else {
