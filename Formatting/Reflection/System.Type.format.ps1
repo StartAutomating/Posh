@@ -17,9 +17,10 @@ Write-FormatView -TypeName n/a -AsControl -Name TypeInheritanceControl -Action {
 $TypeGrouping = [Ordered]@{
     GroupByScript = { 
     "
-    ... | Format-Custom -View Full      # To show public and private members
-    ... | Format-Custom -View Public    # To show public members
-    ... | Format-Custom -View Private   # To show private members
+    ... | Format-Custom -View Full       # To show public and private members
+    ... | Format-Custom -View Public     # To show public members
+    ... | Format-Custom -View Private    # To show private members
+    ... | Format-Custom -View Interfaces # To show interfaces
     "
     }
 }
@@ -54,12 +55,15 @@ foreach ($viewName in 'Public','Private','Full') {
 
 Write-FormatView -TypeName System.Type -Action {
     Write-FormatViewExpression -If $assignView -ScriptBlock { "" }    
+    
+    Write-FormatViewExpression -ControlName TypeInheritanceControl -ScriptBlock { $_ }
+
     Write-FormatViewExpression -If { 
         $_.GetInterfaces()
     } -ScriptBlock { 
         $_.GetInterfaces() | Sort-Object Name
     } -Enumerate -ControlName TypeInterfaceControl
-    Write-FormatViewExpression -ControlName TypeInheritanceControl -ScriptBlock { $_ }
+
     Write-FormatViewExpression -ControlName TypeConstructorsControl -ScriptBlock { 
         if ($_.'.BindingFlags') {
             @{Type=$_;BindingFlags="Instance,$($_.'.BindingFlags')"}
