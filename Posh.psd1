@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1.5'
+    ModuleVersion = '0.1.6'
     FormatsToProcess = 'Posh.format.ps1xml'
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
@@ -15,28 +15,21 @@
             IconURI    = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
             Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized', 'Prompt', 'Customization'
             ReleaseNotes = @'
-## Posh 0.1.5: Posh Issues and Discussions
+## Posh 0.1.6: Posh Reflection 
 
-* Adding PSModuleInfo.Discussion (Fixes #212)
-* Adding PSModuleInfo.Issue (Fixes #137)
-* Improving Issue Templates
-* Adding Stefan Stanger's Blog to $Posh.News (#209) (thanks @stefanstranger)
-* Adding RTPSUG Video to Posh (#213) (`$posh.Video`)
-
----
-
-## Posh 0.1.4: Some Posh News
-
-* Added .News to every module (#173)
-* Populated Posh with lots of blogs (#176)
-
-Try $Posh.News after importing.
-
-Also, added tests (#204).
+* Added multiple custom views for System.Type (#216):
+  * Can now view 'Inheritance', 'Interfaces', 'Public', 'Private', 'Full'
+  * Private methods are highlighted in red.
+* New Formatting:
+  * System.Version (#230, #231, #232)
+* New Methods:
+  * Adding Posh.Host.Choose (#131)
+* Improving formatting for RSS Feeds (#238)
+* Adding PowerShell Podcast to .News/.Links (#228)
 
 ---
 
-More History in [CHANGELOG](CHANGELOG.md)
+More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CHANGELOG.md)
 '@
         }
         FileTypes = @{
@@ -67,6 +60,7 @@ More History in [CHANGELOG](CHANGELOG.md)
             'PowerShell Guide'    = 'https://PowerShellGuide.com/'
             'PowerShell.Org'      = 'https://powershell.org/'
             'PowerShell Discord'  = 'https://discord.com/invite/powershell'
+            'PowerShell Podcast'  = 'https://powershellpodcast.podbean.com/'
             'PowerShell Project'  = 'https://github.com/PowerShell/PowerShell'    
             'PowerShell GitHub'   = 'https://github.com/topics/powershell'
             'PowerShell Twitter'  = 'https://twitter.com/search?q=%23PowerShell'
@@ -79,7 +73,8 @@ More History in [CHANGELOG](CHANGELOG.md)
         }
 
         News = 
-            @{"PowerShell Blog" = "https://devblogs.microsoft.com/powershell/feed/"}, 
+            @{"PowerShell Blog" = "https://devblogs.microsoft.com/powershell/feed/"},
+            @{"PowerShell Podcast"="https://feed.podbean.com/powershellpodcast/feed.xml"}, 
             @{"Evotec"="https://evotec.xyz/feed/"},
             @{"DBATools"="https://dbatools.io/feed/"},            
             @{"The Lazy Admin" = "https://lazyadmin.nl/feed/"}, 
