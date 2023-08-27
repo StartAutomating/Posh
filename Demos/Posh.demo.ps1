@@ -62,13 +62,13 @@ Get-Command | Get-Member
 
 # To see _everything_ about an object, use something like
 
-[int] | Format-Custom -View System.Type.Full
+[int] | Format-Custom -View Public
 
 
 # This also works for generic types.
 
 [Collections.Generic.Dictionary[string, PSObject]] | 
-    Format-Custom -View System.Type.Full
+    Format-Custom -View Public
 
 #2.5 Colorized XML
 

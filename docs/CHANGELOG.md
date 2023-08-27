@@ -1,3 +1,17 @@
+## Posh 0.1.6: Posh Reflection 
+
+* Added multiple custom views for System.Type (#216):
+  * Can now view 'Inheritance', 'Interfaces', 'Public', 'Private', 'Full'
+  * Private methods are highlighted in red.
+* New Formatting:
+  * System.Version (#230, #231, #232)
+* New Methods:
+  * Adding Posh.Host.Choose (#131)
+* Improving formatting for RSS Feeds (#238)
+* Adding PowerShell Podcast to .News/.Links (#228)
+
+---
+
 ## Posh 0.1.5: Posh Issues and Discussions
 
 * Adding PSModuleInfo.Discussion (Fixes #212)

@@ -1,7 +1,9 @@
 describe Posh {
     context "Improving the shell experience" {
         it "Formats itself" {
-            Get-FormatData -TypeName Posh
+            (Get-Module -Name Posh).ExportedFormatFiles | 
+                Select-Xml -path { $_ } -xpath '//TypeName' | 
+                Where-Object { $_.Node.InnerText -eq 'Posh' }             
         }
         it "Adds .Tip(s) to every module" {
             (Get-TypeData -TypeName PSModuleInfo).Members.Tip  | Should -Not -BeNullOrEmpty
