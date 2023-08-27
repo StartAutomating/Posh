@@ -4436,6 +4436,21 @@ To see everything Posh can do: `$posh | Get-Member
                 <ScriptBlock> $_ </ScriptBlock>
                 <CustomControlName>Posh.Link</CustomControlName>
               </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.DatePublished -is [datetime] </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        " ($($_.DatePublished.ToShortDateString())) "
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.Enclosure </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Posh.Link.Play</CustomControlName>
+              </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
         </CustomEntries>
