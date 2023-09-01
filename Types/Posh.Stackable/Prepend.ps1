@@ -13,6 +13,11 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+$toPrepend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $toPrepend; . $currentFunction) -join ''}.GetNewClosure()

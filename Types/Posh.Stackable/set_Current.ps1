@@ -9,8 +9,12 @@
     $Posh.Prompt.Current = {"?"}
 #>
 if (-not $this.FunctionName) { return }
-$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 $this.Stack.Push(
 $currentFunctionValue
 )
-$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+$newFunctionValue = $args[0]
+if ($newFunctionValue -isnot [ScriptBlock]) {
+    $newFunctionValue = [ScriptBlock]::Create($this.Stringify($newFunctionValue))
+}
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", $newFunctionValue)
