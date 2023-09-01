@@ -5397,22 +5397,34 @@ $_ |
           <TableRowEntry>
             <TableColumnItems>
               <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;
+        }
         if ($_.MemberType -like &apos;*property*&apos;) {        
-            &quot;Foreground.Green&quot;, &quot;Bold&quot;
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
         }
         elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
             &quot;Formatting.Warning&quot;
-        }        
+        })        
     "}-->
               <TableColumnItem>
                 <ScriptBlock>                        
                         $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"
+        }
         if ($_.MemberType -like '*property*') {        
-            "Foreground.Green", "Bold"
+            "Foreground.Green"            
+            "Bold"
         }
         elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
             "Formatting.Warning"
-        }        
+        })        
     };$_ = $__);$Script:_LastCellStyle)
                         
                             $CellColorValue = if ($psStyle) {
@@ -5445,22 +5457,34 @@ $_ |
                         </ScriptBlock>
               </TableColumnItem>
               <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;
+        }
         if ($_.MemberType -like &apos;*property*&apos;) {        
-            &quot;Foreground.Green&quot;, &quot;Bold&quot;
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
         }
         elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
             &quot;Formatting.Warning&quot;
-        }        
+        })        
     "}-->
               <TableColumnItem>
                 <ScriptBlock>                        
                         $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"
+        }
         if ($_.MemberType -like '*property*') {        
-            "Foreground.Green", "Bold"
+            "Foreground.Green"            
+            "Bold"
         }
         elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
             "Formatting.Warning"
-        }        
+        })        
     };$_ = $__);$Script:_LastCellStyle)
                         
                             $CellColorValue = if ($psStyle) {
