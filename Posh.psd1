@@ -78,7 +78,7 @@ More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CH
             @{"Evotec"="https://evotec.xyz/feed/"},
             @{"DBATools"="https://dbatools.io/feed/"},            
             @{"The Lazy Admin" = "https://lazyadmin.nl/feed/"}, 
-            @{"The Command Line Ninja" = "https://www.commandline.ninja/rss/"},            
+            @{"The Command Line Ninja" = "https://www.commandline.ninja/rss/"},
             @{"PowerShell Geek"="https://www.powershellgeek.com/feed/"},
             @{"PowerShell District" = "http://www.powershelldistrict.com/feed"}, 
             @{"Adam the Automator"="https://adamtheautomator.com/feed/"},
@@ -86,6 +86,7 @@ More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CH
             @{"MDGRS Factory"="https://mdgrs.hashnode.dev/rss.xml"},
             @{"Pipe How"="https://pipe.how/index.xml"},
             @{"PowerShell is Fun"="https://powershellisfun.com/feed/"},
+            @{"PowerShell Weekly"="https://psweekly.dowst.dev/feed/"},
             @{"Stefan Stranger"="https://stefanstranger.github.io/feed"}
 
         # Got more News?  Feel free to file an issue and open a PR to add your feed.
