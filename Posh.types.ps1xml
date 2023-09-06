@@ -1144,9 +1144,14 @@ param(
 $Value
 )
 
-$ToAppend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+$toAppend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $currentFunction; . $toAppend) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -1205,9 +1210,14 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+$toPrepend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $toPrepend; . $currentFunction) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -1261,27 +1271,26 @@ $Value
 
 
 $toReplace = if ($Value -is [ScriptBlock]) {
-    "{$Value}"
+    $Value
 } else {
-    $this.Stringify($Value)
+    [ScriptBlock]::Create($this.Stringify($Value))
 }
 
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 
-$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
 $passThru = $false
 foreach ($arg in $args) {
     if ($arg -is [bool] -and $arg) {
         $passThru = $true
     }
 }
-$newFunc = "@(
-    `$existingOutput =. { $currentFunction };
-    `$replacePattern = $replaceRegex
-    `$replaceWith = $toReplace 
-    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
-) -join ''" 
-
+$newFunc = {
+    @(
+        $existingOutput =. $currentFunction
+        $replaceRegex = [Regex]::new($Replace,'IgnoreCase,IgnorePatternWhitespace','00:00:02')
+        $replaceRegex.Replace($existingOutput, $toReplace)
+    ) -join ''
+}.GetNewClosure()
 
 $this.Current = $newFunc
 if ($passThru) {
@@ -1350,11 +1359,15 @@ $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($th
     $Posh.Prompt.Current = {"?"}
 #&gt;
 if (-not $this.FunctionName) { return }
-$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 $this.Stack.Push(
 $currentFunctionValue
 )
-$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+$newFunctionValue = $args[0]
+if ($newFunctionValue -isnot [ScriptBlock]) {
+    $newFunctionValue = [ScriptBlock]::Create($this.Stringify($newFunctionValue))
+}
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", $newFunctionValue)
                     </SetScriptBlock>
       </ScriptProperty>
       <NoteProperty>
@@ -2112,9 +2125,14 @@ param(
 $Value
 )
 
-$ToAppend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+$toAppend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $currentFunction; . $toAppend) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2173,9 +2191,14 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+$toPrepend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $toPrepend; . $currentFunction) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2229,27 +2252,26 @@ $Value
 
 
 $toReplace = if ($Value -is [ScriptBlock]) {
-    "{$Value}"
+    $Value
 } else {
-    $this.Stringify($Value)
+    [ScriptBlock]::Create($this.Stringify($Value))
 }
 
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 
-$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
 $passThru = $false
 foreach ($arg in $args) {
     if ($arg -is [bool] -and $arg) {
         $passThru = $true
     }
 }
-$newFunc = "@(
-    `$existingOutput =. { $currentFunction };
-    `$replacePattern = $replaceRegex
-    `$replaceWith = $toReplace 
-    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
-) -join ''" 
-
+$newFunc = {
+    @(
+        $existingOutput =. $currentFunction
+        $replaceRegex = [Regex]::new($Replace,'IgnoreCase,IgnorePatternWhitespace','00:00:02')
+        $replaceRegex.Replace($existingOutput, $toReplace)
+    ) -join ''
+}.GetNewClosure()
 
 $this.Current = $newFunc
 if ($passThru) {
@@ -2318,11 +2340,15 @@ $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($th
     $Posh.Prompt.Current = {"?"}
 #&gt;
 if (-not $this.FunctionName) { return }
-$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 $this.Stack.Push(
 $currentFunctionValue
 )
-$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+$newFunctionValue = $args[0]
+if ($newFunctionValue -isnot [ScriptBlock]) {
+    $newFunctionValue = [ScriptBlock]::Create($this.Stringify($newFunctionValue))
+}
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", $newFunctionValue)
                     </SetScriptBlock>
       </ScriptProperty>
       <NoteProperty>
@@ -2591,9 +2617,14 @@ param(
 $Value
 )
 
-$ToAppend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+$toAppend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $currentFunction; . $toAppend) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2652,9 +2683,14 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+$toPrepend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $toPrepend; . $currentFunction) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2708,27 +2744,26 @@ $Value
 
 
 $toReplace = if ($Value -is [ScriptBlock]) {
-    "{$Value}"
+    $Value
 } else {
-    $this.Stringify($Value)
+    [ScriptBlock]::Create($this.Stringify($Value))
 }
 
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 
-$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
 $passThru = $false
 foreach ($arg in $args) {
     if ($arg -is [bool] -and $arg) {
         $passThru = $true
     }
 }
-$newFunc = "@(
-    `$existingOutput =. { $currentFunction };
-    `$replacePattern = $replaceRegex
-    `$replaceWith = $toReplace 
-    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
-) -join ''" 
-
+$newFunc = {
+    @(
+        $existingOutput =. $currentFunction
+        $replaceRegex = [Regex]::new($Replace,'IgnoreCase,IgnorePatternWhitespace','00:00:02')
+        $replaceRegex.Replace($existingOutput, $toReplace)
+    ) -join ''
+}.GetNewClosure()
 
 $this.Current = $newFunc
 if ($passThru) {
@@ -2797,11 +2832,15 @@ $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($th
     $Posh.Prompt.Current = {"?"}
 #&gt;
 if (-not $this.FunctionName) { return }
-$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 $this.Stack.Push(
 $currentFunctionValue
 )
-$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+$newFunctionValue = $args[0]
+if ($newFunctionValue -isnot [ScriptBlock]) {
+    $newFunctionValue = [ScriptBlock]::Create($this.Stringify($newFunctionValue))
+}
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", $newFunctionValue)
                     </SetScriptBlock>
       </ScriptProperty>
     </Members>

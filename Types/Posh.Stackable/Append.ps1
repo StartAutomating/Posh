@@ -9,6 +9,11 @@ param(
 $Value
 )
 
-$ToAppend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+$toAppend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $currentFunction; . $toAppend) -join ''}.GetNewClosure()
