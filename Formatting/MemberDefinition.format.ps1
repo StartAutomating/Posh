@@ -1,11 +1,17 @@
 ﻿$colorNameAndMemberType = 
     {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"
+        }
         if ($_.MemberType -like '*property*') {        
-            "Foreground.Green", "Bold"
+            "Foreground.Green"            
+            "Bold"
         }
         elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
             "Formatting.Warning"
-        }        
+        })        
     }
 
 Write-FormatView -TypeName Microsoft.PowerShell.Commands.MemberDefinition -Property Name, MemberType, Definition -StyleProperty @{
