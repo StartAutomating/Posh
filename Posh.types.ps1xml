@@ -1049,6 +1049,24 @@ if ($choice -ne -1) {
                     </Script>
       </ScriptMethod>
       <ScriptProperty>
+        <Name>Cursor</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the cursor
+.DESCRIPTION
+    Gets the console cursor.
+.EXAMPLE
+    $Host.Cursor
+.EXAMPLE
+    $Posh.Host.Cursor
+.EXAMPLE
+    $Posh.Cursor.Position
+#&gt;
+return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Height</Name>
         <GetScriptBlock>
                         &lt;#
