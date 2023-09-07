@@ -3567,6 +3567,34 @@ To see everything Posh can do: `$posh | Get-Member
       </CustomControl>
     </View>
     <View>
+      <Name>Posh.Host.Cursor</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Host.Cursor</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Position.Row</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Position.Column</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <ScriptBlock> $_.Position.Row </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock> $_.Position.Column </ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Posh.Host</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Host</TypeName>
