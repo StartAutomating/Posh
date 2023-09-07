@@ -1217,6 +1217,23 @@ param(
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Hide</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Hides the cursor
+.DESCRIPTION
+    Hides the cursor.  This is not supported in all terminals.
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param()
+
+"`e[25l"
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Show</Name>
         <Script>
                         &lt;#
