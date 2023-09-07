@@ -1134,6 +1134,34 @@ $this.UI.RawUI.BufferSize.Width
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Host.Cursor</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>Up</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor up
+.DESCRIPTION
+    Moves the cursor N (default 1) cells up.    
+    If the cursor is already at the edge of the screen, this has no effect.
+#&gt;
+param(
+    # How far the cursor should move
+    [Alias('N')]
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}A"
+
+
+
+                    </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Input</Name>
     <Members>
       <AliasProperty>
