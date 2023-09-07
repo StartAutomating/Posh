@@ -1136,6 +1136,35 @@ $this.UI.RawUI.BufferSize.Width
   <Type>
     <Name>Posh.Host.Cursor</Name>
     <Members>
+      <AliasProperty>
+        <Name>Left</Name>
+        <ReferencedMemberName>Back</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Back</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor back
+.DESCRIPTION
+    Moves the cursor N (default 1) cells back.    
+    If the cursor is already at the edge of the screen, this has no effect.
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move.
+    [Alias('N')]
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}D"
+
+
+
+                    </Script>
+      </ScriptMethod>
       <ScriptMethod>
         <Name>Down</Name>
         <Script>
