@@ -3567,6 +3567,34 @@ To see everything Posh can do: `$posh | Get-Member
       </CustomControl>
     </View>
     <View>
+      <Name>Posh.Host.Cursor</Name>
+      <ViewSelectedBy>
+        <TypeName>Posh.Host.Cursor</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Position.Row</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Position.Column</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <ScriptBlock> $_.Position.Row </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock> $_.Position.Column </ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Posh.Host</Name>
       <ViewSelectedBy>
         <TypeName>Posh.Host</TypeName>
@@ -5374,6 +5402,155 @@ $_ |
       </TableControl>
     </View>
     <View>
+      <Name>Microsoft.PowerShell.Commands.GenericMeasureInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.GenericMeasureInfo</TypeName>
+        <TypeName>Microsoft.PowerShell.Commands.TextMeasureInfo</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $visibleProperties = 
+            @(foreach ($property in $_.psobject.properties) {
+                if ($null -ne $property.Value) {
+                    $property
+                }
+            })
+
+        $longest = 0                
+        $visibleProperties.Name.Foreach({
+            if ($_.Length -gt $longest) {
+                $longest = $_.Length
+            }
+        })
+
+        @(foreach ($visibleProperty in $visibleProperties) {
+            $visibleProperty.Name.PadRight($longest, ' ') + 
+                ' : ' + 
+                $visibleProperty.Value
+        }) -join [Environment]::NewLine
+    </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>All</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.GenericMeasureInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Count</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Average</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Sum</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Maximum</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Minimum</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>StandardDeviation</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Property</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>MinMax</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.GenericMeasureInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Minimum</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Maximum</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.PowerShell.Commands.TextMeasureInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.TextMeasureInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Lines</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Words</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Characters</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Microsoft.PowerShell.Commands.MemberDefinition</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.PowerShell.Commands.MemberDefinition</TypeName>
@@ -5397,22 +5574,34 @@ $_ |
           <TableRowEntry>
             <TableColumnItems>
               <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;
+        }
         if ($_.MemberType -like &apos;*property*&apos;) {        
-            &quot;Foreground.Green&quot;, &quot;Bold&quot;
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
         }
         elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
             &quot;Formatting.Warning&quot;
-        }        
+        })        
     "}-->
               <TableColumnItem>
                 <ScriptBlock>                        
                         $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"
+        }
         if ($_.MemberType -like '*property*') {        
-            "Foreground.Green", "Bold"
+            "Foreground.Green"            
+            "Bold"
         }
         elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
             "Formatting.Warning"
-        }        
+        })        
     };$_ = $__);$Script:_LastCellStyle)
                         
                             $CellColorValue = if ($psStyle) {
@@ -5445,22 +5634,34 @@ $_ |
                         </ScriptBlock>
               </TableColumnItem>
               <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;
+        }
         if ($_.MemberType -like &apos;*property*&apos;) {        
-            &quot;Foreground.Green&quot;, &quot;Bold&quot;
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
         }
         elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
             &quot;Formatting.Warning&quot;
-        }        
+        })        
     "}-->
               <TableColumnItem>
                 <ScriptBlock>                        
                         $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"
+        }
         if ($_.MemberType -like '*property*') {        
-            "Foreground.Green", "Bold"
+            "Foreground.Green"            
+            "Bold"
         }
         elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
             "Formatting.Warning"
-        }        
+        })        
     };$_ = $__);$Script:_LastCellStyle)
                         
                             $CellColorValue = if ($psStyle) {
@@ -5591,6 +5792,311 @@ $_ |
             
         }) -join ''
     </ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>System.Management.Automation.PSMemberInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Management.Automation.PSMemberInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>MemberType</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;       
+        }
+        if ($_.MemberType -like &apos;*property*&apos;) {        
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
+        }
+        elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
+            &quot;Formatting.Warning&quot;
+        })        
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"       
+        }
+        if ($_.MemberType -like '*property*') {        
+            "Foreground.Green"            
+            "Bold"
+        }
+        elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
+            "Formatting.Warning"
+        })        
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'Name'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;       
+        }
+        if ($_.MemberType -like &apos;*property*&apos;) {        
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
+        }
+        elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
+            &quot;Formatting.Warning&quot;
+        })        
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"       
+        }
+        if ($_.MemberType -like '*property*') {        
+            "Foreground.Green"            
+            "Bold"
+        }
+        elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
+            "Formatting.Warning"
+        })        
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'MemberType'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>IsInstance</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Value</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Wrap</Name>
+      <ViewSelectedBy>
+        <TypeName>System.Management.Automation.PSMemberInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>MemberType</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap />
+            <TableColumnItems>
+              <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;       
+        }
+        if ($_.MemberType -like &apos;*property*&apos;) {        
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
+        }
+        elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
+            &quot;Formatting.Warning&quot;
+        })        
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"       
+        }
+        if ($_.MemberType -like '*property*') {        
+            "Foreground.Green"            
+            "Bold"
+        }
+        elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
+            "Formatting.Warning"
+        })        
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'Name'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <!-- {ConditionalStyle:"
+        
+        @(
+        if ($_.MemberType -notin &apos;Method&apos;,&apos;Property&apos;,&apos;ParemeterizedProperty&apos;) {
+            &quot;Italic&quot;       
+        }
+        if ($_.MemberType -like &apos;*property*&apos;) {        
+            &quot;Foreground.Green&quot;            
+            &quot;Bold&quot;
+        }
+        elseif ($_.MemberType -like &apos;*method&apos; -or $_.MemberType -eq &apos;Event&apos;) {
+            &quot;Formatting.Warning&quot;
+        })        
+    "}-->
+              <TableColumnItem>
+                <ScriptBlock>                        
+                        $CellColorValue = $($Script:_LastCellStyle = $($__ = $_;. {
+        
+        @(
+        if ($_.MemberType -notin 'Method','Property','ParemeterizedProperty') {
+            "Italic"       
+        }
+        if ($_.MemberType -like '*property*') {        
+            "Foreground.Green"            
+            "Bold"
+        }
+        elseif ($_.MemberType -like '*method' -or $_.MemberType -eq 'Event') {
+            "Formatting.Warning"
+        })        
+    };$_ = $__);$Script:_LastCellStyle)
+                        
+                            $CellColorValue = if ($psStyle) {
+                                @(foreach ($styleProp in $CellColorValue) {
+                                    if ($styleProp -match '^\$') {
+                                        $ExecutionContext.SessionState.InvokeCommand.InvokeScript($styleProp)
+                                    }
+                                    elseif ($styleProp -match '\.') {
+                                        $targetObject = $psStyle
+                                        foreach ($dotProperty in $styleProp -split '(?&lt;!\.)\.') {
+                                            if ($targetObject.Item -is [Management.Automation.PSMethodInfo] -or 
+                                                $targetObject -is [Collections.IDictionary]) {
+                                                $targetObject = $targetObject[$dotProperty]
+                                            } else {
+                                                $targetObject = $targetObject.$dotProperty
+                                            }
+                                        }
+                                        if ($targetObject) {
+                                            $targetObject
+                                        }
+                                    }
+                                    else {
+                                        $psStyle.$styleProp
+                                    }
+                                }) -join ''
+                            }
+                                                    
+                        $output = . {$_.'MemberType'}
+                        @($CellColorValue; $output; $psStyle.Reset) -join ''
+                        </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>IsInstance</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Value</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>

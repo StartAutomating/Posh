@@ -1049,6 +1049,24 @@ if ($choice -ne -1) {
                     </Script>
       </ScriptMethod>
       <ScriptProperty>
+        <Name>Cursor</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the cursor
+.DESCRIPTION
+    Gets the console cursor.
+.EXAMPLE
+    $Host.Cursor
+.EXAMPLE
+    $Posh.Host.Cursor
+.EXAMPLE
+    $Posh.Cursor.Position
+#&gt;
+return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Height</Name>
         <GetScriptBlock>
                         &lt;#
@@ -1116,6 +1134,276 @@ $this.UI.RawUI.BufferSize.Width
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Host.Cursor</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Left</Name>
+        <ReferencedMemberName>Back</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Right</Name>
+        <ReferencedMemberName>Forward</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Back</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor back
+.DESCRIPTION
+    Moves the cursor N (default 1) cells back.    
+    If the cursor is already at the edge of the screen, this has no effect.
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move.
+    [Alias('N')]
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}D"
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Down</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor down
+.DESCRIPTION
+    Moves the cursor N (default 1) cells down.    
+    If the cursor is already at the edge of the screen, this has no effect.
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move    
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}B"
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Forward</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor forward
+.DESCRIPTION
+    Moves the cursor N (default 1) cells back.    
+    If the cursor is already at the edge of the screen, this has no effect.  
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move
+    [Alias('N')]    
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}C"
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Hide</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Hides the cursor
+.DESCRIPTION
+    Hides the cursor.  This is not supported in all terminals.
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param()
+
+"`e[25l"
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>PageDown</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pages the cursor down
+.DESCRIPTION
+    Pages the cursor N (default 1) pages down.  New lines are added at the top.    
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move
+    [Alias('Rows')]
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+[Console]::Write("`e[${Distance}T")
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>PageUp</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Pages the cursor up.
+.DESCRIPTION
+    Pages the cursor N (default 1) pages up.  New lines are added at the bottom.    
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move
+    [Alias('Rows')]
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+[Console]::Write("`e[${Distance}S")
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>SetPosition</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Sets the cursor position.
+.DESCRIPTION
+    Sets the position of the cursor.  This is not supported in all terminals.
+
+    The position can be provided as a pair of integers.  
+    
+    The first integer will be the row, the second integer will be the column.
+    
+    The position can also be provided as an object with any of the following properties:
+
+    * X/Column/Left
+    * Y/Row/Top
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+
+$argList = @($args | . { process { $_ }})
+
+
+$coordinates = 
+    if ($argList -as [int[]]) {
+        $argList -as [int[]]
+    }
+    elseif ($argList.Length -eq 1) {
+        $arg = $args[0]
+        
+        if ($arg.Y) {
+            $arg.Y
+        }
+        elseif ($arg.Row) {
+            $arg.Row
+        }
+        elseif ($arg.Top) {
+            $arg.Top
+        }
+
+        if ($arg.X) {
+            $arg.X
+        }
+        elseif ($arg.Column) {
+            $arg.Column
+        }
+        elseif ($arg.Left) {
+            $arg.Left
+        }
+    }
+
+if ($coordinates -and $coordinates.Length -eq 2) {    
+    "`e[$($coordinates[0]);$($coordinates[1])H"
+}
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Show</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Shows the cursor
+.DESCRIPTION
+    Shows the cursor.  This is not supported in all terminals.
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param()
+
+"`e[25h"
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Up</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor up
+.DESCRIPTION
+    Moves the cursor N (default 1) cells up.    
+    If the cursor is already at the edge of the screen, this has no effect.
+#&gt;
+param(
+    # How far the cursor should move
+    [Alias('N')]
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}A"
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Position</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the cursor position
+.DESCRIPTION
+    Gets the cursor position
+.EXAMPLE
+    $Host.Cursor.Position
+#&gt;
+
+if ($host.UI.RawUI.CursorPosition) {
+    # In the "really" category, CursorPosition is zero-index, where as actual cursors in a terminal are 1-indexed.
+    [PSCustomObject][Ordered]@{
+        PSTypeName = 'Posh.Host.Cursor.Position'
+        Row    = ($host.UI.RawUI.CursorPosition.Y + 1)
+        Column = ($host.UI.RawUI.CursorPosition.X + 1)
+    }
+}
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Input</Name>
     <Members>
       <AliasProperty>
@@ -1144,9 +1432,14 @@ param(
 $Value
 )
 
-$ToAppend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+$toAppend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $currentFunction; . $toAppend) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -1205,9 +1498,14 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+$toPrepend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $toPrepend; . $currentFunction) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -1261,27 +1559,26 @@ $Value
 
 
 $toReplace = if ($Value -is [ScriptBlock]) {
-    "{$Value}"
+    $Value
 } else {
-    $this.Stringify($Value)
+    [ScriptBlock]::Create($this.Stringify($Value))
 }
 
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 
-$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
 $passThru = $false
 foreach ($arg in $args) {
     if ($arg -is [bool] -and $arg) {
         $passThru = $true
     }
 }
-$newFunc = "@(
-    `$existingOutput =. { $currentFunction };
-    `$replacePattern = $replaceRegex
-    `$replaceWith = $toReplace 
-    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
-) -join ''" 
-
+$newFunc = {
+    @(
+        $existingOutput =. $currentFunction
+        $replaceRegex = [Regex]::new($Replace,'IgnoreCase,IgnorePatternWhitespace','00:00:02')
+        $replaceRegex.Replace($existingOutput, $toReplace)
+    ) -join ''
+}.GetNewClosure()
 
 $this.Current = $newFunc
 if ($passThru) {
@@ -1350,11 +1647,15 @@ $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($th
     $Posh.Prompt.Current = {"?"}
 #&gt;
 if (-not $this.FunctionName) { return }
-$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 $this.Stack.Push(
 $currentFunctionValue
 )
-$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+$newFunctionValue = $args[0]
+if ($newFunctionValue -isnot [ScriptBlock]) {
+    $newFunctionValue = [ScriptBlock]::Create($this.Stringify($newFunctionValue))
+}
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", $newFunctionValue)
                     </SetScriptBlock>
       </ScriptProperty>
       <NoteProperty>
@@ -2112,9 +2413,14 @@ param(
 $Value
 )
 
-$ToAppend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+$toAppend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $currentFunction; . $toAppend) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2173,9 +2479,14 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+$toPrepend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $toPrepend; . $currentFunction) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2229,27 +2540,26 @@ $Value
 
 
 $toReplace = if ($Value -is [ScriptBlock]) {
-    "{$Value}"
+    $Value
 } else {
-    $this.Stringify($Value)
+    [ScriptBlock]::Create($this.Stringify($Value))
 }
 
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 
-$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
 $passThru = $false
 foreach ($arg in $args) {
     if ($arg -is [bool] -and $arg) {
         $passThru = $true
     }
 }
-$newFunc = "@(
-    `$existingOutput =. { $currentFunction };
-    `$replacePattern = $replaceRegex
-    `$replaceWith = $toReplace 
-    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
-) -join ''" 
-
+$newFunc = {
+    @(
+        $existingOutput =. $currentFunction
+        $replaceRegex = [Regex]::new($Replace,'IgnoreCase,IgnorePatternWhitespace','00:00:02')
+        $replaceRegex.Replace($existingOutput, $toReplace)
+    ) -join ''
+}.GetNewClosure()
 
 $this.Current = $newFunc
 if ($passThru) {
@@ -2318,11 +2628,15 @@ $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($th
     $Posh.Prompt.Current = {"?"}
 #&gt;
 if (-not $this.FunctionName) { return }
-$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 $this.Stack.Push(
 $currentFunctionValue
 )
-$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+$newFunctionValue = $args[0]
+if ($newFunctionValue -isnot [ScriptBlock]) {
+    $newFunctionValue = [ScriptBlock]::Create($this.Stringify($newFunctionValue))
+}
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", $newFunctionValue)
                     </SetScriptBlock>
       </ScriptProperty>
       <NoteProperty>
@@ -2591,9 +2905,14 @@ param(
 $Value
 )
 
-$ToAppend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $currentFunction }; . { $toAppend}) -join ''" 
+$toAppend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $currentFunction; . $toAppend) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2652,9 +2971,14 @@ $Value
 
 
 
-$toPrepend = $this.Stringify($Value)
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
-$this.Current = "@(. { $toPrepend} ; . { $currentFunction }) -join ''" 
+$toPrepend = if ($Value -is [ScriptBlock]) {
+    $Value
+} else {
+    [ScriptBlock]::Create($this.Stringify($Value))
+}
+
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
+$this.Current = {@(. $toPrepend; . $currentFunction) -join ''}.GetNewClosure()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -2708,27 +3032,26 @@ $Value
 
 
 $toReplace = if ($Value -is [ScriptBlock]) {
-    "{$Value}"
+    $Value
 } else {
-    $this.Stringify($Value)
+    [ScriptBlock]::Create($this.Stringify($Value))
 }
 
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 
-$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
 $passThru = $false
 foreach ($arg in $args) {
     if ($arg -is [bool] -and $arg) {
         $passThru = $true
     }
 }
-$newFunc = "@(
-    `$existingOutput =. { $currentFunction };
-    `$replacePattern = $replaceRegex
-    `$replaceWith = $toReplace 
-    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
-) -join ''" 
-
+$newFunc = {
+    @(
+        $existingOutput =. $currentFunction
+        $replaceRegex = [Regex]::new($Replace,'IgnoreCase,IgnorePatternWhitespace','00:00:02')
+        $replaceRegex.Replace($existingOutput, $toReplace)
+    ) -join ''
+}.GetNewClosure()
 
 $this.Current = $newFunc
 if ($passThru) {
@@ -2797,11 +3120,15 @@ $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($th
     $Posh.Prompt.Current = {"?"}
 #&gt;
 if (-not $this.FunctionName) { return }
-$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunctionValue = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 $this.Stack.Push(
 $currentFunctionValue
 )
-$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", "$args")
+$newFunctionValue = $args[0]
+if ($newFunctionValue -isnot [ScriptBlock]) {
+    $newFunctionValue = [ScriptBlock]::Create($this.Stringify($newFunctionValue))
+}
+$posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionName)", $newFunctionValue)
                     </SetScriptBlock>
       </ScriptProperty>
     </Members>
@@ -3131,6 +3458,32 @@ if (-not $this.'.Preset') {
         Add-Member NoteProperty '.Preset' $PresetCollection -Force
 }
 $this.'.Preset'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>README</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Module's README
+.DESCRIPTION
+    Gets the content of README.md file located at the module root. 
+#&gt;
+if ($this.'.README') {
+    return $this.'.README'
+}
+
+$readmeFileExists = $this | 
+    Split-Path | 
+    Get-ChildItem | 
+    Where-Object Name -eq 'README.md'
+
+if ($readmeFileExists) {    
+    $this | 
+        Add-Member NoteProperty '.README' -Force (Get-Content -Raw $readmeFileExists)
+    
+    return $this.'.README'
+}
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>

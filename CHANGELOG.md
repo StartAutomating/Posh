@@ -1,3 +1,20 @@
+## Posh 0.1.7: Posh Presentation
+
+* New and Improved Formatting:
+  * Get-Member formatting - Highlighting PowerShell Members (#226)
+  * Adding Formatting for PSMemberInfo (#246)
+  * Adding Formatting for MeasureInfo (#247)
+* New Blogs
+  * PowerShell Weekly (#255)
+* Host Improvements
+  * Adding Posh.Host.Cursor (#134, #135, #243, #244, #245, #248, #249, #250, #251, #252, #253, #259, #261)
+* Prompt Improvements
+  * Improving stackable functions (#138) (thanks @mdgrs !)
+  * Posh.Prompt Tests (#256)
+* Adding PSModuleInfo.get_README (#263)
+
+---
+
 ## Posh 0.1.6: Posh Reflection 
 
 * Added multiple custom views for System.Type (#216):

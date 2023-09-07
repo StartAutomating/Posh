@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1.6'
+    ModuleVersion = '0.1.7'
     FormatsToProcess = 'Posh.format.ps1xml'
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
@@ -15,17 +15,20 @@
             IconURI    = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
             Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized', 'Prompt', 'Customization'
             ReleaseNotes = @'
-## Posh 0.1.6: Posh Reflection 
+## Posh 0.1.7: Posh Presentation
 
-* Added multiple custom views for System.Type (#216):
-  * Can now view 'Inheritance', 'Interfaces', 'Public', 'Private', 'Full'
-  * Private methods are highlighted in red.
-* New Formatting:
-  * System.Version (#230, #231, #232)
-* New Methods:
-  * Adding Posh.Host.Choose (#131)
-* Improving formatting for RSS Feeds (#238)
-* Adding PowerShell Podcast to .News/.Links (#228)
+* New and Improved Formatting:
+    * Get-Member formatting - Highlighting PowerShell Members (#226)
+    * Adding Formatting for PSMemberInfo (#246)
+    * Adding Formatting for MeasureInfo (#247)
+* New Blogs
+    * PowerShell Weekly (#255)
+* Host Improvements
+    * Adding Posh.Host.Cursor (#134, #135, #243, #244, #245, #248, #249, #250, #251, #252, #253, #259, #261)
+* Prompt Improvements
+    * Improving stackable functions (#138) (thanks @mdgrs !)
+    * Posh.Prompt Tests (#256)
+* Adding PSModuleInfo.get_README (#263)
 
 ---
 
@@ -78,7 +81,7 @@ More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CH
             @{"Evotec"="https://evotec.xyz/feed/"},
             @{"DBATools"="https://dbatools.io/feed/"},            
             @{"The Lazy Admin" = "https://lazyadmin.nl/feed/"}, 
-            @{"The Command Line Ninja" = "https://www.commandline.ninja/rss/"},            
+            @{"The Command Line Ninja" = "https://www.commandline.ninja/rss/"},
             @{"PowerShell Geek"="https://www.powershellgeek.com/feed/"},
             @{"PowerShell District" = "http://www.powershelldistrict.com/feed"}, 
             @{"Adam the Automator"="https://adamtheautomator.com/feed/"},
@@ -86,6 +89,7 @@ More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CH
             @{"MDGRS Factory"="https://mdgrs.hashnode.dev/rss.xml"},
             @{"Pipe How"="https://pipe.how/index.xml"},
             @{"PowerShell is Fun"="https://powershellisfun.com/feed/"},
+            @{"PowerShell Weekly"="https://psweekly.dowst.dev/feed/"},
             @{"Stefan Stranger"="https://stefanstranger.github.io/feed"}
 
         # Got more News?  Feel free to file an issue and open a PR to add your feed.

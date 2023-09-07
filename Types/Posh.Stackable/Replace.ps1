@@ -25,27 +25,26 @@ $Value
 
 
 $toReplace = if ($Value -is [ScriptBlock]) {
-    "{$Value}"
+    $Value
 } else {
-    $this.Stringify($Value)
+    [ScriptBlock]::Create($this.Stringify($Value))
 }
 
-$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")
+$currentFunction = $posh.ExecutionContext.SessionState.InvokeCommand.InvokeScript("`$function:$($this.FunctionName)")[0]
 
-$replaceRegex = "[Regex]::new('$($Replace -replace "'","''")','IgnoreCase,IgnorePatternWhitespace','00:00:02')"
 $passThru = $false
 foreach ($arg in $args) {
     if ($arg -is [bool] -and $arg) {
         $passThru = $true
     }
 }
-$newFunc = "@(
-    `$existingOutput =. { $currentFunction };
-    `$replacePattern = $replaceRegex
-    `$replaceWith = $toReplace 
-    `$replacePattern.Replace(`$existingOutput, `$replaceWith)
-) -join ''" 
-
+$newFunc = {
+    @(
+        $existingOutput =. $currentFunction
+        $replaceRegex = [Regex]::new($Replace,'IgnoreCase,IgnorePatternWhitespace','00:00:02')
+        $replaceRegex.Replace($existingOutput, $toReplace)
+    ) -join ''
+}.GetNewClosure()
 
 $this.Current = $newFunc
 if ($passThru) {
