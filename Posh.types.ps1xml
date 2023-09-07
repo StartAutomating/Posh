@@ -1140,6 +1140,10 @@ $this.UI.RawUI.BufferSize.Width
         <Name>Left</Name>
         <ReferencedMemberName>Back</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Right</Name>
+        <ReferencedMemberName>Forward</ReferencedMemberName>
+      </AliasProperty>
       <ScriptMethod>
         <Name>Back</Name>
         <Script>
@@ -1184,6 +1188,31 @@ param(
 )
 
 "`e[${Distance}B"
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Forward</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor forward
+.DESCRIPTION
+    Moves the cursor N (default 1) cells back.    
+    If the cursor is already at the edge of the screen, this has no effect.  
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move
+    [Alias('N')]    
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}C"
+
+
 
                     </Script>
       </ScriptMethod>
