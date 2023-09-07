@@ -7,4 +7,11 @@ body:
     attributes:
       value: |
         Tell us a little bit about what you'd like.
+  - type: textarea
+    id: Description
+    attributes:
+      label: Description
+      description: Describe your dream feature.
+    validations:
+      required: true 
   
