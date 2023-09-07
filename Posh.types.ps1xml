@@ -1137,6 +1137,28 @@ $this.UI.RawUI.BufferSize.Width
     <Name>Posh.Host.Cursor</Name>
     <Members>
       <ScriptMethod>
+        <Name>Down</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Moves the cursor down
+.DESCRIPTION
+    Moves the cursor N (default 1) cells down.    
+    If the cursor is already at the edge of the screen, this has no effect.
+.NOTES
+    This method returns an escape sequence (it should be invisible).
+#&gt;
+param(
+    # How far the cursor should move    
+    [ValidateRange(1,1024)]
+    [int]$Distance = 1
+)
+
+"`e[${Distance}B"
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Up</Name>
         <Script>
                         &lt;#
