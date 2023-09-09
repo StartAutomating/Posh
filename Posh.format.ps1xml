@@ -5305,6 +5305,8 @@ $_ |
           </TableColumnHeader>
           <TableColumnHeader>
           </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
         </TableHeaders>
         <TableRowEntries>
           <TableRowEntry>
@@ -5395,6 +5397,9 @@ $_ |
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Module</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Source</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
