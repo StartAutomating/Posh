@@ -134,7 +134,7 @@ $script:TreeDepth++;</ScriptBlock>
     @(
     if ($_.enclosure.url -and 
         $psStyle.FormatHyperlink -and -not $env:GITHUB_WORKSPACE) {
-            " $($psStyle.FormatHyperlink("▶", $_.enclosure.url)) "
+            " $($psStyle.FormatHyperlink("(▶ $(@($_.enclosure.type -split '/')[0]))", $_.enclosure.url)) "
     }
     ) -join ''
 </ScriptBlock>
@@ -153,6 +153,10 @@ $script:TreeDepth++;</ScriptBlock>
               <ExpressionBinding>
                 <ScriptBlock> $_ </ScriptBlock>
                 <CustomControlName>Posh.Link</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Posh.Link.Play</CustomControlName>
               </ExpressionBinding>
               <NewLine />
             </CustomItem>
