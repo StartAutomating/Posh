@@ -5305,8 +5305,6 @@ $_ |
           </TableColumnHeader>
           <TableColumnHeader>
           </TableColumnHeader>
-          <TableColumnHeader>
-          </TableColumnHeader>
         </TableHeaders>
         <TableRowEntries>
           <TableRowEntry>
@@ -5394,9 +5392,6 @@ $_ |
                         $output = . {$_.'Name'}
                         @($CellColorValue; $output; $psStyle.Reset) -join ''
                         </ScriptBlock>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Module</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Source</PropertyName>

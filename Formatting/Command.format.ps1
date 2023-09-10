@@ -5,7 +5,7 @@ Write-FormatView -TypeName System.Management.Automation.CommandInfo, System.Mana
     System.Management.Automation.CmdletInfo,
     System.Management.Automation.ExternalScriptInfo,
     System.Management.Automation.FilterInfo,
-    System.Management.Automation.FunctionInfo -GroupByProperty CommandType -Property Name, Module, Source -StyleProperty @{
+    System.Management.Automation.FunctionInfo -GroupByProperty CommandType -Property Name, Source -StyleProperty @{
         Name = {
             switch -regex ($_.Name) 
             {
