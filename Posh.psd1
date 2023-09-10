@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1.7'
+    ModuleVersion = '0.1.8'
     FormatsToProcess = 'Posh.format.ps1xml'
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
@@ -15,20 +15,15 @@
             IconURI    = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
             Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized', 'Prompt', 'Customization'
             ReleaseNotes = @'
-## Posh 0.1.7: Posh Presentation
+## Posh 0.1.8: Posh Formatting
 
-* New and Improved Formatting:
-    * Get-Member formatting - Highlighting PowerShell Members (#226)
-    * Adding Formatting for PSMemberInfo (#246)
-    * Adding Formatting for MeasureInfo (#247)
-* New Blogs
-    * PowerShell Weekly (#255)
-* Host Improvements
-    * Adding Posh.Host.Cursor (#134, #135, #243, #244, #245, #248, #249, #250, #251, #252, #253, #259, #261)
-* Prompt Improvements
-    * Improving stackable functions (#138) (thanks @mdgrs !)
-    * Posh.Prompt Tests (#256)
-* Adding PSModuleInfo.get_README (#263)
+* New Formatting:
+  * Get-Service shows up in color! (#265)
+  * Get-Event gets a table formatter (and .EventID, .SourceID, .Time) (#268)
+  * Get-FileHash groups by algorithm and autosizes (#270)
+* Improving Formatting:
+  * Get-Command now shows Source, not Module (#266) ( thanks @ehmiiz ! )
+  * Improving Enclosure Support in Links (#272)
 
 ---
 
