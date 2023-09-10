@@ -5398,7 +5398,7 @@ $_ |
                         </ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Module</PropertyName>
+                <PropertyName>Source</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
