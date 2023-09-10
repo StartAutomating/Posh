@@ -5402,6 +5402,36 @@ $_ |
       </TableControl>
     </View>
     <View>
+      <Name>Microsoft.PowerShell.Commands.FileHashInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.Commands.FileHashInfo</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Algorithm</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Hash</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Path</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Microsoft.PowerShell.Commands.GenericMeasureInfo</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.PowerShell.Commands.GenericMeasureInfo</TypeName>
