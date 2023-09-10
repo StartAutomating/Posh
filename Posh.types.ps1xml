@@ -3163,6 +3163,23 @@ $posh.ExecutionContext.SessionState.PSVariable.Set("function:$($this.FunctionNam
     </Members>
   </Type>
   <Type>
+    <Name>System.Management.Automation.PSEventArgs</Name>
+    <Members>
+      <AliasProperty>
+        <Name>EventID</Name>
+        <ReferencedMemberName>EventIdentifier</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>SourceID</Name>
+        <ReferencedMemberName>SourceIdentifier</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Time</Name>
+        <ReferencedMemberName>TimeGenerated</ReferencedMemberName>
+      </AliasProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>System.Management.Automation.PSModuleInfo</Name>
     <Members>
       <AliasProperty>

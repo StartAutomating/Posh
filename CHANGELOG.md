@@ -1,3 +1,15 @@
+## Posh 0.1.8: Posh Formatting
+
+* New Formatting:
+  * Get-Service shows up in color! (#265)
+  * Get-Event gets a table formatter (and .EventID, .SourceID, .Time) (#268)
+  * Get-FileHash groups by algorithm and autosizes (#270)
+* Improving Formatting:
+  * Get-Command now shows Source, not Module (#266) ( thanks @ehmiiz ! )
+  * Improving Enclosure Support in Links (#272)
+
+---
+
 ## Posh 0.1.7: Posh Presentation
 
 * New and Improved Formatting:
