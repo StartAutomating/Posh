@@ -1,0 +1,17 @@
+name: Formatting
+description: Improve the Look and Feel of Posh
+title: "Formatting for "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us a little bit about what you'd like.
+  - type: textarea
+    id: Description
+    attributes:
+      label: Description
+      description: Describe what you'd like to see.
+    validations:
+      required: false 
+  
