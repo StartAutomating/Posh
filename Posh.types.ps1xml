@@ -2652,6 +2652,35 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Recommendation</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Update</Name>
+        <ReferencedMemberName>Install</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Install</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Installs the recommended module
+.DESCRIPTION
+    Uses Install-Module to install the recommended module.
+#&gt;
+param(
+
+)
+
+if ($this.Name -and -not $this.Url) {    
+    Install-Module $this.Name -Scope CurrentUser -Force
+}
+
+
+                    </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.RSS.Article</Name>
     <Members>
       <AliasProperty>
