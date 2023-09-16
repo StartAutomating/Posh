@@ -2652,6 +2652,35 @@ Pipe $Posh.Prompt to Get-Member to see what it can do.</Value>
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Recommendation</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Update</Name>
+        <ReferencedMemberName>Install</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Install</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Installs the recommended module
+.DESCRIPTION
+    Uses Install-Module to install the recommended module.
+#&gt;
+param(
+
+)
+
+if ($this.Name -and -not $this.Url) {    
+    Install-Module $this.Name -Scope CurrentUser -Force
+}
+
+
+                    </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.RSS.Article</Name>
     <Members>
       <AliasProperty>
@@ -3416,6 +3445,51 @@ $this.LinkList(@(
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>ModuleProfile</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Module's Profile
+.DESCRIPTION
+    Gets the profile file associated with the module.
+
+    Any module can have a file within the same directory as $profile, named `$($this.Name).profile.ps1`.
+
+    This file may be loaded when the module loads, or anytime thereafter.
+#&gt;
+if (-not $profile) { return ''}
+($profile | 
+    Split-Path | 
+    Join-Path -ChildPath "$($this.Name).profile.ps1"
+).ToString()
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ModuleProfiles</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Module's Profiles
+.DESCRIPTION
+    Gets the profile files associated with the module.
+
+    Any module can have a file within the same directory any valid $profile location, named `$($this.Name).profile.ps1`.
+
+    This file may be loaded when the module loads, or anytime thereafter.
+#&gt;
+if (-not $profile) { return @()}
+,@(@($profile.psobject.properties | 
+        Where-Object MemberType -EQ NoteProperty |
+        Select-Object -ExpandProperty Value) -as [io.fileinfo[]] | 
+        Split-Path | 
+        Select-Object -Unique |
+        Where-Object { $_ } | 
+        Join-Path -ChildPath "$($this.Name).profile.ps1" |
+        Where-Object { $_ | Test-Path } |
+        ForEach-Object { $_.FullName })
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>News</Name>
         <GetScriptBlock>
                         &lt;#
@@ -3443,6 +3517,22 @@ if (-not $this.'.News') {
 }
 
 $this.'.News'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Presentation</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets module presentations
+.DESCRIPTION
+    Gets PowerPoint presentations and templates located within a PowerShell module.
+#&gt;
+$this |
+    Split-Path |
+    Get-ChildItem -Recurse |
+    Where-Object Extension -In '.pptx', '.potx','.ppt' |
+    Select-Object -Unique
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>

@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1.8'
+    ModuleVersion = '0.1.9'
     FormatsToProcess = 'Posh.format.ps1xml'
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
@@ -15,15 +15,18 @@
             IconURI    = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
             Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized', 'Prompt', 'Customization'
             ReleaseNotes = @'
-## Posh 0.1.8: Posh Formatting
+## Posh 0.1.9: Posh Community
 
-* New Formatting:
-  * Get-Service shows up in color! (#265)
-  * Get-Event gets a table formatter (and .EventID, .SourceID, .Time) (#268)
-  * Get-FileHash groups by algorithm and autosizes (#270)
-* Improving Formatting:
-  * Get-Command now shows Source, not Module (#266) ( thanks @ehmiiz ! )
-  * Improving Enclosure Support in Links (#272)
+* New Blog: Christian Ritter ( thanks @HCRitter ! )
+
+* Additions to all community modules (when Posh is also loaded)
+  * PSModuleInfo.Presentation (#262)
+  * Module Profiles (#273)
+  * Installable Recommendations (#233)
+
+* Posh now runs any .ModuleProfiles at the end of it's import (#164)
+
+* Integrated [PSA](https://github.com/StartAutomating/PSA) for automated annoucements on BlueSky.
 
 ---
 
@@ -85,7 +88,8 @@ More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CH
             @{"Pipe How"="https://pipe.how/index.xml"},
             @{"PowerShell is Fun"="https://powershellisfun.com/feed/"},
             @{"PowerShell Weekly"="https://psweekly.dowst.dev/feed/"},
-            @{"Stefan Stranger"="https://stefanstranger.github.io/feed"}
+            @{"Stefan Stranger"="https://stefanstranger.github.io/feed"},
+            @{"Christian Ritter"="https://devdojo.com/feed/hcritter"}
 
         # Got more News?  Feel free to file an issue and open a PR to add your feed.
 

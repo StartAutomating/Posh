@@ -85,7 +85,16 @@ $poshCommands =
 
 $posh | Add-Member NoteProperty Commands $poshCommands -Force
 
-Export-ModuleMember -Variable posh 
+$exportedVariables = @('posh')
+
+$hasModuleProfiles = $posh.ModuleProfiles
+if ($hasModuleProfiles) {
+    foreach ($moduleProfile in $hasModuleProfiles) {
+        . $moduleProfile
+    }
+}
+
+Export-ModuleMember -Variable $exportedVariables
 
 $posh.OnRemove = {
     

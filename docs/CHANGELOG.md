@@ -1,3 +1,18 @@
+## Posh 0.1.9: Posh Community
+
+* New Blog: Christian Ritter ( thanks @HCRitter ! )
+
+* Additions to all community modules (when Posh is also loaded)
+  * PSModuleInfo.Presentation (#262)
+  * Module Profiles (#273)
+  * Installable Recommendations (#233)
+
+* Posh now runs any .ModuleProfiles at the end of it's import (#164)
+
+* Integrated [PSA](https://github.com/StartAutomating/PSA) for automated annoucements on BlueSky.
+
+---
+
 ## Posh 0.1.8: Posh Formatting
 
 * New Formatting:
