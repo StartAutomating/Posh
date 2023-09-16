@@ -85,7 +85,8 @@ More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CH
             @{"Pipe How"="https://pipe.how/index.xml"},
             @{"PowerShell is Fun"="https://powershellisfun.com/feed/"},
             @{"PowerShell Weekly"="https://psweekly.dowst.dev/feed/"},
-            @{"Stefan Stranger"="https://stefanstranger.github.io/feed"}
+            @{"Stefan Stranger"="https://stefanstranger.github.io/feed"},
+            @{"Christian Ritter"="https://devdojo.com/feed/hcritter"}
 
         # Got more News?  Feel free to file an issue and open a PR to add your feed.
 
