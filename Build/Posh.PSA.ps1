@@ -26,11 +26,21 @@ $isMergeToMain =
 
 if ($isMergeToMain) {
     $psaModule = Get-Module PSA
-    $FixedIntro  = "PSA : PSA version $($psaModule.Version) is out."
-    $RandomComponent = "Automate the At Protocol", "Automate your Announcements"
-    $fullMessage = "$FixedIntro $($RandomComponent | Get-Random) with PowerShell"
+
+    $fullMessage = @(
+        "PowerShell just got a little more Posh",
+        "The Shell just got a little more sweet",
+        "PowerShell just got more color in it's cheeks",
+        "PowerShell just got a bit more pretty" | Get-Random
+
+        "Posh $($psaModule.Version) is out!"
+    )    
+    
     Send-AtProto -Text $fullMessage -WebCard @{
-        Url = "https://github.com/StartAutomating/PSA"
+        Url = "https://github.com/StartAutomating/Posh"
+    } -LinkPattern @{
+        "Posh" = "https://github.com/StartAutomating/Posh"
     }
+    
     return
 }
