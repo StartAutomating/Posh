@@ -1687,6 +1687,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <Name>Assemblies</Name>
         <ReferencedMemberName>Assembly</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Types</Name>
+        <ReferencedMemberName>Type</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>Assembly</Name>
         <GetScriptBlock>
@@ -1701,6 +1705,36 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     $Posh.Net.Assemblies
 #&gt;
 [AppDomain]::CurrentDomain.GetAssemblies()
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Type</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets loaded types
+.DESCRIPTION
+    Gets all currently loaded types.
+.EXAMPLE
+    $Posh.Net.Type
+.EXAMPLE
+    $Posh.Net.Types    
+#&gt;
+if (-not ($this.'.Types')) {
+    $this | 
+        Add-Member NoteProperty '.Types' -Force -Value @(
+            foreach ($assembly in $this.Assembly) {
+                try {
+                    $assembly.GetTypes()
+                } catch {
+                    $ex = $_
+                    $error.RemoveAt(0) 
+                }
+            }
+        )
+}
+
+$this.'.Types'
                     </GetScriptBlock>
       </ScriptProperty>
     </Members>
