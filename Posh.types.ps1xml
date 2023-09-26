@@ -1708,6 +1708,24 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Public</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets public types
+.DESCRIPTION
+    Gets all currently loaded public types.
+.EXAMPLE
+    $Posh.Net.Public
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsPublic) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Type</Name>
         <GetScriptBlock>
                         &lt;#
