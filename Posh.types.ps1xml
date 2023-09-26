@@ -1681,6 +1681,31 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     </Members>
   </Type>
   <Type>
+    <Name>Posh.NET</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Assemblies</Name>
+        <ReferencedMemberName>Assembly</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Assembly</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets loaded assemblies
+.DESCRIPTION
+    Gets the currently loaded assemblies.
+.EXAMPLE
+    $Posh.Net.Assembly
+.EXAMPLE
+    $Posh.Net.Assemblies
+#&gt;
+[AppDomain]::CurrentDomain.GetAssemblies()
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Parameters</Name>
     <Members>
       <ScriptMethod>
