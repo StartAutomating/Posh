@@ -1688,6 +1688,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Assembly</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Enums</Name>
+        <ReferencedMemberName>Enum</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Interfaces</Name>
         <ReferencedMemberName>Interface</ReferencedMemberName>
       </AliasProperty>
@@ -1709,6 +1713,26 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     $Posh.Net.Assemblies
 #&gt;
 [AppDomain]::CurrentDomain.GetAssemblies()
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Enum</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets enumerated typed
+.DESCRIPTION
+    Gets all currently loaded enumerated types
+.EXAMPLE
+    $Posh.Net.Enum
+.EXAMPLE
+    $Posh.Net.Enums
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsEnum) {
+        $type
+    }
+}
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
