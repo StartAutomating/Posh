@@ -1684,6 +1684,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     <Name>Posh.NET</Name>
     <Members>
       <AliasProperty>
+        <Name>Abstracts</Name>
+        <ReferencedMemberName>Abstract</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Assemblies</Name>
         <ReferencedMemberName>Assembly</ReferencedMemberName>
       </AliasProperty>
@@ -1699,6 +1703,24 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <Name>Types</Name>
         <ReferencedMemberName>Type</ReferencedMemberName>
       </AliasProperty>
+      <ScriptProperty>
+        <Name>Abstract</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets abstract types.
+.DESCRIPTION
+    Gets currently loaded abstract types.
+.EXAMPLE
+    $posh.Net.Abstract
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.Attributes -band 'Abstract') {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
       <ScriptProperty>
         <Name>Assembly</Name>
         <GetScriptBlock>
