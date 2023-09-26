@@ -1696,6 +1696,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Attribute</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Delegates</Name>
+        <ReferencedMemberName>Delegate</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Enums</Name>
         <ReferencedMemberName>Enum</ReferencedMemberName>
       </AliasProperty>
@@ -1760,6 +1764,26 @@ foreach ($type in $this.Type) {
 #&gt;
 foreach ($type in $this.Type) {
     if ($type.IsSubclassOf([Attribute])) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Delegate</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets delegates
+.DESCRIPTION
+    Gets all currently loaded delegates.
+.EXAMPLE
+    $Posh.Net.Delegate
+.EXAMPLE
+    $Posh.Net.Delegates
+#&gt;
+foreach ($type in $this.Public) {
+    if ($type.IsSubclassOf([Delegate])) {
         $type
     }
 }
