@@ -1692,6 +1692,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Assembly</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Attributes</Name>
+        <ReferencedMemberName>Attribute</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Enums</Name>
         <ReferencedMemberName>Enum</ReferencedMemberName>
       </AliasProperty>
@@ -1739,6 +1743,26 @@ foreach ($type in $this.Type) {
     $Posh.Net.Assemblies
 #&gt;
 [AppDomain]::CurrentDomain.GetAssemblies()
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Attribute</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets attribute types
+.DESCRIPTION
+    Gets all currently loaded attribute types
+.EXAMPLE
+    $Posh.Net.Attribute
+.EXAMPLE
+    $Posh.Net.Attributes
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsSubclassOf([Attribute])) {
+        $type
+    }
+}
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
