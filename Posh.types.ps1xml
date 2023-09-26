@@ -1696,6 +1696,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Enum</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Generics</Name>
+        <ReferencedMemberName>Generic</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Interfaces</Name>
         <ReferencedMemberName>Interface</ReferencedMemberName>
       </AliasProperty>
@@ -1752,6 +1756,26 @@ foreach ($type in $this.Type) {
 #&gt;
 foreach ($type in $this.Type) {
     if ($type.IsEnum) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Generic</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets generic types.
+.DESCRIPTION
+    Gets currently loaded generic types.
+.EXAMPLE
+    $Posh.Net.Generic
+.EXAMPLE
+    $Posh.Net.Generics
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsGenericType) {
         $type
     }
 }
