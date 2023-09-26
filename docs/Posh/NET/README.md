@@ -4,6 +4,7 @@
 ### Script Methods
 
 
+* [get_Abstract](get_Abstract.md)
 * [get_Assembly](get_Assembly.md)
 * [get_Enum](get_Enum.md)
 * [get_Interface](get_Interface.md)
