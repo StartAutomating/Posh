@@ -1,3 +1,4 @@
 @{
-    Assemblies = "Assembly"    
+    Assemblies = "Assembly"
+    Types = "Type"
 }
