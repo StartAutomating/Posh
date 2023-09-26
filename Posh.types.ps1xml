@@ -1688,6 +1688,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Assembly</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Interfaces</Name>
+        <ReferencedMemberName>Interface</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Types</Name>
         <ReferencedMemberName>Type</ReferencedMemberName>
       </AliasProperty>
@@ -1705,6 +1709,22 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     $Posh.Net.Assemblies
 #&gt;
 [AppDomain]::CurrentDomain.GetAssemblies()
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Interface</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets all interfaces
+.DESCRIPTION
+    Gets all currently loaded interfaces
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsInterface) {
+        $type
+    }
+}
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
