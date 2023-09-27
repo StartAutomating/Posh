@@ -7,5 +7,6 @@
     Generics = "Generic"
     Types = "Type"
     Interfaces = "Interface"
-    Enums = "Enum"    
+    Enums = "Enum"
+    ValueTypes = "ValueType"    
 }
