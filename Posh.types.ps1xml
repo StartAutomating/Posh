@@ -1719,6 +1719,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <Name>Types</Name>
         <ReferencedMemberName>Type</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>ValueTypes</Name>
+        <ReferencedMemberName>ValueType</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>Abstract</Name>
         <GetScriptBlock>
@@ -1934,6 +1938,28 @@ if (-not ($this.'.Types')) {
 }
 
 $this.'.Types'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ValueType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Value Types
+.DESCRIPTION
+    Gets currently loaded .NET value types
+    
+    (types that represent a single value)
+.EXAMPLE
+    $posh.Net.ValueType
+.EXAMPLE
+    $Posh.Net.ValueTypes
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsValueType) {
+        $type
+    }
+}
                     </GetScriptBlock>
       </ScriptProperty>
     </Members>
