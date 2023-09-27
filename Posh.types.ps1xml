@@ -1696,6 +1696,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Attribute</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Cmdlets</Name>
+        <ReferencedMemberName>Cmdlet</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Delegates</Name>
         <ReferencedMemberName>Delegate</ReferencedMemberName>
       </AliasProperty>
@@ -1764,6 +1768,27 @@ foreach ($type in $this.Type) {
 #&gt;
 foreach ($type in $this.Type) {
     if ($type.IsSubclassOf([Attribute])) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Cmdlet</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets cmdlet types
+.DESCRIPTION
+    Gets .net types that are subclasses of Cmdlet.
+.EXAMPLE
+    $posh.Net.Cmdlet
+.EXAMPLE
+    $posh.Net.Cmdlets
+
+#&gt;
+foreach ($type in $this.Public) {
+    if ($type.IsSubclassOf([Management.Automation.Cmdlet])) {
         $type
     }
 }
