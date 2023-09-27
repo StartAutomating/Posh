@@ -7,6 +7,7 @@
 * [get_Abstract](get_Abstract.md)
 * [get_Assembly](get_Assembly.md)
 * [get_Attribute](get_Attribute.md)
+* [get_Cmdlet](get_Cmdlet.md)
 * [get_Delegate](get_Delegate.md)
 * [get_Enum](get_Enum.md)
 * [get_Generic](get_Generic.md)
