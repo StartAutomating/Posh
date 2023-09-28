@@ -1688,6 +1688,14 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Abstract</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Alias</Name>
+        <ReferencedMemberName>TypeAccelerator</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Aliases</Name>
+        <ReferencedMemberName>TypeAccelerator</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Assemblies</Name>
         <ReferencedMemberName>Assembly</ReferencedMemberName>
       </AliasProperty>
@@ -1718,6 +1726,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
       <AliasProperty>
         <Name>Interfaces</Name>
         <ReferencedMemberName>Interface</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>TypeAccelerators</Name>
+        <ReferencedMemberName>TypeAccelerator</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>Types</Name>
@@ -1980,6 +1992,34 @@ if (-not ($this.'.Types')) {
 }
 
 $this.'.Types'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>TypeAccelerator</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets type accelerators
+.DESCRIPTION
+    Gets currently loaded type accelerators.
+.EXAMPLE
+    $posh.Net.TypeAccelerator
+.EXAMPLE
+    $Posh.Net.TypeAccelerators
+.EXAMPLE
+    $Posh.Net.Alias
+.EXAMPLE
+    $Posh.Net.Aliases
+#&gt;
+
+$accelerators = ([psobject].assembly.gettype("System.Management.Automation.TypeAccelerators")::Get)
+$acceleratorOutput = [Ordered]@{PSTypeName='Posh.Type.Accelerator'}
+foreach ($kv in $accelerators.GetEnumerator()) {
+    if ($kv.Key -ne 'PSObject') {
+        $acceleratorOutput[$kv.Key] = $kv.Value    
+    }    
+}
+[PSCustomObject]$acceleratorOutput
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
