@@ -18,11 +18,12 @@ Write-FormatView -TypeName Posh -Action {
     Write-FormatViewExpression -Newline
     Write-FormatViewExpression -Newline
 
-    Write-FormatViewExpression -Style 'Foreground.Magenta' -ScriptBlock {        
+    Write-FormatViewExpression -Style 'Foreground.Magenta' -ScriptBlock {
         "To see PowerShell tips, try `$posh.Tips",
         "To see PowerShell links, use `$Posh.Links",
         "To see PowerShell module recommendations, get `$Posh.Recommends",
-        "To see PowerShell news, get `$Posh.News" | Get-Random
+        "To see PowerShell news, get `$Posh.News",
+        "To explore .NET in Powershell, try `$Posh.Net" | Get-Random
     }
 
     Write-FormatViewExpression -Newline
