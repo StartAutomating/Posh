@@ -15,8 +15,10 @@ if (-not ($this.'.Types')) {
                 try {
                     $assembly.GetTypes()
                 } catch {
+                    # An assembly can refuse to .GetTypes(), or otherwise have an exception
+                    # we do not want this to worry anyone, so we catch the exception
                     $ex = $_
-                    $error.RemoveAt(0) 
+                    $error.RemoveAt(0) # and remove it from $error
                 }
             }
         )
