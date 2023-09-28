@@ -1936,6 +1936,26 @@ foreach ($type in $this.Type) {
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Primitive</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets primitive types
+.DESCRIPTION
+    Gets all primitive types.
+
+    Primitive types are used to build all other types.
+.EXAMPLE
+    $Posh.Net.Primitive
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsPrimitive) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Private</Name>
         <GetScriptBlock>
                         &lt;#
