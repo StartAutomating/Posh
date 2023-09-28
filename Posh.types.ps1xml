@@ -1739,7 +1739,7 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
     $posh.Net.Abstract
 #&gt;
 foreach ($type in $this.Type) {
-    if ($type.Attributes -band 'Abstract') {
+    if ($type.Attributes -band 'Abstract' -and -not ($type.Attributes -band 'Sealed')) {
         $type
     }
 }
@@ -1929,6 +1929,24 @@ foreach ($type in $this.Type) {
 #&gt;
 foreach ($type in $this.Type) {
     if ($type.IsPublic) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Static</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets static types.
+.DESCRIPTION
+    Gets currently loaded static types.
+.EXAMPLE
+    $posh.Net.Abstract
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.Attributes -band 'Abstract,Sealed') {
         $type
     }
 }
