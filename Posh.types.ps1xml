@@ -1720,6 +1720,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Exception</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>ExtensionTypes</Name>
+        <ReferencedMemberName>ExtensionType</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Generics</Name>
         <ReferencedMemberName>Generic</ReferencedMemberName>
       </AliasProperty>
@@ -1870,6 +1874,27 @@ foreach ($type in $this.Type) {
 foreach ($type in $this.Type) {
     if ($type.IsSubclassOf([Exception])) {
         $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ExtensionType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets .NET extension types
+.DESCRIPTION
+    Gets .NET Extension Types.
+    
+    These types define extension methods for LINQ.
+#&gt;
+:nextType foreach ($type in $this.Type) {
+    foreach ($attr in $type.GetCustomAttributes($false)) {
+        if ($attr -is [Runtime.CompilerServices.ExtensionAttribute]) {
+            $type
+            continue nextType
+        }
     }
 }
                     </GetScriptBlock>
