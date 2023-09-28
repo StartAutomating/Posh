@@ -11,6 +11,7 @@
 * [get_Delegate](get_Delegate.md)
 * [get_Enum](get_Enum.md)
 * [get_Exception](get_Exception.md)
+* [get_ExtensionType](get_ExtensionType.md)
 * [get_Generic](get_Generic.md)
 * [get_Interface](get_Interface.md)
 * [get_Private](get_Private.md)
