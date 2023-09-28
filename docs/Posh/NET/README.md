@@ -14,6 +14,7 @@
 * [get_ExtensionType](get_ExtensionType.md)
 * [get_Generic](get_Generic.md)
 * [get_Interface](get_Interface.md)
+* [get_Primitive](get_Primitive.md)
 * [get_Private](get_Private.md)
 * [get_Public](get_Public.md)
 * [get_Static](get_Static.md)
