@@ -6,6 +6,7 @@
     Aliases = "TypeAccelerator"
     Enums = "Enum"
     Exceptions = "Exception"
+    ExtensionTypes = "ExtensionType"
     Cmdlets = "Cmdlet"
     Generics = "Generic"
     Delegates = "Delegate"
