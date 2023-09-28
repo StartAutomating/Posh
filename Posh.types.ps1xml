@@ -98,6 +98,16 @@ Get-Module
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>NET</Name>
+        <GetScriptBlock>
+                        if (-not $this.'.NET') {
+    $this | Add-Member NoteProperty '.NET' -Value ([PSCustomObject]@{PSTypeName='Posh.NET'})
+}
+
+$this.'.NET'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Process</Name>
         <GetScriptBlock>
                         &lt;#
@@ -1667,6 +1677,535 @@ There's a very useful module by the name of PSReadLine that helps handle advance
 Posh allows you to override the input function for PowerShell in a safe, stackable way.
 
 Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>Posh.NET</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Abstracts</Name>
+        <ReferencedMemberName>Abstract</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Alias</Name>
+        <ReferencedMemberName>TypeAccelerator</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Aliases</Name>
+        <ReferencedMemberName>TypeAccelerator</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Assemblies</Name>
+        <ReferencedMemberName>Assembly</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Attributes</Name>
+        <ReferencedMemberName>Attribute</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Cmdlets</Name>
+        <ReferencedMemberName>Cmdlet</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Delegates</Name>
+        <ReferencedMemberName>Delegate</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Enums</Name>
+        <ReferencedMemberName>Enum</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Exceptions</Name>
+        <ReferencedMemberName>Exception</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>ExtensionTypes</Name>
+        <ReferencedMemberName>ExtensionType</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Generics</Name>
+        <ReferencedMemberName>Generic</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Interfaces</Name>
+        <ReferencedMemberName>Interface</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>TypeAccelerators</Name>
+        <ReferencedMemberName>TypeAccelerator</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Types</Name>
+        <ReferencedMemberName>Type</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>ValueTypes</Name>
+        <ReferencedMemberName>ValueType</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>Refresh</Name>
+        <Script>
+                        foreach ($property in $this.psobject.properties) {
+    if ($property -is [psnoteproperty] -and 
+        $property.Name -match '^\.') {
+        $property.Value = @()
+    }
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>Abstract</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets abstract types.
+.DESCRIPTION
+    Gets currently loaded abstract types.
+.EXAMPLE
+    $posh.Net.Abstract
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.Attributes -band 'Abstract' -and -not ($type.Attributes -band 'Sealed')) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Assembly</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets loaded assemblies
+.DESCRIPTION
+    Gets the currently loaded assemblies.
+.EXAMPLE
+    $Posh.Net.Assembly
+.EXAMPLE
+    $Posh.Net.Assemblies
+#&gt;
+[AppDomain]::CurrentDomain.GetAssemblies()
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Attribute</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets attribute types
+.DESCRIPTION
+    Gets all currently loaded attribute types
+.EXAMPLE
+    $Posh.Net.Attribute
+.EXAMPLE
+    $Posh.Net.Attributes
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsSubclassOf([Attribute])) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Cmdlet</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets cmdlet types
+.DESCRIPTION
+    Gets .net types that are subclasses of Cmdlet.
+.EXAMPLE
+    $posh.Net.Cmdlet
+.EXAMPLE
+    $posh.Net.Cmdlets
+
+#&gt;
+foreach ($type in $this.Public) {
+    if ($type.IsSubclassOf([Management.Automation.Cmdlet])) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Delegate</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets delegates
+.DESCRIPTION
+    Gets all currently loaded delegates.
+.EXAMPLE
+    $Posh.Net.Delegate
+.EXAMPLE
+    $Posh.Net.Delegates
+#&gt;
+foreach ($type in $this.Public) {
+    if ($type.IsSubclassOf([Delegate])) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Enum</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets enumerated typed
+.DESCRIPTION
+    Gets all currently loaded enumerated types
+.EXAMPLE
+    $Posh.Net.Enum
+.EXAMPLE
+    $Posh.Net.Enums
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsEnum) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Exception</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets exception types
+.DESCRIPTION
+    Gets all currently loaded exception types
+.EXAMPLE
+    $Posh.Net.Exception
+.EXAMPLE
+    $Posh.Net.Exceptions
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsSubclassOf([Exception])) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ExtensionType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets .NET extension types
+.DESCRIPTION
+    Gets .NET Extension Types.
+    
+    These types define extension methods for LINQ.
+#&gt;
+:nextType foreach ($type in $this.Type) {
+    foreach ($attr in $type.GetCustomAttributes($false)) {
+        if ($attr -is [Runtime.CompilerServices.ExtensionAttribute]) {
+            $type
+            continue nextType
+        }
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Generic</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets generic types.
+.DESCRIPTION
+    Gets currently loaded generic types.
+.EXAMPLE
+    $Posh.Net.Generic
+.EXAMPLE
+    $Posh.Net.Generics
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsGenericType) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Interface</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets all interfaces
+.DESCRIPTION
+    Gets all currently loaded interfaces
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsInterface) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Primitive</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets primitive types
+.DESCRIPTION
+    Gets all primitive types.
+
+    Primitive types are used to build all other types.
+.EXAMPLE
+    $Posh.Net.Primitive
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsPrimitive) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Private</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets private types
+.DESCRIPTION
+    Gets all currently loaded private types
+.EXAMPLE
+    $Posh.Net.Private
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsNotPublic) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Public</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets public types
+.DESCRIPTION
+    Gets all currently loaded public types.
+.EXAMPLE
+    $Posh.Net.Public
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsPublic) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Static</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets static types.
+.DESCRIPTION
+    Gets currently loaded static types.
+.EXAMPLE
+    $posh.Net.Abstract
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.Attributes -band 'Abstract,Sealed') {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Type</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets loaded types
+.DESCRIPTION
+    Gets all currently loaded types.
+.EXAMPLE
+    $Posh.Net.Type
+.EXAMPLE
+    $Posh.Net.Types    
+#&gt;
+if (-not ($this.'.Types')) {
+    $this | 
+        Add-Member NoteProperty '.Types' -Force -Value @(
+            foreach ($assembly in $this.Assembly) {
+                try {
+                    $assembly.GetTypes()
+                } catch {
+                    # An assembly can refuse to .GetTypes(), or otherwise have an exception
+                    # we do not want this to worry anyone, so we catch the exception
+                    $ex = $_
+                    $error.RemoveAt(0) # and remove it from $error
+                }
+            }
+        )
+}
+
+$this.'.Types'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>TypeAccelerator</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets type accelerators
+.DESCRIPTION
+    Gets currently loaded type accelerators.
+.EXAMPLE
+    $posh.Net.TypeAccelerator
+.EXAMPLE
+    $Posh.Net.TypeAccelerators
+.EXAMPLE
+    $Posh.Net.Alias
+.EXAMPLE
+    $Posh.Net.Aliases
+#&gt;
+
+$accelerators = ([psobject].assembly.gettype("System.Management.Automation.TypeAccelerators")::Get)
+$acceleratorOutput = [Ordered]@{PSTypeName='Posh.Type.Accelerator'}
+foreach ($kv in $accelerators.GetEnumerator()) {
+    if ($kv.Key -ne 'PSObject') {
+        $acceleratorOutput[$kv.Key] = $kv.Value    
+    }    
+}
+[PSCustomObject]$acceleratorOutput
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets type accelerators
+.DESCRIPTION
+    Sets type accelerators (aliases for types)
+.EXAMPLE
+    $posh.Net.TypeAccelerator = @{'t'=[type]}
+.EXAMPLE
+    $posh.Net.Alias = 't10', [type]
+#&gt;
+param()
+
+$accelerators = [psobject].assembly.gettype("System.Management.Automation.TypeAccelerators")
+$currentString = ''
+
+$unrolledArgs = $args | . { process { $_ } }
+foreach ($arg in $unrolledArgs) {    
+    if ($arg -is [Collections.IDictionary]) {
+        
+        foreach ($kv in $arg.GetEnumerator()) {
+            if ($kv.Value -as [type]) {
+                $null = $accelerators::Add($kv.Key, $kv.Value)
+            }
+        }
+    }
+    elseif ($arg -is [string]) {
+        
+        $currentString = "$arg"
+    }
+    elseif ($arg -is [type] -and $currentString) {
+        
+        $null = $accelerators::Add($currentString, [type]$arg)
+        $currentString = ''
+    } else {
+        
+    }
+}
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ValueType</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Value Types
+.DESCRIPTION
+    Gets currently loaded .NET value types
+    
+    (types that represent a single value)
+.EXAMPLE
+    $posh.Net.ValueType
+.EXAMPLE
+    $Posh.Net.ValueTypes
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsValueType) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>README</Name>
+        <Value>### What Is .NET?
+
+.NET is a framework of tools for building almost anything you can imagine.
+
+PowerShell is built on top of .NET, and makes it easy to interactively explore.
+
+.NET is object-oriented and strongly typed.
+
+### $Posh.NET
+
+Posh makes .NET easier to explore.
+
+For example, to see all primitive types, just run:
+
+~~~PowerShell
+$Posh.Net.Primitive
+~~~
+
+To see all attributes, use:
+
+~~~PowerShell
+$Posh.Net.Attribute
+~~~
+
+To see all possible exceptions, use:
+
+~~~PowerShell
+$Posh.Net.Exceptions
+~~~
+
+To see everything $Posh.Net makes easier, pipe it to `Get-Member`
+
+~~~PowerShell
+$Posh.Net | Get-Member
+~~~
+
+### .NET Types in PowerShell
+
+You can reference any public .NET type in PowerShell by putting it within brackets:
+
+~~~PowerShell
+[int]
+~~~
+
+You can see if an object is a type using the -is operator:
+
+~~~PowerShell
+1 -is [int]
+~~~
+
+You can cast an object to a type by putting it before an expression:
+
+~~~PowerShell
+[int]"1"
+~~~
+
+If the object cannot be cast, you will get an exception.
+
+To see if you can cast an object, use the -as operator
+
+~~~PowerShell
+"1" -as [int]
+~~~</Value>
       </NoteProperty>
     </Members>
   </Type>

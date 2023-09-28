@@ -25,7 +25,7 @@ $isMergeToMain =
     $gitHubEvent.ref -eq 'refs/heads/main'
 
 if ($isMergeToMain) {
-    $psaModule = Get-Module PSA
+    Import-Module .\Posh.psd1 -Global    
 
     $fullMessage = @(
         "PowerShell just got a little more Posh",
@@ -33,13 +33,11 @@ if ($isMergeToMain) {
         "PowerShell just got more color in it's cheeks",
         "PowerShell just got a bit more pretty" | Get-Random
 
-        "Posh $($psaModule.Version) is out!"
+        "Posh $($posh.Version) is out!"
     )    
     
     Send-AtProto -Text $fullMessage -WebCard @{
         Url = "https://github.com/StartAutomating/Posh"
-    } -LinkPattern @{
-        "Posh" = "https://github.com/StartAutomating/Posh"
     }
     
     return

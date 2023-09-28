@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1.9'
+    ModuleVersion = '0.2'
     FormatsToProcess = 'Posh.format.ps1xml'
     TypesToProcess   = 'Posh.types.ps1xml'
     RootModule = 'Posh.psm1'
@@ -15,22 +15,32 @@
             IconURI    = 'https://raw.githubusercontent.com/StartAutomating/Posh/main/Assets/Posh.png'
             Tags = 'Posh', '.ps1xml', 'Format','Output','Types', 'Colorized', 'Prompt', 'Customization'
             ReleaseNotes = @'
-## Posh 0.1.9: Posh Community
+## Posh 0.2: Posh.NET:
 
-* New Blog: Christian Ritter ( thanks @HCRitter ! )
+Added Posh.Net Psuedotype (#282)
 
-* Additions to all community modules (when Posh is also loaded)
-  * PSModuleInfo.Presentation (#262)
-  * Module Profiles (#273)
-  * Installable Recommendations (#233)
+This makes .NET types easier to explore in Posh
 
-* Posh now runs any .ModuleProfiles at the end of it's import (#164)
+For example:
 
-* Integrated [PSA](https://github.com/StartAutomating/PSA) for automated annoucements on BlueSky.
+~~~PowerShell
+$Posh.NET.Assembly # Get all assemblies
+$Posh.NET.Type # Get all types
+$Posh.Net.Generic # Get all generic types
+$Posh.Net.Attribute # Get all attributes
+~~~
+
+For a full list of everything you can do, run:
+
+~~~PowerShell
+$Posh.Net | Get-Member
+~~~
 
 ---
 
 More History in [CHANGELOG](https://github.com/StartAutomating/Posh/blob/main/CHANGELOG.md)
+
+Like It?  Star It!  Love It?  Support It!
 '@
         }
         FileTypes = @{
