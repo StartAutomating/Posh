@@ -18,4 +18,5 @@
 * [get_Static](get_Static.md)
 * [get_Type](get_Type.md)
 * [get_TypeAccelerator](get_TypeAccelerator.md)
+* [set_TypeAccelerator](set_TypeAccelerator.md)
 * [get_ValueType](get_ValueType.md)
