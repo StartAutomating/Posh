@@ -1,3 +1,26 @@
+## Posh 0.2: Posh.NET:
+
+Added Posh.Net Psuedotype (#282)
+
+This makes .NET types easier to explore in Posh
+
+For example:
+
+~~~PowerShell
+$Posh.NET.Assembly # Get all assemblies
+$Posh.NET.Type # Get all types
+$Posh.Net.Generic # Get all generic types
+$Posh.Net.Attribute # Get all attributes
+~~~
+
+For a full list of everything you can do, run:
+
+~~~PowerShell
+$Posh.Net | Get-Member
+~~~
+
+---
+
 ## Posh 0.1.9: Posh Community
 
 * New Blog: Christian Ritter ( thanks @HCRitter ! )
