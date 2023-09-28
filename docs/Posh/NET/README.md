@@ -17,4 +17,5 @@
 * [get_Public](get_Public.md)
 * [get_Static](get_Static.md)
 * [get_Type](get_Type.md)
+* [get_TypeAccelerator](get_TypeAccelerator.md)
 * [get_ValueType](get_ValueType.md)
