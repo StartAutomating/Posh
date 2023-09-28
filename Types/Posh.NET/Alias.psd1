@@ -4,6 +4,7 @@
     Attributes = "Attribute"
     Cmdlets = "Cmdlet"
     Delegates = "Delegate"
+    Exceptions = "Exception"
     Generics = "Generic"
     Types = "Type"
     Interfaces = "Interface"
