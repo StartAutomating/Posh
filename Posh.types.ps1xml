@@ -1708,6 +1708,10 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <ReferencedMemberName>Enum</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Exceptions</Name>
+        <ReferencedMemberName>Exception</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Generics</Name>
         <ReferencedMemberName>Generic</ReferencedMemberName>
       </AliasProperty>
@@ -1833,6 +1837,26 @@ foreach ($type in $this.Public) {
 #&gt;
 foreach ($type in $this.Type) {
     if ($type.IsEnum) {
+        $type
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Exception</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets exception types
+.DESCRIPTION
+    Gets all currently loaded exception types
+.EXAMPLE
+    $Posh.Net.Exception
+.EXAMPLE
+    $Posh.Net.Exceptions
+#&gt;
+foreach ($type in $this.Type) {
+    if ($type.IsSubclassOf([Exception])) {
         $type
     }
 }
