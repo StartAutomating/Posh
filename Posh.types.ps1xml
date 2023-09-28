@@ -1743,6 +1743,17 @@ Pipe `$posh.Input` into `Get-Member` to see what it can do.</Value>
         <Name>ValueTypes</Name>
         <ReferencedMemberName>ValueType</ReferencedMemberName>
       </AliasProperty>
+      <ScriptMethod>
+        <Name>Refresh</Name>
+        <Script>
+                        foreach ($property in $this.psobject.properties) {
+    if ($property -is [psnoteproperty] -and 
+        $property.Name -match '^\.') {
+        $property.Value = @()
+    }
+}
+                    </Script>
+      </ScriptMethod>
       <ScriptProperty>
         <Name>Abstract</Name>
         <GetScriptBlock>
