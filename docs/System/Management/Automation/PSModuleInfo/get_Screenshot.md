@@ -1,25 +1,16 @@
 System.Management.Automation.PSModuleInfo.get_Screenshot()
 ----------------------------------------------------------
 
-
-
-
 ### Synopsis
 Gets Module Screenshots
 
-
-
 ---
-
 
 ### Description
 
 Lists screenshots from this module.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -27,6 +18,5 @@ Lists screenshots from this module.
 ```PowerShell
 $posh.Screenshots
 ```
-
 
 ---
