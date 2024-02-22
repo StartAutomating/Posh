@@ -1,25 +1,16 @@
 Posh.Host.get_Height()
 ----------------------
 
-
-
-
 ### Synopsis
 Gets the height of the host
 
-
-
 ---
-
 
 ### Description
 
 Gets the height of the host (in characters).
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $posh.Host.Height
 ```PowerShell
 $Host.Height
 ```
-
 
 ---
