@@ -7,7 +7,7 @@ Write-FormatView -TypeName Posh -Action {
     Write-FormatViewExpression -Newline
     
     Write-FormatViewExpression -Style "Foreground.Blue", "Italic" -ScriptBlock {
-        $_.Description
+        $_.Taglines | Get-Random
     } 
     Write-FormatViewExpression -Newline
 
