@@ -1,25 +1,16 @@
 Posh.NET.get_Generic()
 ----------------------
 
-
-
-
 ### Synopsis
 Gets generic types.
 
-
-
 ---
-
 
 ### Description
 
 Gets currently loaded generic types.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $Posh.Net.Generic
 ```PowerShell
 $Posh.Net.Generics
 ```
-
 
 ---
