@@ -107,6 +107,15 @@ if ($hasModuleProfiles) {
 
 Export-ModuleMember -Variable $exportedVariables
 
+if ($MyModule.Mount) {
+    $MyModule.Mount()
+}
+
+if ($home -and $MyModule.Mount) {
+    $MyMyModule= "My$($myModule.name)"
+    $MyModule.Mount($MyMyModule, (Join-Path $home $MyMyModule))
+}
+
 $posh.OnRemove = {
     
     if ($posh.Prompt.Stack -and $posh.Prompt.Stack.Count) {
