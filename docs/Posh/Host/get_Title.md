@@ -1,25 +1,16 @@
 Posh.Host.get_Title()
 ---------------------
 
-
-
-
 ### Synopsis
 Gets the host's title
 
-
-
 ---
-
 
 ### Description
 
 Gets the host's window title.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -27,6 +18,5 @@ Gets the host's window title.
 ```PowerShell
 $Posh.Title
 ```
-
 
 ---
