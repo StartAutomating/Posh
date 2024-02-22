@@ -1,25 +1,16 @@
 Posh.NET.set_TypeAccelerator()
 ------------------------------
 
-
-
-
 ### Synopsis
 Sets type accelerators
 
-
-
 ---
-
 
 ### Description
 
 Sets type accelerators (aliases for types)
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $posh.Net.TypeAccelerator = @{'t'=[type]}
 ```PowerShell
 $posh.Net.Alias = 't10', [type]
 ```
-
 
 ---
