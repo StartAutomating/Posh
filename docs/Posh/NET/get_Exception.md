@@ -1,25 +1,16 @@
 Posh.NET.get_Exception()
 ------------------------
 
-
-
-
 ### Synopsis
 Gets exception types
 
-
-
 ---
-
 
 ### Description
 
 Gets all currently loaded exception types
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $Posh.Net.Exception
 ```PowerShell
 $Posh.Net.Exceptions
 ```
-
 
 ---
