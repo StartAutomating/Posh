@@ -1,25 +1,16 @@
 Posh.Host.get_Width()
 ---------------------
 
-
-
-
 ### Synopsis
 Gets the Width of the host
 
-
-
 ---
-
 
 ### Description
 
 Gets the Width of the host (in characters).
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $posh.Host.Width
 ```PowerShell
 $Host.Width
 ```
-
 
 ---
