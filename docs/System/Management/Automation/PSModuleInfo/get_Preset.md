@@ -1,16 +1,10 @@
 System.Management.Automation.PSModuleInfo.get_Preset()
 ------------------------------------------------------
 
-
-
-
 ### Synopsis
 Get's a module's presets
 
-
-
 ---
-
 
 ### Description
 
@@ -23,7 +17,5 @@ Any module can contain `*.preset(s)` files, of the extensions:
 * .clixml
 
 The collection of presets can be accessed in a Module's .Preset(s) properties
-
-
 
 ---
