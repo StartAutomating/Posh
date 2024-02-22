@@ -1,0 +1,4 @@
+@{
+    Borders = 'Boxes'
+    Box = 'Boxes'
+}
