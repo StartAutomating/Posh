@@ -1630,6 +1630,15 @@ return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
 │ │ │
 ╰─┴─╯</Value>
       </NoteProperty>
+      <NoteProperty>
+        <Name>LightTripleDash</Name>
+        <Value>┌┄┬┄┐
+┆ │ ┆
+├┄┼┄┤
+┆ │ ┆
+└┄┴┄┘
+</Value>
+      </NoteProperty>
     </Members>
   </Type>
   <Type>
