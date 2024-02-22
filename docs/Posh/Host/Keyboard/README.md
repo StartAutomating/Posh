@@ -5,3 +5,4 @@
 
 
 * [get_KeyPress](get_KeyPress.md)
+* [get_KeyUp](get_KeyUp.md)
