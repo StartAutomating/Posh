@@ -12,6 +12,11 @@ Update-TypeData -AppendPath (Join-Path $PSScriptRoot "Posh.types.ps1xml")
 # we can make the host information present more cleanly, 
 # and prevent people from digging into deep properties.
 [decorate('Posh.Host',Clear)]$global:Host
+# (of course, we can also make the deeper parts of hosting easier, too)
+$hostUI = $global:Host.UI
+[decorate('Posh.Host.UI',Clear)]$hostUI
+$hostRawUI = $hostUI.RawUI
+[decorate('Posh.Host.RawUI',Clear)]$hostRawUI
 # And we can manipulate the profile
 [decorate('Posh.Profiles',Clear)]$global:PROFILE
 
@@ -30,7 +35,7 @@ if ($global:PSStyle) {
 . (Join-Path $PSScriptRoot '@.ps1')
 
 # The next neat trick we do is decorate ourselves.
-$Posh = $MyInvocation.MyCommand.ScriptBlock.Module
+$Posh = $MyModule = $MyInvocation.MyCommand.ScriptBlock.Module
 $Posh.pstypenames.Insert(0,'Posh')
 
 #region Stackable Functions
@@ -100,8 +105,11 @@ $posh.OnRemove = {
     
     if ($posh.Prompt.Stack -and $posh.Prompt.Stack.Count) {
         $function:Prompt = $posh.Prompt.Stack.ToArray()[-1]
-    }
+    }    
+
     $host.pstypenames.Clear()
+    $host.ui.pstypenames.Clear()
+    $host.ui.RawUI.pstypenames.Clear()
     $global:ExecutionContext.pstypenames.clear()
     $global:error.pstypenames.clear()
     $global:PROFILE.pstypenames.clear()
