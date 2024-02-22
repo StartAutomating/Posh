@@ -1,25 +1,16 @@
 Posh.NET.get_Delegate()
 -----------------------
 
-
-
-
 ### Synopsis
 Gets delegates
 
-
-
 ---
-
 
 ### Description
 
 Gets all currently loaded delegates.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $Posh.Net.Delegate
 ```PowerShell
 $Posh.Net.Delegates
 ```
-
 
 ---
