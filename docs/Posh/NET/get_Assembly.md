@@ -1,25 +1,16 @@
 Posh.NET.get_Assembly()
 -----------------------
 
-
-
-
 ### Synopsis
 Gets loaded assemblies
 
-
-
 ---
-
 
 ### Description
 
 Gets the currently loaded assemblies.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $Posh.Net.Assembly
 ```PowerShell
 $Posh.Net.Assemblies
 ```
-
 
 ---
