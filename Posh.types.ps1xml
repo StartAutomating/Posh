@@ -1480,6 +1480,22 @@ if ($host.UI.RawUI.CursorPosition) {
     <Name>Posh.Host.Keyboard</Name>
     <Members>
       <ScriptProperty>
+        <Name>KeyDown</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the current KeyDown
+.DESCRIPTION
+    Gets the current KeyDown
+.EXAMPLE
+    $Posh.Host.Keyboard.KeyDown # Will almost always be enter, because you just ran it
+#&gt;
+while ($host.UI.RawUI.KeyAvailable) { 
+    $host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>KeyPress</Name>
         <GetScriptBlock>
                         &lt;#
