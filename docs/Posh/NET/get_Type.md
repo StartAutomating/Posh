@@ -1,25 +1,16 @@
 Posh.NET.get_Type()
 -------------------
 
-
-
-
 ### Synopsis
 Gets loaded types
 
-
-
 ---
-
 
 ### Description
 
 Gets all currently loaded types.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $Posh.Net.Type
 ```PowerShell
 $Posh.Net.Types
 ```
-
 
 ---
