@@ -15,6 +15,13 @@ $global:ExecutionContext.pstypenames.add('Posh.ExecutionContext')
 # and prevent people from digging into deep properties.
 $global:Host.pstypenames.clear()
 $global:Host.pstypenames.add('Posh.Host')
+# (of course, we can also make the deeper parts of hosting easier, too)
+$hostUI = $global:Host.UI
+$hostUI.pstypenames.clear()
+$hostUI.pstypenames.add('Posh.Host.UI')
+$hostRawUI = $hostUI.RawUI
+$hostRawUI.pstypenames.clear()
+$hostRawUI.pstypenames.add('Posh.Host.RawUI')
 # And we can manipulate the profile
 $global:PROFILE.pstypenames.clear()
 $global:PROFILE.pstypenames.add('Posh.Profiles')
@@ -34,7 +41,7 @@ if ($global:PSStyle) {
 . (Join-Path $PSScriptRoot '@.ps1')
 
 # The next neat trick we do is decorate ourselves.
-$Posh = $MyInvocation.MyCommand.ScriptBlock.Module
+$Posh = $MyModule = $MyInvocation.MyCommand.ScriptBlock.Module
 $Posh.pstypenames.Insert(0,'Posh')
 
 #region Stackable Functions
@@ -104,8 +111,11 @@ $posh.OnRemove = {
     
     if ($posh.Prompt.Stack -and $posh.Prompt.Stack.Count) {
         $function:Prompt = $posh.Prompt.Stack.ToArray()[-1]
-    }
+    }    
+
     $host.pstypenames.Clear()
+    $host.ui.pstypenames.Clear()
+    $host.ui.RawUI.pstypenames.Clear()
     $global:ExecutionContext.pstypenames.clear()
     $global:error.pstypenames.clear()
     $global:PROFILE.pstypenames.clear()
