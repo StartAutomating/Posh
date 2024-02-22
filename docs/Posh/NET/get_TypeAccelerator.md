@@ -1,25 +1,16 @@
 Posh.NET.get_TypeAccelerator()
 ------------------------------
 
-
-
-
 ### Synopsis
 Gets type accelerators
 
-
-
 ---
-
 
 ### Description
 
 Gets currently loaded type accelerators.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -42,6 +33,5 @@ $Posh.Net.Alias
 ```PowerShell
 $Posh.Net.Aliases
 ```
-
 
 ---
