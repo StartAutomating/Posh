@@ -1580,6 +1580,19 @@ return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Host.UI.Boxes</Name>
+    <Members>
+      <NoteProperty>
+        <Name>Double</Name>
+        <Value>╔═╦═╗
+║ ║ ║
+╠═╬═║
+║ ║ ║
+╚═╩═╝</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Input</Name>
     <Members>
       <AliasProperty>
