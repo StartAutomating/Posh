@@ -15,4 +15,5 @@
     Feed = 'News'
     Discussions = 'Discussion'
     Issues = 'Issue'
+    Taglines = 'Tagline'
 }
