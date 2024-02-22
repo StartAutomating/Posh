@@ -1,22 +1,13 @@
 Posh.Commands.FindExtensions()
 ------------------------------
 
-
-
-
 ### Synopsis
 
-
-
-
 ---
-
 
 ### Description
 
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -24,6 +15,5 @@ Posh.Commands.FindExtensions()
 ```PowerShell
 $posh.Commands.FindExtensions($posh, "$pwd")
 ```
-
 
 ---
