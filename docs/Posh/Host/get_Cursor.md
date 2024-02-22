@@ -1,25 +1,16 @@
 Posh.Host.get_Cursor()
 ----------------------
 
-
-
-
 ### Synopsis
 Gets the cursor
 
-
-
 ---
-
 
 ### Description
 
 Gets the console cursor.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -37,6 +28,5 @@ $Posh.Host.Cursor
 ```PowerShell
 $Posh.Cursor.Position
 ```
-
 
 ---
