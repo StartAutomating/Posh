@@ -83,6 +83,13 @@ Like It?  Star It!  Love It?  Support It!
             "Improving the Shell Experience (from RTPSUG)" = "https://www.youtube.com/watch?v=iZgcTD_uN-w"
         }
 
+        Taglines = 
+            "PowerShell made Posh",
+            "Spice up your Shell",
+            "Add some color to your console",
+            "PowerShell made pretty",
+            "Fancy Formatting for your Shell"
+
         News = 
             @{"PowerShell Blog" = "https://devblogs.microsoft.com/powershell/feed/"},
             @{"PowerShell Podcast"="https://feed.podbean.com/powershellpodcast/feed.xml"}, 
