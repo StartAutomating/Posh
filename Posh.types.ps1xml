@@ -1645,8 +1645,12 @@ return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
       </NoteProperty>
       <NoteProperty>
         <Name>Light</Name>
-        <Value>
-        </Value>
+        <Value>┌─┬─┐
+│ │ │
+├─┼─┤
+│ │ │
+└─┴─┘
+</Value>
       </NoteProperty>
       <NoteProperty>
         <Name>LightDash</Name>
