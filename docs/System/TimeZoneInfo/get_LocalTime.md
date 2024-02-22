@@ -1,25 +1,16 @@
 System.TimeZoneInfo.get_LocalTime()
 -----------------------------------
 
-
-
-
 ### Synopsis
 Gets the local time
 
-
-
 ---
-
 
 ### Description
 
 Gets the local time for a timezone.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ Get-TimeZone -ListAvailable
 ```PowerShell
 Get-TimeZone | Select LocalTime
 ```
-
 
 ---
