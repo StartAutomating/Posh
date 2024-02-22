@@ -1,25 +1,16 @@
 Posh.get_Errors()
 -----------------
 
-
-
-
 ### Synopsis
 Returns all errors
 
-
-
 ---
-
 
 ### Description
 
 Returns all errors from the current session
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -27,6 +18,5 @@ Returns all errors from the current session
 ```PowerShell
 $Posh.Errors
 ```
-
 
 ---
