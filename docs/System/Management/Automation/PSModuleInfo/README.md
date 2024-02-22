@@ -18,6 +18,7 @@
 * [get_README](get_README.md)
 * [get_Recommendation](get_Recommendation.md)
 * [get_Screenshot](get_Screenshot.md)
+* [get_Tagline](get_Tagline.md)
 * [get_Test](get_Test.md)
 * [get_Tip](get_Tip.md)
 * [get_Video](get_Video.md)
