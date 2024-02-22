@@ -1,16 +1,10 @@
 Posh.Host.Cursor.SetPosition()
 ------------------------------
 
-
-
-
 ### Synopsis
 Sets the cursor position.
 
-
-
 ---
-
 
 ### Description
 
@@ -25,14 +19,9 @@ The position can also be provided as an object with any of the following propert
 * X/Column/Left
 * Y/Row/Top
 
-
-
 ---
-
 
 ### Notes
 This method returns an escape sequence (it should be invisible).
-
-
 
 ---
