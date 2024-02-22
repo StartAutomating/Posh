@@ -1,25 +1,16 @@
 Posh.NET.get_Static()
 ---------------------
 
-
-
-
 ### Synopsis
 Gets static types.
 
-
-
 ---
-
 
 ### Description
 
 Gets currently loaded static types.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -27,6 +18,5 @@ Gets currently loaded static types.
 ```PowerShell
 $posh.Net.Abstract
 ```
-
 
 ---
