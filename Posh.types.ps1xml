@@ -1466,6 +1466,29 @@ if ($host.UI.RawUI.CursorPosition) {
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Host.UI</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Cursor</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the cursor
+.DESCRIPTION
+    Gets the console cursor.
+.EXAMPLE
+    $Host.UI.Cursor
+.EXAMPLE
+    $Posh.Host.UI.Cursor
+.EXAMPLE
+    $Posh.Host.UI.Cursor.Position
+#&gt;
+return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Input</Name>
     <Members>
       <AliasProperty>
