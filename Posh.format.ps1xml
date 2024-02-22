@@ -6846,7 +6846,7 @@ $module = $_
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock>
-        $_.Description
+        $_.Taglines | Get-Random
     </ScriptBlock>
               </ExpressionBinding>
               <ExpressionBinding>
