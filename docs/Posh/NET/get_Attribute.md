@@ -1,25 +1,16 @@
 Posh.NET.get_Attribute()
 ------------------------
 
-
-
-
 ### Synopsis
 Gets attribute types
 
-
-
 ---
-
 
 ### Description
 
 Gets all currently loaded attribute types
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $Posh.Net.Attribute
 ```PowerShell
 $Posh.Net.Attributes
 ```
-
 
 ---
