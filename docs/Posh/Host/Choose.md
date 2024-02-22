@@ -1,16 +1,10 @@
 Posh.Host.Choose()
 ------------------
 
-
-
-
 ### Synopsis
 Prompts a choice
 
-
-
 ---
-
 
 ### Description
 
@@ -24,10 +18,7 @@ Strings will be outputted as a message.
 
 A boolean will indicate multiple items can be chosen.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -38,6 +29,5 @@ $Posh.Host.Choose(
     @("Cake", "Death")
 )
 ```
-
 
 ---
