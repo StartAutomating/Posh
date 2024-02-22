@@ -1145,6 +1145,17 @@ $this.UI.RawUI.BufferSize.Height
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Keyboard</Name>
+        <GetScriptBlock>
+                        if (-not $this.'.Keyboard') {
+    Add-Member -InputObject $this -MemberType NoteProperty -Name '.Keyboard' -Value (
+        [PSCustomObject]@{PSTypeName='Posh.Host.Keyboard'}
+    ) -Force
+}
+$this.'.Keyboard'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Title</Name>
         <GetScriptBlock>
                         &lt;#
