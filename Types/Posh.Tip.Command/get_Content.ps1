@@ -1,3 +1,9 @@
+<#
+.SYNOPSIS
+    Gets Tip content
+.DESCRIPTION
+    Gets the content of a Tip file
+#>
 switch -regex ($this.Source) {
     '\.psd1$' {
         (Import-LocalizedData -BaseDirectory ($this.Source | Split-Path) -FileName ($this.Source | Split-Path -Leaf)).Content
