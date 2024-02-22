@@ -1495,6 +1495,22 @@ while ($host.UI.RawUI.KeyAvailable) {
 }
                     </GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>KeyUp</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the current KeyUp
+.DESCRIPTION
+    Gets the current KeyUp event
+.EXAMPLE
+    $Posh.Host.Keyboard.KeyUp # Will almost always be enter, because you just ran it
+#&gt;
+while ($host.UI.RawUI.KeyAvailable) { 
+    $host.UI.RawUI.ReadKey('NoEcho,IncludeKeyUp')
+} 
+                    </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
   <Type>
