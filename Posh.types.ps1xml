@@ -1591,6 +1591,14 @@ return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
 ╚═╩═╝</Value>
       </NoteProperty>
       <NoteProperty>
+        <Name>DoubleColumns</Name>
+        <Value>╔═╦═╗
+║ ║ ║
+╠═╬═║
+║ ║ ║
+╚═╩═╝</Value>
+      </NoteProperty>
+      <NoteProperty>
         <Name>Heavy</Name>
         <Value>┏━┳━┓
 ┃ ┃ ┃
