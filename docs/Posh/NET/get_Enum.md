@@ -1,25 +1,16 @@
 Posh.NET.get_Enum()
 -------------------
 
-
-
-
 ### Synopsis
 Gets enumerated typed
 
-
-
 ---
-
 
 ### Description
 
 Gets all currently loaded enumerated types
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -32,6 +23,5 @@ $Posh.Net.Enum
 ```PowerShell
 $Posh.Net.Enums
 ```
-
 
 ---
