@@ -1580,6 +1580,28 @@ return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
     </Members>
   </Type>
   <Type>
+    <Name>Posh.Host.UI.Box</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>TopLeft</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a box's TopLeft character
+.DESCRIPTION
+    Gets the TopLeft character in a box
+#&gt;
+$theseLines = @($this -split '[\r\n]+' -ne '')
+
+if (-not $theseLines) { return }
+$theseLines[0].Substring(0,1)
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
     <Name>Posh.Host.UI.Boxes</Name>
     <Members>
       <ScriptMethod>
