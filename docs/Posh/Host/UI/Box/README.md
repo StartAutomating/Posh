@@ -4,6 +4,7 @@
 ### Script Methods
 
 
+* [GetBorderLine](GetBorderLine.md)
 * [get_BottomLeft](get_BottomLeft.md)
 * [get_BottomMiddle](get_BottomMiddle.md)
 * [get_BottomRight](get_BottomRight.md)
