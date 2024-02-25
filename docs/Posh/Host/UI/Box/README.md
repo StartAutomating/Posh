@@ -13,6 +13,7 @@
 * [get_Middle](get_Middle.md)
 * [get_MiddleLeft](get_MiddleLeft.md)
 * [get_MiddleRight](get_MiddleRight.md)
+* [get_MiddleVerticalWall](get_MiddleVerticalWall.md)
 * [get_MiddleWall](get_MiddleWall.md)
 * [get_RightWall](get_RightWall.md)
 * [get_TopLeft](get_TopLeft.md)
