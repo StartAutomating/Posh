@@ -11,3 +11,8 @@ Gets a box's Bottom Middle character
 Gets the Bottom Middle character in a box
 
 ---
+
+### Notes
+If there is only one line, and it is shorter than 5 characters, then the Bottom Left will be considered the Bottom Middle
+
+---
