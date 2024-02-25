@@ -2159,11 +2159,11 @@ if ($this.$BoxName -is [string]) {
       </NoteProperty>
       <NoteProperty>
         <Name>MixedShade</Name>
-        <Value>█▒░▒█
+        <Value>█░▒░█
 █ ▒ █
-█▒░▒█
+█░▒░█
 █ ▒ █
-█▒░▒█</Value>
+█░▒░█</Value>
       </NoteProperty>
       <NoteProperty>
         <Name>PipeDash</Name>
