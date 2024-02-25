@@ -1582,6 +1582,29 @@ return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
   <Type>
     <Name>Posh.Host.UI.Boxes</Name>
     <Members>
+      <ScriptMethod>
+        <Name>New</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Creates a new box
+.DESCRIPTION
+    Creates a new box, based off of a box shape name.
+#&gt;
+param(
+# The name of the box shape name.
+[Parameter(Mandatory)]
+[string]
+$BoxName
+)
+
+if ($this.$BoxName -is [string]) {
+    $newBoxObject = [PSObject]::new("$($this.$BoxName)")
+    $newBoxObject.pstypenames.insert(0,'Posh.Host.UI.Box')
+    $newBoxObject
+}
+                    </Script>
+      </ScriptMethod>
       <NoteProperty>
         <Name>Double</Name>
         <Value>╔═╦═╗
