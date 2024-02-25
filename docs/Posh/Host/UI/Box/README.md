@@ -9,6 +9,7 @@
 * [get_BottomRight](get_BottomRight.md)
 * [get_Middle](get_Middle.md)
 * [get_MiddleLeft](get_MiddleLeft.md)
+* [get_MiddleRight](get_MiddleRight.md)
 * [get_TopLeft](get_TopLeft.md)
 * [get_TopMiddle](get_TopMiddle.md)
 * [get_TopRight](get_TopRight.md)
