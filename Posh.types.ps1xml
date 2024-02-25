@@ -1586,7 +1586,7 @@ return ([PSCustomObject]@{PSTypeName='Posh.Host.Cursor'})
         <Name>Double</Name>
         <Value>╔═╦═╗
 ║ ║ ║
-╠═╬═║
+╠═╬═╣
 ║ ║ ║
 ╚═╩═╝</Value>
       </NoteProperty>
