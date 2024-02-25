@@ -36,6 +36,7 @@ $this."${lineType}Left",
 
 if (-not $wall) { $wall = ' '}
 if (-not $left) { $left = $this.LeftWall }
+if (-not $middle) { $middle = $this.MiddleWall }
 if (-not $right) { $right = $this.RightWall }
 if (-not $ColumnWidth) {
     return $(switch ($width) {
