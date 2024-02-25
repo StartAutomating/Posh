@@ -1874,23 +1874,16 @@ $theseLines = @($this -split '[\r\n]+' -ne '')
 if (-not $theseLines) { return }
 $theLine = $theseLines[[Math]::Floor($theseLines.Length / 2)]
 if ($theLine.Length -lt 5) {
-    # If there is only one line, it is between two and five characters    
-    if ($theLine.Length -ge 2) {
-        # pick the second character as the top wall
-        $theLine.Substring(1,1)
-    } else {
-        # (if there was only one character, it's the top wall)
-        $theLine.Substring(0,1)
-    }    
+    # If there is only one line, it is less than five characters    
+    return $theLine.Substring(0,1) # treat the upper left as the vertical wall.
 } 
 elseif ($theseLines.Length -gt 1) {
-    $theLine = $theseLines[[Math]::Floor($theseLines.Length / 2) - 1]
-    $theLine.Substring(([Math]::Floor($theLine.Length / 2)), 1)
+    $theLine = $theseLines[[Math]::Floor($theseLines.Length / 2) - 1]    
 }
-else {
-    # Otherwise, pick one left of the middle in the line
-    $theLine.Substring(([Math]::Floor($theLine.Length / 2) - 1), 1)
-}
+
+# Otherwise, pick the middle of the line
+$theLine.Substring(([Math]::Floor($theLine.Length / 2)), 1)
+
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
