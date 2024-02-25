@@ -15,7 +15,7 @@ if ($theseLines.Length -eq 1 -and $theseLines[0].Length -lt 5) {
     $theseLines[0].Substring(0,1)
 } else {
     $theLine = $theseLines[[Math]::Floor($theseLines.Length/2)]
-    $theLine[[Math]::Floor($theLine.Length / 2)]    
+    $theLine.Substring(([Math]::Floor($theLine.Length / 2)), 1)
 }
 
 

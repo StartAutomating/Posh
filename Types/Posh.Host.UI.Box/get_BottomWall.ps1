@@ -25,5 +25,5 @@ if ($theLine.Length -lt 5) {
     }    
 } else {
     # Otherwise, pick one left of the middle in the line
-    $theLine[[Math]::Floor($theLine.Length / 2) - 1]
+    $theLine.Substring(([Math]::Floor($theLine.Length / 2) - 1), 1)
 }
