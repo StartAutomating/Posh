@@ -1685,6 +1685,25 @@ $theLine.Substring(0,1)
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>MiddleRight</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a box's Middle Right character
+.DESCRIPTION
+    Gets the Middle Right character in a box
+#&gt;
+$theseLines = @($this -split '[\r\n]+' -ne '')
+
+if (-not $theseLines) { return }
+$theLine = $theseLines[[Math]::Floor($theseLines.Length/2)]
+$theLine.Substring($theLine.Length - 1)
+
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>TopLeft</Name>
         <GetScriptBlock>
                         &lt;#
