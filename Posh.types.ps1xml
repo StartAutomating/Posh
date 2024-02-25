@@ -1666,6 +1666,25 @@ if ($theseLines.Length -eq 1 -and $theseLines[0].Length -lt 5) {
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>MiddleLeft</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a box's Middle Left character
+.DESCRIPTION
+    Gets the Middle Left character in a box
+#&gt;
+$theseLines = @($this -split '[\r\n]+' -ne '')
+
+if (-not $theseLines) { return }
+$theLine = $theseLines[[Math]::Floor($theseLines.Length/2)]
+$theLine.Substring(0,1)
+
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>TopLeft</Name>
         <GetScriptBlock>
                         &lt;#
