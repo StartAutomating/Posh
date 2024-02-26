@@ -2206,6 +2206,15 @@ if ($this.$BoxName -is [string]) {
 </Value>
       </NoteProperty>
       <NoteProperty>
+        <Name>LightHeavy</Name>
+        <Value>┌━┬━┐
+┃ ┃ ┃
+├━╋━┤
+┃ ┃ ┃
+└━┴━┘
+</Value>
+      </NoteProperty>
+      <NoteProperty>
         <Name>LightQuadDash</Name>
         <Value>┌┈┬┈┐
 ┊ │ ┊
