@@ -2097,6 +2097,10 @@ if ($this.$BoxName -is [string]) {
                     </Script>
       </ScriptMethod>
       <NoteProperty>
+        <Name>Dot</Name>
+        <Value>●</Value>
+      </NoteProperty>
+      <NoteProperty>
         <Name>DotDash</Name>
         <Value>●─●</Value>
       </NoteProperty>
