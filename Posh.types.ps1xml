@@ -1970,6 +1970,37 @@ if ($theseLines.Length -gt 1 -and $theseLines.Length % 2) {
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>RowCount</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the number of rows in a box.
+.DESCRIPTION
+    Gets the number of rows in a Posh.Host.UI.Box object.
+#&gt;
+
+if ($null -eq $this.'.RowCount') {
+    $this | Add-Member NoteProperty '.RowCount' 0 -Force
+}
+$this.'.RowCount'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the number of rows in a box.
+.DESCRIPTION
+    Sets the number of rows in a Posh.Host.UI.Box object.
+#&gt;
+param(
+[int]$RowCount
+)
+$this | Add-Member NoteProperty '.RowCount' $RowCount -Force
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>TopLeft</Name>
         <GetScriptBlock>
                         &lt;#
