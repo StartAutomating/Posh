@@ -16,6 +16,8 @@
 * [get_MiddleVerticalWall](get_MiddleVerticalWall.md)
 * [get_MiddleWall](get_MiddleWall.md)
 * [get_RightWall](get_RightWall.md)
+* [get_RowCount](get_RowCount.md)
+* [set_RowCount](set_RowCount.md)
 * [get_TopLeft](get_TopLeft.md)
 * [get_TopMiddle](get_TopMiddle.md)
 * [get_TopRight](get_TopRight.md)
