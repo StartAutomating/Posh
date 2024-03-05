@@ -9,6 +9,8 @@
 * [get_BottomMiddle](get_BottomMiddle.md)
 * [get_BottomRight](get_BottomRight.md)
 * [get_BottomWall](get_BottomWall.md)
+* [get_ColumnCount](get_ColumnCount.md)
+* [set_ColumnCount](set_ColumnCount.md)
 * [get_LeftWall](get_LeftWall.md)
 * [get_Middle](get_Middle.md)
 * [get_MiddleLeft](get_MiddleLeft.md)
